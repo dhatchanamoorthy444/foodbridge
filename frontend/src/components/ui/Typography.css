@@ -1,3 +1,5 @@
+/* Typography styles for FoodBridge */
+
 @layer base {
   /* Define custom list marker styling (addressing constraint 16 - replacing basic checkmark bullets) */
   .custom-list li::before {

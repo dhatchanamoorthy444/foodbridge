@@ -5,7 +5,7 @@ import { cn } from '../lib/utils'
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
-  variant?: 'default' | 'primary' | 'white'
+  variant?: 'default' | 'primary' | 'white' | 'botanical'
   className?: string
 }
 
@@ -21,6 +21,7 @@ export function LoadingSpinner({ size = 'md', variant = 'default', className }: 
     default: 'text-botanical',
     primary: 'text-primary',
     white: 'text-white',
+    botanical: 'text-botanical',
   }
 
   return (
