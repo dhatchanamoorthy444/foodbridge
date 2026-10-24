@@ -1,0 +1,263 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --cursor-x: 0px;
+    --cursor-y: 0px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-slate-100 font-sans antialiased;
+    background-color: #0b1510; /* Deep, grounded forest dark tone instead of generic purple/black */
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-editorial {
+    @apply font-serif tracking-tight;
+  }
+
+  /* Theme CSS Variables - set by ThemeProvider */
+  :root {
+    --color-background: #0b1510;
+    --color-surface: #0f291e;
+    --color-surface-elevated: #16382a;
+    --color-text: #f5f0e6;
+    --color-text-secondary: #e8e2d5;
+    --color-text-tertiary: #d6cebd;
+    --color-border: #2d5a3c;
+    --color-primary: #2d5a3c;
+    --color-primary-light: #4b8c65;
+    --color-primary-dark: #1a4731;
+    --color-botanical: #3b6e4f;
+    --color-botanical-light: #4b8c65;
+    --color-botanical-dark: #2c523b;
+    --color-forest: #0f291e;
+    --color-forest-light: #16382a;
+    --color-forest-dark: #0a1f10;
+    --color-cream: #f5f0e6;
+    --color-olive: #4b5e40;
+  }
+
+  /* Apply theme colors */
+  .theme-forest {
+    --color-background: #0b1510;
+    --color-surface: #0f291e;
+    --color-surface-elevated: #16382a;
+    --color-text: #f5f0e6;
+    --color-text-secondary: #e8e2d5;
+    --color-text-tertiary: #d6cebd;
+    --color-border: #2d5a3c;
+    --color-primary: #2d5a3c;
+    --color-primary-light: #4b8c65;
+    --color-primary-dark: #1a4731;
+    --color-botanical: #3b6e4f;
+    --color-botanical-light: #4b8c65;
+    --color-botanical-dark: #2c523b;
+    --color-forest: #0f291e;
+    --color-forest-light: #16382a;
+    --color-forest-dark: #0a1f10;
+    --color-cream: #f5f0e6;
+    --color-olive: #4b5e40;
+  }
+
+  .theme-earth {
+    --color-background: #1a1611;
+    --color-surface: #2d2419;
+    --color-surface-elevated: #3e2e20;
+    --color-text: #f5f0e6;
+    --color-text-secondary: #e8e2d5;
+    --color-text-tertiary: #d6cebd;
+    --color-border: #5d4e37;
+    --color-primary: #5d4e37;
+    --color-primary-light: #7d6f57;
+    --color-primary-dark: #3d2e1f;
+    --color-botanical: #6d5e4b;
+    --color-botanical-light: #8a7964;
+    --color-botanical-dark: #54493b;
+    --color-forest: #1a1611;
+    --color-forest-light: #2d2419;
+    --color-forest-dark: #0f0b08;
+    --color-cream: #f5f0e6;
+    --color-olive: #5d4e37;
+  }
+
+  .theme-sage {
+    --color-background: #0a1412;
+    --color-surface: #0e1d18;
+    --color-surface-elevated: #114c3c;
+    --color-text: #f0f7f4;
+    --color-text-secondary: #e1efe9;
+    --color-text-tertiary: #d2e9df;
+    --color-border: #3d5f4f;
+    --color-primary: #3d5f4f;
+    --color-primary-light: #5a7f71;
+    --color-primary-dark: #2a4f40;
+    --color-botanical: #3d5f4f;
+    --color-botanical-light: #5a7f71;
+    --color-botanical-dark: #2a4f40;
+    --color-forest: #0e1d18;
+    --color-forest-light: #114c3c;
+    --color-forest-dark: #072a1a;
+    --color-cream: #f0f7f4;
+    --color-olive: #3d5f4f;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f241a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #254b38;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #36694e;
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: #2d5a3c;
+    color: #f5f0e6;
+  }
+
+  /* Theme-aware background and text colors */
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+}
+
+@layer components {
+  /* Tonal Earthy Card (No liquid glassmorphism, no heavy generic shadows, clean contrast borders) */
+  .earth-card {
+    background-color: rgba(22, 45, 33, 0.7);
+    border: 1px solid rgba(75, 140, 101, 0.2);
+    border-radius: 0.75rem;
+  }
+
+  .earth-card-hover {
+    @apply earth-card transition-all duration-200;
+  }
+
+  .earth-card-hover:hover {
+    background-color: rgba(28, 56, 41, 0.9);
+    border-color: rgba(75, 140, 101, 0.4);
+  }
+
+  /* Status badges with high contrast & domain indicators */
+  .badge-normal {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-emerald-950/80 text-emerald-300 border border-emerald-700/40;
+  }
+
+  .badge-urgent {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-amber-950/80 text-amber-300 border border-amber-700/40;
+  }
+
+  .badge-critical {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-orange-950/80 text-orange-300 border border-orange-700/40;
+  }
+
+  .badge-expired {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-rose-950/80 text-rose-300 border border-rose-700/40;
+  }
+
+  .badge-safety {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium bg-purple-950/80 text-purple-300 border border-purple-700/40;
+  }
+
+  /* Primary Button (Refined Botanical Solid Green, Tactile, No harsh neon gradient) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-botanical hover:bg-botanical-light text-cream rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-botanical-light focus:ring-offset-2 focus:ring-offset-[#0b1510] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-forest-800 hover:bg-forest-700 text-stone rounded-lg font-medium transition-all duration-200 border border-forest-600/40 focus:outline-none focus:ring-2 focus:ring-botanical focus:ring-offset-2 focus:ring-offset-[#0b1510] active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-transparent hover:bg-forest-800/60 text-cream rounded-lg font-medium transition-all duration-200 border border-botanical/40 focus:outline-none focus:ring-2 focus:ring-botanical;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-rose-800 hover:bg-rose-700 text-white rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-[#0b1510];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-stone hover:text-cream hover:bg-forest-800/40 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-botanical;
+  }
+
+  /* Input fields */
+  .input-field {
+    @apply w-full bg-[#12241b] border border-forest-600/40 rounded-lg px-3.5 py-2.5 text-cream placeholder-stone-dark/70 focus:outline-none focus:ring-2 focus:ring-botanical focus:border-transparent transition-all duration-200 text-sm;
+  }
+
+  .input-label {
+    @apply block text-xs font-semibold uppercase tracking-wider text-stone mb-1.5;
+  }
+
+  /* Custom thoughtful list markers */
+  .custom-list {
+    @apply space-y-3;
+  }
+  .custom-list li {
+    @apply flex items-start gap-3 text-stone;
+  }
+  .custom-list li::before {
+    content: "—";
+    @apply text-botanical-light font-bold flex-shrink-0;
+  }
+}
+
+@layer utilities {
+  /* Subtle earthy ambient cursor effect */
+  .cursor-glow {
+    background: radial-gradient(
+      500px circle at var(--cursor-x) var(--cursor-y),
+      rgba(45, 90, 60, 0.08),
+      transparent 50%
+    );
+  }
+
+  /* Subtle noise texture */
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-botanical-light focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1510];
+  }
+}
+
+/* Reduced motion preference compliance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

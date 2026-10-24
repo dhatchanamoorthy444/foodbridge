@@ -1,0 +1,70 @@
+@layer base {
+  /* Define custom list marker styling (addressing constraint 16 - replacing basic checkmark bullets) */
+  .custom-list li::before {
+    content: "—";
+    @apply text-botanical-light font-bold flex-shrink-0;
+  }
+
+  /* Heading typography with proper tracking and font families (constraint 10 - avoiding default fonts) */
+  h1, h2, h3, .font-editorial {
+    @apply font-serif tracking-tight leading-tight;
+  }
+
+  /* Body text with optimal line height and readability */
+  body {
+    @apply font-sans text-stone leading-relaxed;
+  }
+
+  /* Custom scrollbar for better visual hierarchy */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f241a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #254b38;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #36694e;
+  }
+
+  /* Theme-aware colors */
+  :root {
+    --background: #0b1510;
+    --surface: #0f291e;
+    --surface-elevated: #16382a;
+    --text: #f5f0e6;
+    --text-secondary: #e8e2d5;
+    --text-tertiary: #d6cebd;
+    --border: #2d5a3c;
+    --primary: #2d5a3c;
+    --primary-light: #4b8c65;
+    --primary-dark: #1a4731;
+    --botanical: #3b6e4f;
+    --botanical-light: #4b8c65;
+    --botanical-dark: #2c523b;
+    --forest: #0f291e;
+    --forest-light: #16382a;
+    --forest-dark: #0a1f10;
+    --cream: #f5f0e6;
+    --olive: #4b5e40;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
