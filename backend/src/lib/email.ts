@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.SMTP_PORT || '587'),
   secure: false,
@@ -35,7 +35,7 @@ export async function sendEmail(options: {
 
 export async function sendExpiryWarningEmail(
   email: string,
-  foodItem: any,
+  foodItem: { name: string; category: string; expiry_date: string | Date },
   daysUntilExpiry: number
 ) {
   const subject = `⚠️ Expiry Warning - ${foodItem.name} - ${daysUntilExpiry} days remaining`

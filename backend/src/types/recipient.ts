@@ -1,3 +1,5 @@
+import type { FoodCategory, StorageRequirement } from './food'
+
 export type EligibilityStatus = 'eligible' | 'ineligible' | 'pending'
 export type RejectionReason =
   | 'quantity_exceeded'

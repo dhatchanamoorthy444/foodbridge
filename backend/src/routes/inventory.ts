@@ -145,7 +145,7 @@ router.put('/:id', async (req, res) => {
         category: validatedData.category,
         quantity: validatedData.quantity,
         unit: validatedData.unit,
-        available_quantity: validatedData.availableQuantity ?? existingItem.available_quantity,
+        available_quantity: validatedData.quantity ?? existingItem.available_quantity,
         expiry_date: validatedData.expiryDate || existingItem.expiry_date,
         storage_requirement: validatedData.storageRequirement || existingItem.storage_requirement,
         condition_notes: validatedData.conditionNotes,

@@ -57,7 +57,7 @@ router.get('/dashboard', async (req, res) => {
       .select('*', { count: 'exact', head: true })
       .eq('status', 'completed')
 
-    const completionRate = totalMatches > 0 ? ((completedMatches / totalMatches) * 100).toFixed(1) : '0'
+    const completionRate = totalMatches && totalMatches > 0 ? (((completedMatches ?? 0) / totalMatches) * 100).toFixed(1) : '0'
 
     // Calculate food waste prevented (kg)
     const { data: matchDetails } = await supabaseAdmin
@@ -135,7 +135,7 @@ router.get('/categories', async (req, res) => {
 router.get('/trends', async (req, res) => {
   try {
     const now = new Date()
-    const sixMonthsAgo = new Date(now.setMonth(now.getMonth() - 6))
+    const sixMonthsAgo = new Date(new Date(now.getFullYear(), now.getMonth() - 6, 1).toISOString())
 
     const { data: matches, error } = await supabaseAdmin
       .from('matches')
@@ -146,14 +146,14 @@ router.get('/trends', async (req, res) => {
       return res.status(500).json({ error: 'Failed to fetch trends data' })
     }
 
-    const monthlyData = []
+    const monthlyData: { month: string; donations: number; redistributed: number }[] = []
     for (let i = 5; i >= 0; i--) {
-      const month = new Date(now.setMonth(now.getMonth() - i))
-      const monthKey = month.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+      const anchor = new Date(now.getFullYear(), now.getMonth() - i, 1)
+      const monthKey = anchor.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 
       const monthMatches = (matches || []).filter(match => {
         const matchDate = new Date(match.created_at)
-        return matchDate.getMonth() === month.getMonth() && matchDate.getFullYear() === month.getFullYear()
+        return matchDate.getMonth() === anchor.getMonth() && matchDate.getFullYear() === anchor.getFullYear()
       })
 
       const donations = monthMatches.length
