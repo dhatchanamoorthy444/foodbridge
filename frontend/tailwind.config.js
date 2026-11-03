@@ -60,9 +60,15 @@ export default {
 
         /* Legacy aliases kept so existing components do not break. */
         app: 'rgb(var(--fb-app) / <alpha-value>)',
+        'app-deep': 'rgb(var(--fb-app-deep) / <alpha-value>)',
         panel: 'rgb(var(--fb-panel) / <alpha-value>)',
         elevated: 'rgb(var(--fb-elevated) / <alpha-value>)',
         line: 'rgb(var(--fb-line) / <alpha-value>)',
+        text: 'rgb(var(--fb-text) / <alpha-value>)',
+        'text-2': 'rgb(var(--fb-text-2) / <alpha-value>)',
+        'text-3': 'rgb(var(--fb-text-3) / <alpha-value>)',
+        danger: 'rgb(var(--fb-danger) / <alpha-value>)',
+        'danger-soft': 'rgb(var(--fb-danger-soft) / <alpha-value>)',
         muted: 'rgb(var(--fb-muted) / <alpha-value>)',
         harvest: 'rgb(var(--fb-primary) / <alpha-value>)',
         tomato: 'rgb(var(--fb-danger) / <alpha-value>)',

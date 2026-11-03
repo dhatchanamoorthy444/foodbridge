@@ -38,10 +38,26 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
     return res.status(400).json({ error: `Upload error: ${err.message}` })
   }
 
-  // Custom errors
-  if (err.message && (err.message.includes('already exists') || err.message.includes('not found'))) {
-    const status = err.message.includes('not found') ? 404 : 409
-    return res.status(status).json({ error: err.message })
+  // Custom domain errors raised by services/RPCs ("CODE: human text")
+  const domainMatch = /^\s*([A-Z_]+):\s*(.+)$/.exec(err.message ?? '')
+  if (domainMatch) {
+    const statusByCode: Record<string, number> = {
+      NOT_FOUND: 404,
+      FORBIDDEN: 403,
+      DUPLICATE: 409,
+      MISMATCH: 409,
+      QUANTITY_EXCEEDS: 409,
+      QUANTITY_INVALID: 400,
+      DONATION_STATE: 409,
+      DONATION_EXPIRED: 409,
+      REQUEST_STATE: 409,
+      RESPONSE_STATE: 409,
+      ALERT_STATE: 409,
+      OVERFLOW: 409,
+      STATE: 409,
+    }
+    const status = statusByCode[domainMatch[1]] ?? 400
+    return res.status(status).json({ error: domainMatch[2] })
   }
 
   // Default error

@@ -1,212 +1,184 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Bell,
-  CheckCircle2,
-  Heart,
-  Search,
-  Tag,
-  Truck,
-  X,
-  AlertTriangle,
-  ShieldAlert,
-  Menu,
-} from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, Bell, CheckCheck, LogOut, Settings as SettingsIcon, User as UserIcon } from 'lucide-react'
 import useAppStore from '../../store/useAppStore'
+import { authService } from '../../services/api'
+import { useNotifications, useMarkNotificationRead, useMarkAllNotificationsRead } from '../../hooks/useAppData'
 import { formatRelativeTime } from '../../lib/utils'
-import { Notification } from '../../types'
 
-const C = {
-  primary: '#dfff00', primaryContainer: '#0e5c35',
-  secondary: '#2bff88', secondaryFixed: '#6ffbbe', onSecondaryFixed: '#002113',
-  surface: '#0a0a0a', surfaceLowest: '#141614',
-  surfaceContainerLow: '#1b1e1b', surfaceContainer: '#232723',
-  surfaceContainerHigh: '#2e322e',
-  onSurface: '#ffffff', onSurfaceVariant: '#9aa39b',
-  error: '#ff4d4d',
-}
+export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
+  const user = useAppStore((s) => s.user)
+  const logoutLocal = useAppStore((s) => s.logoutLocal)
+  const [openNotifications, setOpenNotifications] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
 
-function getNotificationIcon(type: Notification['type']) {
-  const icons: Record<string, React.ElementType> = {
-    expiry_warning: AlertTriangle,
-    match_found: Tag,
-    pickup_scheduled: Truck,
-    pickup_confirmed: CheckCircle2,
-    system_alert: ShieldAlert,
-    welcome: Heart,
-  }
-  const Icon = icons[type] || Bell
-  return <Icon className="h-4 w-4" style={{ color: C.secondary }} strokeWidth={2.4} />
-}
-
-export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
-  const { user, notifications, unreadCount, markNotificationRead, markAllNotificationsRead } = useAppStore()
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isNotifOpen, setIsNotifOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
+  const notificationsQuery = useNotifications()
+  const markRead = useMarkNotificationRead()
+  const markAllRead = useMarkAllNotificationsRead()
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (!target.closest('.notif-dropdown')) setIsNotifOpen(false)
+    function onDocClick(e: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+        setOpenNotifications(false)
+        setOpenMenu(false)
+      }
     }
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
+    document.addEventListener('mousedown', onDocClick)
+    return () => document.removeEventListener('mousedown', onDocClick)
   }, [])
 
+  const unread = notificationsQuery.data?.unread ?? 0
+  const items = notificationsQuery.data?.data ?? []
+
+  const displayName =
+    user?.organization?.trim() ||
+    user?.full_name ||
+    user?.email.split('@')[0] ||
+    'Account'
+
+  const handleLogout = async () => {
+    try {
+      await authService.signOut()
+    } catch {
+      /* clearing local state regardless */
+    }
+    logoutLocal()
+    window.location.assign('/')
+  }
+
   return (
-    <header
-      className="h-16 sticky top-0 z-30 flex items-center justify-between px-4 backdrop-blur-xl"
-      style={{
-        background: 'rgba(10,10,10,0.88)',
-        boxShadow: '0 1px 8px rgba(0,0,0,0.04)',
-        borderBottom: `1px solid ${C.surfaceContainerHigh}`,
-      }}
-    >
-      {/* Left: mobile menu + search */}
-      <div className="flex items-center gap-2 flex-1 min-w-0">
+    <header className="sticky top-0 z-30 bg-app border-b border-line" ref={rootRef}>
+      <div className="h-14 px-3 md:px-4 flex items-center justify-between gap-2">
+        {/* Mobile menu */}
         <button
           onClick={onMenuClick}
-          className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl transition-colors"
-          style={{ color: C.onSurfaceVariant }}
-          aria-label="Open menu"
+          className="md:hidden p-2 rounded-lg text-text-2 hover:bg-elevated transition-colors"
+          aria-label="Toggle navigation"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        {/* Brand on mobile when sidebar is hidden */}
-        <div className="flex items-center gap-2 md:hidden">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: C.primary }}>
-            <Heart className="w-3.5 h-3.5" style={{ color: C.onSecondaryFixed }} strokeWidth={2.6} />
-          </div>
-          <span style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 18, color: C.primary, letterSpacing: '-0.01em' }}>FoodBridge</span>
+        {/* Logo (mobile) */}
+        <Link to="/" className="md:hidden flex items-center gap-2">
+          <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-8 w-8 object-contain" />
+          <span className="font-['Anton'] text-lg text-text tracking-tight">FOODBRIDGE</span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-2 min-w-0">
+          <span className="font-label-sm text-[11px] uppercase tracking-widest text-text-3">
+            {user?.role === 'donor' ? 'Donor workspace' : 'Recipient workspace'}
+          </span>
         </div>
 
-        {/* Search */}
-        <div className="relative flex-1 max-w-xs ml-2 hidden sm:block">
-          {isSearchOpen ? (
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: C.onSurfaceVariant }} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search surplus, farms, kitchens..."
-                autoFocus
-                className="w-full h-9 pl-10 pr-10 rounded-xl text-sm outline-none"
-                style={{ background: C.surfaceContainerLow, border: `1px solid ${C.surfaceContainerHigh}`, color: C.onSurface, fontFamily: 'Rubik, sans-serif' }}
-              />
-              <button onClick={() => setIsSearchOpen(false)}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-                style={{ color: C.onSurfaceVariant }}>
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <button onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 h-9 px-3 rounded-xl transition-colors"
-              style={{ background: C.surfaceContainerLow, color: C.onSurfaceVariant, fontFamily: 'Rubik, sans-serif', fontSize: 13 }}
-              aria-label="Search">
-              <Search className="w-4 h-4" />
-              <span className="hidden md:block">Search…</span>
+        <div className="flex items-center gap-1.5">
+          {/* Notifications */}
+          <div className="relative">
+            <button
+              onClick={() => { setOpenNotifications((v) => !v); setOpenMenu(false) }}
+              className="relative p-2 rounded-lg text-text-2 hover:bg-elevated transition-colors"
+              aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
+            >
+              <Bell className="w-5 h-5" />
+              {unread > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-danger text-white text-[9px] font-bold flex items-center justify-center">
+                  {unread > 9 ? '9+' : unread}
+                </span>
+              )}
+              {notificationsQuery.connected && unread === 0 && (
+                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-secondary" aria-label="Live" />
+              )}
             </button>
-          )}
-        </div>
-      </div>
 
-      {/* Right: notifications + profile */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-
-        {/* Notifications */}
-        <div className="notif-dropdown relative">
-          <button
-            onClick={() => setIsNotifOpen(!isNotifOpen)}
-            className="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all active:scale-95"
-            style={{ color: C.onSurfaceVariant }}
-            aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
-          >
-            <Bell className="w-5 h-5" />
-            {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[1rem] px-1 items-center justify-center rounded-full font-bold text-[9px] shadow"
-                style={{ background: C.error, color: 'white', fontFamily: 'Be Vietnam Pro, sans-serif' }}>
-                {unreadCount}
-              </span>
-            )}
-          </button>
-
-          <AnimatePresence>
-            {isNotifOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                transition={{ duration: 0.15 }}
-                className="absolute right-0 mt-2 w-80 rounded-2xl overflow-hidden shadow-xl z-50"
-                style={{ background: C.surfaceLowest, border: `1px solid ${C.surfaceContainerHigh}` }}
-              >
-                <div className="px-4 py-3 flex items-center justify-between"
-                  style={{ borderBottom: `1px solid ${C.surfaceContainerHigh}` }}>
-                  <h3 style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, fontWeight: 700, color: C.onSurface }}>Notifications</h3>
-                  {unreadCount > 0 && (
-                    <button onClick={markAllNotificationsRead}
-                      style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: C.secondary, letterSpacing: '0.04em' }}>
+            <AnimatePresence>
+              {openNotifications && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                  transition={{ duration: 0.16 }}
+                  className="absolute right-0 mt-2 w-[320px] max-h-[420px] overflow-y-auto rounded-xl bg-panel border border-line shadow-popover z-50"
+                >
+                  <div className="flex items-center justify-between px-3 py-2 border-b border-line">
+                    <p className="text-[12px] font-bold uppercase tracking-widest text-text-2">Notifications</p>
+                    <button
+                      onClick={() => markAllRead.mutate()}
+                      disabled={markAllRead.isPending || unread === 0}
+                      className="text-[11px] font-semibold text-primary-fixed hover:text-text transition-colors disabled:opacity-40"
+                    >
                       Mark all read
                     </button>
-                  )}
-                </div>
-                <div className="max-h-80 overflow-y-auto">
-                  {notifications.length === 0 ? (
-                    <div className="p-8 text-center" style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, color: C.onSurfaceVariant }}>
-                      No notifications
+                  </div>
+                  {notificationsQuery.isLoading ? (
+                    <div className="p-4 text-center text-sm text-text-2">Loading…</div>
+                  ) : items.length === 0 ? (
+                    <div className="p-6 text-center">
+                      <Bell className="w-6 h-6 mx-auto mb-2 text-text-3" />
+                      <p className="text-sm text-text-2">No notifications yet</p>
+                      <p className="text-[12px] text-text-3 mt-0.5">Activity on your food will appear here</p>
                     </div>
                   ) : (
-                    notifications.map(notif => (
-                      <div
-                        key={notif.id}
-                        className="p-4 cursor-pointer transition-colors"
-                        style={{
-                          borderBottom: `1px solid ${C.surfaceContainerHigh}`,
-                          background: notif.read ? 'transparent' : C.surfaceContainerLow,
-                        }}
-                        onClick={() => markNotificationRead(notif.id)}
-                      >
-                        <div className="flex gap-3">
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
-                            style={{ background: C.surfaceContainer, border: `1px solid ${C.surfaceContainerHigh}` }}>
-                            {getNotificationIcon(notif.type)}
-                          </span>
-                          <div>
-                            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, color: C.onSurface }}>{notif.message}</p>
-                            <p style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 10, color: C.onSurfaceVariant, marginTop: 2 }}>
-                              {formatRelativeTime(notif.createdAt)}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))
+                    <ul>
+                      {items.slice(0, 20).map((n) => (
+                        <li key={n.id} className={`px-3 py-2.5 border-b border-line last:border-b-0 ${!n.read ? 'bg-elevated/60' : ''}`}>
+                          <button
+                            onClick={() => { if (!n.read) markRead.mutate(n.id) }}
+                            className="w-full text-left"
+                          >
+                            <div className="flex items-start gap-2">
+                              <span className={`mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0 ${n.read ? 'bg-line' : 'bg-primary'}`} />
+                              <div className="min-w-0">
+                                <p className={`text-[13px] leading-snug ${n.read ? 'text-text-2' : 'text-text font-medium'}`}>{n.title}</p>
+                                <p className="text-[12px] text-text-3 leading-snug line-clamp-2">{n.message}</p>
+                                <p className="text-[10px] text-text-3 mt-0.5">{formatRelativeTime(n.created_at)}</p>
+                              </div>
+                            </div>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-        {/* Profile avatar */}
-        <Link
-          to="/settings"
-          className="flex items-center gap-2.5 pl-3"
-          style={{ borderLeft: `1px solid ${C.surfaceContainerHigh}` }}
-        >
-          <div className="text-right hidden sm:block">
-            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, fontWeight: 600, color: C.onSurface }}>{user?.fullName}</p>
-            <p style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 9, fontWeight: 700, color: C.secondary, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{user?.role}</p>
+          {/* Account menu */}
+          <div className="relative">
+            <button
+              onClick={() => { setOpenMenu((v) => !v); setOpenNotifications(false) }}
+              className="flex items-center gap-2 pl-1.5 pr-2.5 py-1.5 rounded-lg hover:bg-elevated transition-colors"
+              aria-label="Account menu"
+            >
+              <span className="h-8 w-8 rounded-full bg-primary-container text-on-primary-container text-[12px] font-bold flex items-center justify-center uppercase">
+                {displayName.slice(0, 1)}
+              </span>
+              <span className="hidden md:block max-w-[140px] truncate text-[13px] font-semibold text-text">{displayName}</span>
+            </button>
+
+            <AnimatePresence>
+              {openMenu && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.16 }}
+                  className="absolute right-0 mt-2 w-52 rounded-xl bg-panel border border-line shadow-popover z-50 overflow-hidden">
+                  <div className="px-3 py-2.5 border-b border-line">
+                    <p className="text-[13px] font-semibold text-text truncate">{displayName}</p>
+                    <p className="text-[11px] text-text-3 truncate">{user?.email}</p>
+                  </div>
+                  <Link to="/settings" onClick={() => setOpenMenu(false)} className="flex items-center gap-2 px-3 py-2.5 text-[13px] text-text-2 hover:text-text hover:bg-elevated transition-colors">
+                    <SettingsIcon className="w-4 h-4" /> Settings
+                  </Link>
+                  <Link to="/" onClick={() => setOpenMenu(false)} className="flex items-center gap-2 px-3 py-2.5 text-[13px] text-text-2 hover:text-text hover:bg-elevated transition-colors">
+                    <UserIcon className="w-4 h-4" /> My workspace
+                  </Link>
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2.5 text-[13px] text-danger hover:bg-danger-soft transition-colors border-t border-line">
+                    <LogOut className="w-4 h-4" /> Sign out <CheckCheck className="w-0 h-0" />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shadow-sm"
-            style={{ background: C.primaryContainer, color: C.secondaryFixed, fontFamily: 'Anton, Impact, sans-serif', fontSize: 15 }}>
-            {user?.fullName?.split(' ').map(n => n[0]).join('') || 'U'}
-          </div>
-        </Link>
+        </div>
       </div>
     </header>
   )
