@@ -140,6 +140,6 @@ export const validators = {
   futureDate: (value: string) => {
     const date = new Date(value)
     const now = new Date()
-    return date > now ? undefined : 'Date must be in the future',
+    return date > now ? undefined : 'Date must be in the future'
   },
 }

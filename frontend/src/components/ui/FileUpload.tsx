@@ -28,30 +28,30 @@ export function FileUpload({ label, onFileSelect, className, ...props }: FileUpl
 
   return (
     <div className={cn("w-full", className)}>
-      {label && <label className=\"input-label mb-1.5 block\">{label}</label>}
+      {label && <label className="input-label mb-1.5 block">{label}</label>}
       {!file ? (
         <div
           onClick={() => inputRef.current?.click()}
-          className=\"border-2 border-dashed border-surface-border rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:border-botanical/50 transition-colors bg-surface-card\"
+          className="border-2 border-dashed border-surface-border rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:border-botanical/50 transition-colors bg-surface-card"
         >
-          <Upload className=\"w-8 h-8 text-stone mb-2\" />
-          <p className=\"text-sm text-stone\">Click to upload or drag and drop</p>
+          <Upload className="w-8 h-8 text-stone mb-2" />
+          <p className="text-sm text-stone">Click to upload or drag and drop</p>
           <input
             ref={inputRef}
-            type=\"file\"
-            className=\"hidden\"
+            type="file"
+            className="hidden"
             onChange={handleFileChange}
             {...props}
           />
         </div>
       ) : (
-        <div className=\"flex items-center justify-between p-3 bg-surface-elevated border border-surface-border rounded-lg\">
-          <div className=\"flex items-center gap-2\">
-            <FileText className=\"w-5 h-5 text-botanical-light\" />
-            <span className=\"text-sm text-cream truncate\">{file.name}</span>
+        <div className="flex items-center justify-between p-3 bg-surface-elevated border border-surface-border rounded-lg">
+          <div className="flex items-center gap-2">
+            <FileText className="w-5 h-5 text-botanical-light" />
+            <span className="text-sm text-cream truncate">{file.name}</span>
           </div>
-          <button onClick={removeFile} className=\"p-1 hover:bg-white/5 rounded\">
-            <X className=\"w-4 h-4 text-stone hover:text-cream\" />
+          <button onClick={removeFile} className="p-1 hover:bg-white/5 rounded">
+            <X className="w-4 h-4 text-stone hover:text-cream" />
           </button>
         </div>
       )}

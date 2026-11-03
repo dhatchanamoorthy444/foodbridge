@@ -23,7 +23,7 @@ export function Watermark({ text = 'FoodBridge', opacity = 0.03, rotation = -30,
         style={{
           transform: `rotate(${rotation}deg)`,
           userSelect: 'none',
-n          WebkitUserSelect: 'none'
+          WebkitUserSelect: 'none'
         }}
       >
         {text}
