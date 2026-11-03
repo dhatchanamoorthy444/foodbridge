@@ -1,187 +1,150 @@
-import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
-  LayoutDashboard,
-  Package,
-  Users,
+  Home,
+  Search,
   Truck,
-  BarChart3,
+  LayoutDashboard,
   Settings,
   LogOut,
-  ChevronDown,
-  ChevronUp,
-  Utensils,
+  Store,
+  Users,
+  BarChart3,
+  Plus,
+  Heart,
 } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { cn } from '../../lib/utils'
 import useAppStore from '../../store/useAppStore'
-import { UserRole } from '../../types'
-import { Dynamic3DScene } from '../animations/Dynamic3DScene'
+
+const C = {
+  primary: '#dfff00', primaryContainer: '#0e5c35',
+  secondary: '#2bff88', secondaryFixed: '#6ffbbe', onSecondaryFixed: '#002113',
+  surface: '#0a0a0a', surfaceLowest: '#141614',
+  surfaceContainerLow: '#1b1e1b', surfaceContainer: '#232723',
+  surfaceContainerHigh: '#2e322e',
+  onSurface: '#ffffff', onSurfaceVariant: '#9aa39b',
+  error: '#ff4d4d', errorContainer: '#3a1414',
+}
 
 interface NavItem {
   label: string
   icon: React.ElementType
   path: string
-  roles: UserRole[]
-  badge?: number
-  scene: 'dashboard' | 'inventory' | 'matching' | 'pickups' | 'analytics'
 }
 
 const navItems: NavItem[] = [
-  {
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    path: '/',
-    roles: ['donor', 'recipient', 'admin', 'volunteer'],
-    badge: 3,
-    scene: 'dashboard',
-  },
-  {
-    label: 'Inventory',
-    icon: Package,
-    path: '/inventory',
-    roles: ['donor', 'admin'],
-    badge: 5,
-    scene: 'inventory',
-  },
-  {
-    label: 'Matching',
-    icon: Users,
-    path: '/matching',
-    roles: ['recipient', 'admin'],
-    badge: 2,
-    scene: 'matching',
-  },
-  {
-    label: 'Pickups',
-    icon: Truck,
-    path: '/pickups',
-    roles: ['donor', 'recipient', 'volunteer', 'admin'],
-    badge: 1,
-    scene: 'pickups',
-  },
-  {
-    label: 'Analytics',
-    icon: BarChart3,
-    path: '/analytics',
-    roles: ['admin'],
-    scene: 'analytics',
-  },
-  {
-    label: 'Settings',
-    icon: Settings,
-    path: '/settings',
-    roles: ['donor', 'recipient', 'admin', 'volunteer'],
-    scene: 'dashboard', // Fallback
-  },
+  { label: 'Home',      icon: Home,            path: '/' },
+  { label: 'Explore',   icon: Search,          path: '/matching' },
+  { label: 'Pickups',   icon: Truck,           path: '/pickups' },
+  { label: 'Inventory', icon: LayoutDashboard, path: '/inventory' },
+  { label: 'Analytics', icon: BarChart3,       path: '/analytics' },
+  { label: 'Settings',  icon: Settings,        path: '/settings' },
 ]
+
+function getInitials(name?: string) {
+  return name
+    ?.split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || 'U'
+}
 
 export default function Sidebar() {
   const { user, logout } = useAppStore()
   const location = useLocation()
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [activeScene, setActiveScene] = useState<NavItem['scene']>('dashboard')
-
-  const filteredItems = navItems.filter(
-    (item) => user && item.roles.includes(user.role)
-  )
 
   return (
-    <div className="flex flex-col h-full bg-[#0b1510]">
-      {/* Interactive 3D Preview Area */}
-      <div className="h-40 border-b border-forest-600/30 overflow-hidden relative">
-        <Dynamic3DScene sceneType={activeScene} />
-      </div>
+    <div className="flex flex-col h-full" style={{ background: C.surfaceContainerLow, borderRight: `1px solid ${C.surfaceContainerHigh}` }}>
 
       {/* Logo */}
-      <div className="p-4 border-b border-forest-600/30">
-        <NavLink to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-botanical flex items-center justify-center">
-            <Utensils className="w-5 h-5 text-cream" />
+      <div className="p-4" style={{ borderBottom: `1px solid ${C.surfaceContainerHigh}` }}>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: C.primary }}>
+            <Heart className="w-4 h-4" style={{ color: C.onSecondaryFixed }} strokeWidth={2.5} />
           </div>
-          <div className="flex flex-col">
-            <span className="font-serif font-bold text-lg text-cream">FoodBridge</span>
-            <span className="text-[10px] text-stone uppercase tracking-widest font-mono">Resilience System</span>
+          <div className="min-w-0">
+            <span className="block truncate"
+              style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 20, color: C.primary, lineHeight: '26px', letterSpacing: '-0.01em' }}>
+              FoodBridge
+            </span>
+            <span className="block"
+              style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 9, fontWeight: 700, color: C.secondary, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Redistribution Portal
+            </span>
           </div>
-        </NavLink>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {filteredItems.map((item) => {
-          const isActive = location.pathname === item.path
+      {/* Nav items */}
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto pb-2">
+        {navItems.map(item => {
+          const isActive = item.path === '/'
+            ? location.pathname === '/'
+            : location.pathname.startsWith(item.path)
           const Icon = item.icon
-
           return (
             <NavLink
               key={item.path}
               to={item.path}
-              onClick={() => setActiveScene(item.scene)}
-              className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 relative group',
-                isActive
-                  ? 'bg-botanical/20 text-cream border border-botanical/40'
-                  : 'text-stone hover:text-cream hover:bg-forest-800/40'
-              )}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 12,
+                padding: '10px 12px', borderRadius: 10,
+                transition: 'all 0.12s',
+                background: isActive ? C.primaryContainer : 'transparent',
+                color: isActive ? 'white' : C.onSurfaceVariant,
+                fontFamily: 'Rubik, sans-serif', fontSize: 14, fontWeight: isActive ? 600 : 500,
+                textDecoration: 'none',
+              }}
             >
-              <Icon className={cn('w-5 h-5', isActive && 'text-botanical-light')} />
-              <span className="flex-1 font-medium">{item.label}</span>
-              {item.badge && (
-                <span className="px-2 py-0.5 text-[10px] font-semibold bg-forest-900 text-stone rounded-full">
-                  {item.badge}
-                </span>
+              <Icon className="w-4.5 h-4.5 flex-shrink-0" style={{ width: 18, height: 18 }} />
+              <span>{item.label}</span>
+              {isActive && (
+                <span className="ml-auto w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ background: C.secondaryFixed }} />
               )}
-              <div className="absolute inset-0 rounded-lg bg-botanical/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
             </NavLink>
           )
         })}
+
+        {/* New Donation CTA */}
+        <div className="pt-3">
+          <button
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-sm"
+            style={{ background: C.primary, color: C.onSecondaryFixed, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, letterSpacing: '0.04em' }}>
+            <Plus className="w-4 h-4" />
+            New Donation
+          </button>
+        </div>
       </nav>
 
-      {/* User section */}
-      <div className="p-3 border-t border-forest-600/30">
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-stone hover:text-cream hover:bg-forest-800/40 transition-all duration-200"
-        >
-          <div className="w-8 h-8 rounded-full bg-botanical flex items-center justify-center text-cream font-semibold text-xs border border-forest-600/40">
-            {user?.fullName?.charAt(0).toUpperCase() || 'U'}
+      {/* User footer */}
+      <div className="p-3" style={{ borderTop: `1px solid ${C.surfaceContainerHigh}` }}>
+        <div className="flex items-center gap-3 px-2 py-2 rounded-xl" style={{ background: C.surface }}>
+          <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0"
+            style={{ background: C.primaryContainer, color: C.secondaryFixed, fontFamily: 'Anton, Impact, sans-serif', fontSize: 16 }}>
+            {getInitials(user?.fullName)}
           </div>
-          <div className="flex-1 text-left">
-            <p className="text-sm font-medium text-cream truncate">
-              {user?.fullName || 'User'}
+          <div className="flex-1 min-w-0">
+            <p className="truncate" style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, fontWeight: 600, color: C.onSurface }}>{user?.fullName || 'User'}</p>
+            <p className="flex items-center gap-1"
+              style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 9, fontWeight: 700, color: C.secondary, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              {user?.role === 'donor'     && <Store    className="w-3 h-3" />}
+              {user?.role === 'recipient' && <Users    className="w-3 h-3" />}
+              {(user?.role === 'admin' || user?.role === 'volunteer') && <BarChart3 className="w-3 h-3" />}
+              {user?.role || 'donor'}
             </p>
-            <p className="text-[10px] text-stone uppercase tracking-wider">{user?.role || 'Guest'}</p>
           </div>
-          {isExpanded ? (
-            <ChevronUp className="w-4 h-4" />
-          ) : (
-            <ChevronDown className="w-4 h-4" />
-          )}
-        </button>
-
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="mt-2 space-y-1"
+          <button
+            onClick={logout}
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ color: C.onSurfaceVariant }}
+            aria-label="Log out"
+            onMouseEnter={e => (e.currentTarget.style.color = C.error)}
+            onMouseLeave={e => (e.currentTarget.style.color = C.onSurfaceVariant)}
           >
-            <NavLink
-              to="/settings"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-stone hover:text-cream hover:bg-forest-800/40 transition-all duration-200"
-            >
-              <Settings className="w-4 h-4" />
-              <span className="text-sm">Settings</span>
-            </NavLink>
-            <button
-              onClick={logout}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-rose-400 hover:bg-rose-950/30 transition-all duration-200"
-            >
-              <LogOut className="w-4 h-4" />
-              <span className="text-sm">Sign Out</span>
-            </button>
-          </motion.div>
-        )}
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -12,9 +12,9 @@ async function startServer() {
 
     // Start server
     app.listen(PORT, () => {
-      console.log(`🚀 FoodBridge API Server running on port ${PORT}")
+      console.log(`🚀 FoodBridge API Server running on port ${PORT}`)
       console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`)
-      console.log(`📊 Health check: http://localhost:${PORT}/health")
+      console.log(`📊 Health check: http://localhost:${PORT}/health`)
     })
   } catch (error) {
     console.error('❌ Failed to start server:', error)

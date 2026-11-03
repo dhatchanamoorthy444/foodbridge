@@ -23,14 +23,14 @@ function DashboardScene() {
         {/* Crate Base */}
         <mesh position={[0, -0.5, 0]}>
           <boxGeometry args={[2, 0.4, 2]} />
-          <meshStandardMaterial color="#2d5a3c" roughness={0.7} />
+          <meshStandardMaterial color="#2E7D4F" roughness={0.7} />
         </mesh>
         {/* Produce Spheres (Apples / Oranges) */}
         {[-0.5, 0.5].map((x, i) =>
           [-0.5, 0.5].map((z, j) => (
             <mesh key={`${i}-${j}`} position={[x, 0.2 + (i+j)*0.1, z]} castShadow>
               <sphereGeometry args={[0.4, 24, 24]} />
-              <meshStandardMaterial color={i === 0 ? '#ef4444' : '#f97316'} roughness={0.3} metalness={0.2} />
+              <meshStandardMaterial color={i === 0 ? '#FF5A36' : '#FF9F1C'} roughness={0.3} metalness={0.2} />
             </mesh>
           ))
         )}
@@ -48,7 +48,7 @@ function InventoryScene() {
           <mesh position={[x, idx * 0.8 - 0.8, 0]} castShadow>
             <boxGeometry args={[1.2, 0.7, 1.2]} />
             <meshStandardMaterial
-              color={idx === 0 ? '#3b82f6' : idx === 1 ? '#22c55e' : '#f59e0b'}
+              color={idx === 0 ? '#E0FF00' : idx === 1 ? '#BAD306' : '#ECFB7E'}
               metalness={0.4}
               roughness={0.3}
             />
@@ -61,22 +61,20 @@ function InventoryScene() {
 
 // 3. Matching Scene: Network Redistribution Nodes
 function MatchingScene() {
-  const lineRef = useRef<THREE.Line>(null)
   const points = [new THREE.Vector3(-2, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(2, 0, 0)]
   const geometry = new THREE.BufferGeometry().setFromPoints(points)
+  const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: '#E0FF00', linewidth: 3 }))
 
   return (
     <group>
-      <line geometry={geometry}>
-        <lineBasicMaterial color="#4ade80" linewidth={3} />
-      </line>
+      <primitive object={line} />
       <mesh position={[-2, 0, 0]}>
         <sphereGeometry args={[0.3, 16, 16]} />
-        <meshStandardMaterial color="#22c55e" emissive="#22c55e" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#E0FF00" emissive="#E0FF00" emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[2, 0, 0]}>
         <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshStandardMaterial color="#f97316" emissive="#f97316" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#FF9F1C" emissive="#FF9F1C" emissiveIntensity={0.5} />
       </mesh>
     </group>
   )
@@ -96,15 +94,15 @@ function PickupsScene() {
       <Float speed={3} floatIntensity={0.4}>
         <mesh position={[0, 0, 0]} castShadow>
           <boxGeometry args={[2, 1, 1]} />
-          <meshStandardMaterial color="#3b82f6" roughness={0.4} />
+          <meshStandardMaterial color="#BAD306" roughness={0.4} />
         </mesh>
         <mesh ref={wheelRef} position={[-0.6, -0.6, 0.5]}>
           <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
-          <meshStandardMaterial color="#1e293b" />
+          <meshStandardMaterial color="#111111" />
         </mesh>
         <mesh position={[0.6, -0.6, 0.5]}>
           <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
-          <meshStandardMaterial color="#1e293b" />
+          <meshStandardMaterial color="#111111" />
         </mesh>
       </Float>
     </group>
@@ -121,7 +119,7 @@ function AnalyticsScene() {
           <mesh key={x} position={[x, height / 2 - 1, 0]} castShadow>
             <boxGeometry args={[0.6, height, 0.6]} />
             <meshStandardMaterial
-              color={idx === 3 ? '#22c55e' : '#4b8c65'}
+              color={idx % 2 === 0 ? '#E0FF00' : '#ECFB7E'}
               metalness={0.2}
               roughness={0.4}
             />
@@ -141,7 +139,7 @@ export function Dynamic3DScene({ sceneType, className = '' }: Dynamic3DSceneProp
         <Suspense fallback={null}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 8, 5]} intensity={1.2} castShadow />
-          <pointLight position={[-5, -5, -5]} intensity={0.4} color="#f97316" />
+          <pointLight position={[-5, -5, -5]} intensity={0.4} color="#FF9F1C" />
 
           {sceneType === 'dashboard' && <DashboardScene />}
           {sceneType === 'inventory' && <InventoryScene />}

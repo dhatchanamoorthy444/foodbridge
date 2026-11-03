@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 // Typography Styles that adhere to the UI/UX design constraints
 

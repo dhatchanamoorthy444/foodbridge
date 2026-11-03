@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 import { ChevronRight } from 'lucide-react'
 
 interface BreadcrumbItem {

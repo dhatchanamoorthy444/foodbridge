@@ -61,7 +61,7 @@ export function getDaysUntilExpiry(expiryDate: Date | string): number {
 }
 
 export function calculateMatchScore(
-  category: string,
+  category: number,
   quantityMatch: number,
   pickupFeasibility: number,
   storageCompatibility: number

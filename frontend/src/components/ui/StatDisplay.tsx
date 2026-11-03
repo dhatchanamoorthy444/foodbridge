@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface StatDisplayProps {
   value: string | number
@@ -36,7 +36,6 @@ export function StatDisplay({ value, label, icon, trend, className }: StatDispla
           <span className="text-stone">from last month</span>
         </div>
       )}
-      }
     </div>
   )
 }

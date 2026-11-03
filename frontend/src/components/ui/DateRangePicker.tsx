@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Calendar } from './Calendar'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface DateRangePickerProps {
   startDate?: Date

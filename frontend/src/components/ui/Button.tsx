@@ -1,49 +1,55 @@
 import { forwardRef } from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-surface disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 shadow-sm',
-        destructive: 'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-700 shadow-sm',
-        outline: 'border border-surface-border bg-transparent hover:bg-white/5 text-slate-200',
-        secondary: 'bg-surface-elevated text-slate-200 hover:bg-surface-border border border-surface-border',
-        ghost: 'text-slate-400 hover:text-slate-200 hover:bg-white/5',
-        link: 'text-primary-400 underline-offset-4 hover:underline',
-        botanical: 'bg-botanical hover:bg-botanical-light text-cream rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-botanical-light focus:ring-offset-2 focus:ring-offset-[#0b1510] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none',
-        "botanical-outline": 'bg-transparent hover:bg-botanical/20 text-botanical rounded-lg font-medium transition-all duration-200 border border-botanical/40 focus:outline-none focus:ring-2 focus:ring-botanical',
-        "forest-primary": 'bg-forest-800 hover:bg-forest-700 text-cream rounded-lg font-medium transition-all duration-200 border border-forest-600/40 focus:outline-none focus:ring-2 focus:ring-botanical focus:ring-offset-2 focus:ring-offset-[#0b1510] active:scale-[0.98]',
-      },
-      size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-8 px-3',
-        lg: 'h-12 px-6',
-        icon: 'h-10 w-10',
-        xl: 'h-14 px-8',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
+type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'botanical' | 'botanical-outline' | 'forest-primary'
+type ButtonSize = 'default' | 'sm' | 'lg' | 'icon' | 'xl'
+
+const getVariantClasses = (variant: ButtonVariant): string => {
+  const variants: Record<ButtonVariant, string> = {
+    default:
+      'bg-harvest text-app-deep border-2 border-harvest hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_rgb(var(--fb-text))] active:translate-x-0 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed font-bold uppercase tracking-wide',
+    destructive:
+      'bg-tomato text-app-deep border-2 border-tomato hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_rgb(var(--fb-text))] font-bold uppercase tracking-wide',
+    outline: 'border-2 border-harvest bg-transparent hover:bg-harvest/10 text-harvest font-bold uppercase tracking-wide',
+    secondary: 'bg-panel text-bone border-2 border-line hover:border-harvest hover:text-harvest font-bold uppercase tracking-wide',
+    ghost: 'text-muted hover:text-harvest hover:bg-panel/60 border-2 border-transparent font-bold uppercase tracking-wide',
+    link: 'text-harvest underline-offset-4 hover:underline font-semibold',
+    botanical:
+      'bg-harvest text-app-deep border-2 border-harvest rounded-[10px] font-bold uppercase tracking-wide transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_rgb(var(--fb-text))] active:translate-x-0 active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none',
+    'botanical-outline':
+      'bg-transparent hover:bg-harvest/10 text-harvest rounded-[10px] font-bold uppercase tracking-wide transition-all duration-150 border-2 border-harvest',
+    'forest-primary':
+      'bg-panel hover:border-harvest hover:text-harvest text-bone rounded-[10px] font-bold uppercase tracking-wide transition-all duration-150 border-2 border-line active:scale-[0.98]',
   }
-)
+  return variants[variant]
+}
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+const getSizeClasses = (size: ButtonSize): string => {
+  const sizes: Record<ButtonSize, string> = {
+    default: 'h-10 px-4 py-2',
+    sm: 'h-8 px-3 text-sm',
+    lg: 'h-12 px-6 text-base',
+    icon: 'h-10 w-10',
+    xl: 'h-14 px-8 text-lg',
+  }
+  return sizes[size]
+}
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant
+  size?: ButtonSize
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
+  ({ className, variant = 'default', size = 'default', ...props }, ref) => {
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+      <button
+        className={cn(
+          'inline-flex items-center justify-center gap-2 rounded-[10px] font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-harvest focus:ring-offset-2 focus:ring-offset-app disabled:pointer-events-none',
+          getVariantClasses(variant),
+          getSizeClasses(size),
+          className
+        )}
         ref={ref}
         {...props}
       />
@@ -53,4 +59,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button'
 
-export { Button, buttonVariants }
+export { Button }

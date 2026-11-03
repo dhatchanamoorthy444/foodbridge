@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface SwitchProps {
   checked: boolean
@@ -31,12 +31,12 @@ export function Switch({ checked, onCheckedChange, disabled = false, className, 
         <div
           className={cn(
             'w-11 h-6 rounded-full transition-colors duration-200',
-            checked ? 'bg-botanical' : 'bg-surface-border'
+            checked ? 'bg-harvest' : 'bg-line'
           )}
         >
           <div
             className={cn(
-              'w-4 h-4 rounded-full bg-white shadow-md transform transition-transform duration-200',
+              'w-4 h-4 rounded-full bg-bone shadow-md transform transition-transform duration-200',
               'absolute top-1 left-1',
               checked && 'translate-x-5'
             )}

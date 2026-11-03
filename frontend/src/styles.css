@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Rubik', system-ui, sans-serif;
+  background: #0f0f0f;
+  color: #ffffff;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Botanical Editorial imports (for remaining pages) */
+@import url('https://fonts.googleapis.com/css2?family=Anton:wght@400&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&family=Roboto+Mono:wght@400&display=swap');

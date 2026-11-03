@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface StatCardProps {
   title: string
@@ -20,14 +20,14 @@ export function StatCard({ title, value, change, icon, iconBg = 'bg-primary-500/
     <div className={cn('glass-card p-6', className)}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-400">{title}</p>
-          <h3 className="text-3xl font-bold text-white mt-1">{value}</h3>
+          <p className="text-sm font-medium text-muted">{title}</p>
+          <h3 className="text-3xl font-bold text-bone mt-1">{value}</h3>
           {change && (
             <div className="flex items-center gap-1 mt-2 text-sm">
               <span className={change.direction === 'up' ? 'text-green-400' : 'text-red-400'}>
                 {change.direction === 'up' ? '↑' : '↓'} {change.value}%
               </span>
-              <span className="text-slate-500">{change.period}</span>
+              <span className="text-muted">{change.period}</span>
             </div>
           )}
         </div>

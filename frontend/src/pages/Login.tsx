@@ -1,266 +1,179 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
-import { Heart, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, ArrowLeft } from 'lucide-react'
-import { loginSchema, LoginFormData } from '../lib/validations'
+import { Heart, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react'
 import useAppStore from '../store/useAppStore'
+
+const C = {
+  primary: '#dfff00',
+  primaryContainer: '#0e5c35',
+  secondary: '#2bff88',
+  secondaryFixed: '#6ffbbe',
+  onSecondaryFixed: '#002113',
+  surface: '#0a0a0a',
+  error: '#ff4d4d',
+  errorContainer: '#3a1414',
+  onErrorContainer: '#ff9d9d',
+}
+
+const DEMO_USERS = {
+  'donor@demo.com':     { id: '1', email: 'donor@demo.com',     fullName: 'Alex Chen',    role: 'donor'     as const, status: 'active' as const, organization: 'Green Leaf Bakery & Supermarket',  createdAt: new Date() },
+  'recipient@demo.com': { id: '2', email: 'recipient@demo.com', fullName: 'Maria Santos', role: 'recipient' as const, status: 'active' as const, organization: 'Hope Community Kitchen',           createdAt: new Date() },
+  'admin@demo.com':     { id: '3', email: 'admin@demo.com',     fullName: 'Admin User',   role: 'admin'     as const, status: 'active' as const, organization: 'FoodBridge Central Authority',     createdAt: new Date() },
+}
 
 export default function Login() {
   const navigate = useNavigate()
   const { login } = useAppStore()
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [email, setEmail]       = useState('')
+  const [password, setPassword] = useState('')
+  const [showPwd, setShowPwd]   = useState(false)
+  const [loading, setLoading]   = useState(false)
+  const [error, setError]       = useState('')
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  })
-
-  const demoUsers = {
-    'donor@demo.com': {
-      id: '1',
-      email: 'donor@demo.com',
-      fullName: 'Green Market Groceries',
-      role: 'donor' as const,
-      status: 'active' as const,
-      organization: 'Green Market LLC',
-      createdAt: new Date(),
-    },
-    'recipient@demo.com': {
-      id: '2',
-      email: 'recipient@demo.com',
-      fullName: 'City Food Shelter',
-      role: 'recipient' as const,
-      status: 'active' as const,
-      organization: 'Community Hope Shelter',
-      createdAt: new Date(),
-    },
-    'admin@demo.com': {
-      id: '3',
-      email: 'admin@demo.com',
-      fullName: 'Platform Moderator',
-      role: 'admin' as const,
-      status: 'active' as const,
-      organization: 'FoodBridge Central Admin',
-      createdAt: new Date(),
-    },
-  }
-
-  const handleDirectLogin = (email: keyof typeof demoUsers) => {
-    setIsLoading(true)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     setError('')
-    setTimeout(() => {
-      login(demoUsers[email])
-      setIsLoading(false)
+    setLoading(true)
+    await new Promise(r => setTimeout(r, 700))
+    const user = DEMO_USERS[email as keyof typeof DEMO_USERS]
+    if (user && password.length >= 4) {
+      login(user)
       navigate('/')
-    }, 400)
+    } else {
+      setError('Invalid credentials. Use a demo account below.')
+    }
+    setLoading(false)
   }
 
-  const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true)
-    setError('')
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 600))
-
-      const user = demoUsers[data.email as keyof typeof demoUsers]
-      if (user && data.password === 'demo123') {
-        login(user)
-        navigate('/')
-      } else if (data.email && data.password) {
-        // Fallback demo user for arbitrary logins during evaluation
-        login({
-          id: Date.now().toString(),
-          email: data.email,
-          fullName: 'Verified Partner',
-          role: 'donor',
-          status: 'active',
-          organization: 'Partner Organization',
-          createdAt: new Date(),
-        })
-        navigate('/')
-      } else {
-        setError('Invalid email or password. Use demo accounts below.')
-      }
-    } catch (err) {
-      setError('An authentication error occurred. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
+  const handleQuickLogin = (key: keyof typeof DEMO_USERS) => {
+    setLoading(true)
+    setTimeout(() => { login(DEMO_USERS[key]); navigate('/') }, 500)
   }
 
   return (
-    <div className="min-h-screen bg-[#0b1510] text-cream flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background ambient lighting */}
-      <div className="fixed inset-0 pointer-events-none noise-overlay" />
+    <div className="min-h-screen flex flex-col" style={{ background: C.surface }}>
 
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md relative z-10"
-      >
-        <Link to="/" className="inline-flex items-center gap-2 text-stone hover:text-cream text-xs font-mono uppercase tracking-wider mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Overview
-        </Link>
-
-        {/* Header Branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-botanical flex items-center justify-center shadow-lg">
-              <Heart className="w-5 h-5 text-cream" />
+      {/* Header */}
+      <header className="fixed top-0 w-full z-50" style={{ background: C.surface, borderBottom: '1px solid rgba(111,251,190,0.12)' }}>
+        <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: C.secondaryFixed }}>
+              <Heart className="w-4 h-4" style={{ color: C.onSecondaryFixed }} strokeWidth={2.6} />
             </div>
-            <span className="font-serif font-bold text-2xl text-cream">FoodBridge</span>
-          </div>
-          <p className="text-stone text-xs mt-2 uppercase tracking-wider font-mono">
-            Surplus Redistribution Platform
-          </p>
+            <div className="flex flex-col leading-none">
+              <span style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 20, color: '#ffffff', letterSpacing: '0.02em' }}>FOODBRIDGE</span>
+              <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 8, fontWeight: 700, color: C.secondaryFixed, letterSpacing: '0.18em', textTransform: 'uppercase' }}>Surplus Resilience</span>
+            </div>
+          </Link>
+          <Link to="/register"
+            style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: C.secondaryFixed, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Create Account
+          </Link>
         </div>
+      </header>
 
-        {/* Login Card */}
-        <div className="earth-card p-8">
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-serif text-cream mb-1">Access Account</h1>
-            <p className="text-stone text-xs">Sign in to manage surplus listings and allocations</p>
+      {/* Main */}
+      <div className="flex-1 pt-16 flex items-center justify-center px-4 py-12">
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
+          className="w-full max-w-sm space-y-6">
+
+          {/* Brand mark */}
+          <div className="text-center space-y-2">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-lg"
+              style={{ background: C.secondaryFixed }}>
+              <Heart className="w-8 h-8" style={{ color: C.onSecondaryFixed }} strokeWidth={2.5} />
+            </div>
+            <h1 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 32, color: '#ffffff', letterSpacing: '0.02em', textTransform: 'uppercase' }}>Welcome Back</h1>
+            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, color: 'rgba(215,230,217,0.75)' }}>Sign in to your FoodBridge portal</p>
           </div>
 
+          {/* Error */}
           {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-5 p-3.5 rounded bg-rose-950/80 border border-rose-700/50 flex items-start gap-3 text-xs text-rose-200"
-            >
-              <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
-              <span>{error}</span>
-            </motion.div>
+            <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: C.errorContainer }}>
+              <AlertCircle className="w-4 h-4 flex-shrink-0" style={{ color: C.onErrorContainer }} />
+              <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, color: C.onErrorContainer }}>{error}</p>
+            </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className="input-label">Work / Organizational Email</label>
+              <label className="block text-xs font-bold mb-1.5" style={{ fontFamily: 'Be Vietnam Pro, sans-serif', color: 'rgba(215,230,217,0.7)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Email Address
+              </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-dark" />
-                <input
-                  {...register('email')}
-                  type="email"
-                  placeholder="donor@demo.com"
-                  className="input-field pl-10"
-                />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(215,230,217,0.5)' }} />
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
+                  placeholder="you@example.com"
+                  className="w-full h-12 pl-10 pr-4 rounded-xl text-sm outline-none transition-all"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(111,251,190,0.2)', color: '#ffffff', fontFamily: 'Rubik, sans-serif' }} />
               </div>
-              {errors.email && (
-                <p className="mt-1 text-xs text-rose-400">{errors.email.message}</p>
-              )}
             </div>
 
             <div>
-              <label className="input-label">Password</label>
+              <label className="block text-xs font-bold mb-1.5" style={{ fontFamily: 'Be Vietnam Pro, sans-serif', color: 'rgba(215,230,217,0.7)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Password
+              </label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-dark" />
-                <input
-                  {...register('password')}
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  className="input-field pl-10 pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-dark hover:text-cream"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(215,230,217,0.5)' }} />
+                <input type={showPwd ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required
+                  placeholder="Your password"
+                  className="w-full h-12 pl-10 pr-10 rounded-xl text-sm outline-none"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(111,251,190,0.2)', color: '#ffffff', fontFamily: 'Rubik, sans-serif' }} />
+                <button type="button" onClick={() => setShowPwd(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  style={{ color: 'rgba(215,230,217,0.5)' }}>
+                  {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="mt-1 text-xs text-rose-400">{errors.password.message}</p>
-              )}
             </div>
 
-            <div className="flex items-center justify-between text-xs pt-1">
-              <label className="flex items-center gap-2 cursor-pointer text-stone">
-                <input
-                  type="checkbox"
-                  className="rounded border-forest-600 bg-forest-900 text-botanical focus:ring-botanical"
-                />
-                <span>Remember session</span>
-              </label>
-              <button
-                type="button"
-                onClick={() => handleDirectLogin('donor@demo.com')}
-                className="text-botanical-light hover:underline"
-              >
-                Forgot password?
-              </button>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full btn-primary py-2.5 mt-2 justify-center"
-            >
-              {isLoading ? 'Authenticating...' : (
-                <>
-                  Sign In <ArrowRight className="w-4 h-4" />
-                </>
-              )}
+            <button type="submit" disabled={loading}
+              className="w-full h-12 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-60 shadow-lg"
+              style={{ background: C.primary, color: C.onSecondaryFixed, fontFamily: 'Rubik, sans-serif', fontSize: 15, fontWeight: 600 }}>
+              {loading
+                ? <div className="w-5 h-5 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+                : <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>}
             </button>
           </form>
 
-          {/* Explicit One-Click Quick Demo Accounts */}
-          <div className="mt-6 pt-5 border-t border-forest-600/30">
-            <p className="text-center text-xs font-mono uppercase tracking-wider text-stone mb-3">
-              One-Click Demo Authentication
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setValue('email', 'donor@demo.com')
-                  setValue('password', 'demo123')
-                  handleDirectLogin('donor@demo.com')
-                }}
-                className="py-2 px-2 rounded bg-forest-800 hover:bg-forest-700 text-cream text-xs font-medium border border-forest-600/40 transition-colors text-center"
-              >
-                Donor
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setValue('email', 'recipient@demo.com')
-                  setValue('password', 'demo123')
-                  handleDirectLogin('recipient@demo.com')
-                }}
-                className="py-2 px-2 rounded bg-forest-800 hover:bg-forest-700 text-cream text-xs font-medium border border-forest-600/40 transition-colors text-center"
-              >
-                Recipient
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setValue('email', 'admin@demo.com')
-                  setValue('password', 'demo123')
-                  handleDirectLogin('admin@demo.com')
-                }}
-                className="py-2 px-2 rounded bg-forest-800 hover:bg-forest-700 text-cream text-xs font-medium border border-forest-600/40 transition-colors text-center"
-              >
-                Admin
-              </button>
-            </div>
+          {/* Divider */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px" style={{ background: 'rgba(111,251,190,0.15)' }} />
+            <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 10, fontWeight: 700, color: 'rgba(215,230,217,0.45)', letterSpacing: '0.1em' }}>DEMO ACCESS</span>
+            <div className="flex-1 h-px" style={{ background: 'rgba(111,251,190,0.15)' }} />
           </div>
-        </div>
 
-        <div className="flex items-center justify-between text-xs text-stone mt-6 px-1">
-          <Link to="/privacy" className="hover:text-cream">Privacy Policy</Link>
-          <Link to="/terms" className="hover:text-cream">Terms of Service</Link>
-          <Link to="/cookies" className="hover:text-cream">Cookie Policy</Link>
-        </div>
-      </motion.div>
+          {/* Quick login */}
+          <div className="space-y-2">
+            {[
+              { key: 'donor@demo.com'     as const, label: 'Donor',        desc: 'Green Leaf Bakery & Supermarket', emoji: '🌱' },
+              { key: 'recipient@demo.com' as const, label: 'Recipient NGO', desc: 'Hope Community Kitchen',          emoji: '🏠' },
+              { key: 'admin@demo.com'     as const, label: 'Admin',         desc: 'FoodBridge Central Authority',    emoji: '⚙️' },
+            ].map(({ key, label, desc, emoji }) => (
+              <button key={key} onClick={() => handleQuickLogin(key)} disabled={loading}
+                className="w-full flex items-center gap-3 p-3 rounded-xl transition-all active:scale-[0.98] text-left"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(111,251,190,0.15)' }}>
+                <span className="text-xl">{emoji}</span>
+                <div className="flex-1 min-w-0">
+                  <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, fontWeight: 600, color: C.secondaryFixed }}>{label}</p>
+                  <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 11, color: 'rgba(215,230,217,0.55)' }}>{desc}</p>
+                </div>
+                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full flex-shrink-0"
+                  style={{ background: C.secondaryFixed, color: C.onSecondaryFixed, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 9, fontWeight: 700, letterSpacing: '0.06em' }}>
+                  <ShieldCheck className="w-3 h-3" /> DEMO
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <p className="text-center" style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, color: 'rgba(215,230,217,0.55)' }}>
+            Don't have an account?{' '}
+            <Link to="/register" style={{ color: C.secondaryFixed, fontWeight: 600 }}>Sign up free</Link>
+          </p>
+        </motion.div>
+      </div>
     </div>
   )
 }

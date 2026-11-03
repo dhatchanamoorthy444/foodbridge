@@ -81,6 +81,27 @@ export const loginSchema = z.object({
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
+// Create account validation schema
+export const registerSchema = z
+  .object({
+    fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+    organization: z.string().min(2, 'Organization name must be at least 2 characters'),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string().min(6, 'Confirm your password'),
+    role: z.enum(['donor', 'recipient']),
+    termsAccepted: z.boolean().refine((v) => v === true, {
+      message: 'You must accept the Terms of Service and Privacy Policy',
+    }),
+    marketingConsent: z.boolean(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+
+export type RegisterFormData = z.infer<typeof registerSchema>
+
 // Pickup scheduling schema
 export const pickupSchema = z.object({
   scheduledDate: z.string().refine((date) => {

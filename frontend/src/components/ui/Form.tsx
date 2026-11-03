@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -19,7 +19,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           placeholder={placeholder}
           className={cn(
-            'w-full bg-[#12241b] border border-forest-600/40 rounded-lg px-3.5 py-2.5 text-cream placeholder-stone-dark/70 focus:outline-none focus:ring-2 focus:ring-botanical focus:border-transparent transition-all duration-200 text-sm',
+            'w-full bg-app-deep border-2 border-line/70 rounded-[10px] px-3.5 py-2.5 text-bone placeholder-muted/70 focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest transition-all duration-200 text-sm',
             error && 'border-rose-500/50 focus:ring-rose-500',
             className
           )}
@@ -51,14 +51,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           className={cn(
-            'w-full bg-[#12241b] border border-forest-600/40 rounded-lg px-3.5 py-2.5 text-cream placeholder-stone-dark/70 focus:outline-none focus:ring-2 focus:ring-botanical focus:border-transparent transition-all duration-200 text-sm',
+            'w-full bg-app-deep border-2 border-line/70 rounded-[10px] px-3.5 py-2.5 text-bone placeholder-muted/70 focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest transition-all duration-200 text-sm',
             error && 'border-rose-500/50 focus:ring-rose-500',
             className
           )}
           {...props}
         >
           {options.map((option) => (
-            <option key={option.value} value={option.value} className="bg-[#12241b] text-cream">
+            <option key={option.value} value={option.value} className="bg-app-deep text-bone">
               {option.label}
             </option>
           ))}
@@ -88,7 +88,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           className={cn(
-            'w-full bg-[#12241b] border border-forest-600/40 rounded-lg px-3.5 py-2.5 text-cream placeholder-stone-dark/70 focus:outline-none focus:ring-2 focus:ring-botanical focus:border-transparent transition-all duration-200 text-sm',
+            'w-full bg-app-deep border-2 border-line/70 rounded-[10px] px-3.5 py-2.5 text-bone placeholder-muted/70 focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest transition-all duration-200 text-sm',
             error && 'border-rose-500/50 focus:ring-rose-500',
             className
           )}

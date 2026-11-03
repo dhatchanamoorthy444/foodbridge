@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { MoreVertical } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface OverflowMenuItem {
   label: string

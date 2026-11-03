@@ -4,34 +4,34 @@ import { ArrowLeft, Shield, Lock, Eye, FileText } from 'lucide-react'
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-[#0b1510] text-cream px-6 py-12 md:py-20 max-w-4xl mx-auto">
-      <Link to="/" className="inline-flex items-center gap-2 text-stone hover:text-cream mb-8 transition-colors text-sm">
+    <div className="min-h-screen bg-app text-bone px-6 py-12 md:py-20 max-w-4xl mx-auto">
+      <Link to="/" className="inline-flex items-center gap-2 text-muted hover:text-bone mb-8 transition-colors text-sm">
         <ArrowLeft className="w-4 h-4" /> Back to FoodBridge
       </Link>
 
-      <div className="border-b border-forest-600/30 pb-6 mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-forest-800 text-botanical-light text-xs font-mono uppercase tracking-wider mb-3">
+      <div className="border-b border-line/60 pb-6 mb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-panel text-harvest text-xs font-mono uppercase tracking-wider mb-3">
           Compliance & Transparency
         </div>
-        <h1 className="text-4xl md:text-5xl font-serif font-bold text-cream">Privacy Policy</h1>
-        <p className="text-stone text-sm mt-2">
+        <h1 className="text-4xl md:text-5xl font-display font-bold text-bone">Privacy Policy</h1>
+        <p className="text-muted text-sm mt-2">
           Effective Date: October 24, 2024 · Last Reviewed: October 2024
         </p>
       </div>
 
-      <div className="space-y-8 text-stone leading-relaxed text-sm md:text-base">
+      <div className="space-y-8 text-muted leading-relaxed text-sm md:text-base">
         <section className="space-y-3">
-          <h2 className="text-2xl font-serif text-cream">1. Introduction & Organizational Disclosure</h2>
+          <h2 className="text-2xl font-display text-bone">1. Introduction & Organizational Disclosure</h2>
           <p>
             FoodBridge is an educational and community-driven initiative dedicated to surplus food redistribution and food expiry monitoring. This Privacy Policy details our practices concerning the collection, storage, use, and protection of personal and organizational information.
           </p>
-          <p className="text-xs text-stone-dark italic">
+          <p className="text-xs text-muted italic">
             Notice: FoodBridge operates as an open platform project. Provisions herein should be reviewed by a qualified legal professional prior to deployment in commercial jurisdictions.
           </p>
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-2xl font-serif text-cream">2. Data Minimization & Information Collected</h2>
+          <h2 className="text-2xl font-display text-bone">2. Data Minimization & Information Collected</h2>
           <p>
             We strictly adhere to privacy-by-design and data minimization principles. We collect only the data strictly necessary to facilitate surplus food logistics:
           </p>
@@ -44,7 +44,7 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-2xl font-serif text-cream">3. Purpose and Legal Basis of Processing</h2>
+          <h2 className="text-2xl font-display text-bone">3. Purpose and Legal Basis of Processing</h2>
           <p>We process information under the following lawful grounds:</p>
           <ul className="custom-list">
             <li><strong>Contractual & Operational Necessity:</strong> Facilitating matching between surplus food donors and eligible recipient organizations.</li>
@@ -54,7 +54,7 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-2xl font-serif text-cream">4. Third-Party Services & Infrastructure</h2>
+          <h2 className="text-2xl font-display text-bone">4. Third-Party Services & Infrastructure</h2>
           <p>
             We do not sell, rent, or monetize your data. The external service integrations used by FoodBridge include:
           </p>
@@ -66,7 +66,7 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-2xl font-serif text-cream">5. Retention Periods & Data Deletion Rights</h2>
+          <h2 className="text-2xl font-display text-bone">5. Retention Periods & Data Deletion Rights</h2>
           <p>
             Users have the right to request deletion of their account and all associated personal information at any time via the user settings panel or by direct request to our privacy team.
           </p>
@@ -76,11 +76,11 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-2xl font-serif text-cream">6. Contact & Data Protection Inquiries</h2>
+          <h2 className="text-2xl font-display text-bone">6. Contact & Data Protection Inquiries</h2>
           <p>
             For data protection inquiries, access requests, or regulatory questions, reach our project team at:
           </p>
-          <div className="earth-card p-4 text-cream font-mono text-sm">
+          <div className="earth-card p-4 text-bone font-mono text-sm">
             Email: privacy@foodbridge.network<br />
             Support: support@foodbridge.network
           </div>

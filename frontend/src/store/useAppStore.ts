@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { User, UserRole, Notification } from '../types'
 
+export type AppTheme = 'harvest' | 'orchard' | 'market'
+
 interface AppState {
   // Auth state
   user: User | null
@@ -10,7 +12,7 @@ interface AppState {
 
   // UI state
   sidebarOpen: boolean
-  theme: 'dark' | 'light'
+  theme: AppTheme
   animationsEnabled: boolean
 
   // Notifications
@@ -20,11 +22,12 @@ interface AppState {
   // Actions
   setUser: (user: User | null) => void
   login: (user: User) => void
+  updateUser: (updates: Partial<User>) => Promise<User | null>
   logout: () => void
   setLoading: (loading: boolean) => void
   toggleSidebar: () => void
   setSidebarOpen: (open: boolean) => void
-  setTheme: (theme: 'dark' | 'light') => void
+  setTheme: (theme: AppTheme) => void
   setAnimationsEnabled: (enabled: boolean) => void
   addNotification: (notification: Omit<Notification, 'id' | 'createdAt'>) => void
   markNotificationRead: (id: string) => void
@@ -40,7 +43,7 @@ const useAppStore = create<AppState>()(
       isAuthenticated: false,
       isLoading: false,
       sidebarOpen: true,
-      theme: 'dark',
+      theme: 'harvest',
       animationsEnabled: true,
       notifications: [],
       unreadCount: 0,
@@ -57,6 +60,13 @@ const useAppStore = create<AppState>()(
           message: `Hello ${user.fullName}! You're now logged in as ${user.role}.`,
           read: false,
         })
+      },
+      updateUser: async (updates) => {
+        const current = get().user
+        if (!current) return null
+        const updated = { ...current, ...updates }
+        set({ user: updated })
+        return updated
       },
       logout: () =>
         set({
@@ -101,6 +111,13 @@ const useAppStore = create<AppState>()(
     }),
     {
       name: 'foodbridge-storage',
+      version: 2,
+      migrate: (persisted: unknown) => {
+        const state = (persisted ?? {}) as Record<string, unknown>
+        if (state.theme === 'light') state.theme = 'orchard'
+        else if (state.theme === 'dark' || !state.theme) state.theme = 'harvest'
+        return state
+      },
       partialize: (state) => ({
         theme: state.theme,
         animationsEnabled: state.animationsEnabled,
@@ -110,4 +127,5 @@ const useAppStore = create<AppState>()(
   )
 )
 
+export { useAppStore }
 export default useAppStore

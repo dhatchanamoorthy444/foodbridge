@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hover?: boolean
@@ -12,9 +12,10 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-xl border border-surface-border bg-surface-elevated p-6 shadow-card',
-          hover && 'transition-all duration-300 hover:shadow-card-hover hover:border-white/10',
-          transparent && 'bg-transparent border-white/5',
+          'rounded-[10px] border-2 border-line/70 bg-panel p-6 shadow-card',
+          hover &&
+            'transition-all duration-200 hover:border-harvest hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_rgb(var(--fb-accent))]',
+          transparent && 'border-line/40 bg-transparent',
           className
         )}
         {...props}

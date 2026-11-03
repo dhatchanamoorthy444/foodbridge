@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Float, Html, Environment, Stars, ContactShadows, MeshDistortMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -51,12 +51,12 @@ function FoodItem3D({ position, type, scale = 1, delay = 0 }: FoodItem3DProps) {
   const getColor = () => {
     switch (type) {
       case 'apple': return '#ef4444'
-      case 'carrot': return '#f97316'
+      case 'carrot': return '#FF9F1C'
       case 'bread': return '#fbbf24'
       case 'milk': return '#ffffff'
       case 'meat': return '#dc2626'
       case 'can': return '#3b82f6'
-      default: return '#22c55e'
+      default: return '#E0FF00'
     }
   }
 
@@ -84,10 +84,10 @@ function FoodItem3D({ position, type, scale = 1, delay = 0 }: FoodItem3DProps) {
       speed={1.5}
       rotationIntensity={0.3}
       floatIntensity={0.3}
-      initialPosition={position}
     >
       <group
         ref={meshRef}
+        position={position}
         scale={scale}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
@@ -167,7 +167,8 @@ function GlowingRing({ position, radius = 3 }: { position: [number, number, numb
     if (ringRef.current) {
       ringRef.current.rotation.x = state.clock.elapsedTime * 0.3
       ringRef.current.rotation.y = state.clock.elapsedTime * 0.2
-      ringRef.current.material.opacity = 0.2 + Math.sin(state.clock.elapsedTime * 2) * 0.1
+      const material = ringRef.current.material as THREE.Material
+      material.opacity = 0.2 + Math.sin(state.clock.elapsedTime * 2) * 0.1
     }
   })
 
@@ -175,7 +176,7 @@ function GlowingRing({ position, radius = 3 }: { position: [number, number, numb
     <mesh ref={ringRef} position={position}>
       <torusGeometry args={[radius, 0.08, 16, 100]} />
       <meshBasicMaterial
-        color="#22c55e"
+        color="#E0FF00"
         transparent
         opacity={0.3}
         side={THREE.DoubleSide}
@@ -190,8 +191,8 @@ function HeroScene() {
     <>
       <ambientLight intensity={0.6} />
       <directionalLight position={[5, 10, 7]} intensity={1.5} castShadow />
-      <pointLight position={[-5, 5, -5]} intensity={1} color="#22c55e" />
-      <pointLight position={[5, -5, 5]} intensity={0.8} color="#f97316" />
+      <pointLight position={[-5, 5, -5]} intensity={1} color="#E0FF00" />
+      <pointLight position={[5, -5, 5]} intensity={0.8} color="#FF9F1C" />
 
       {/* Food items floating */}
       <FoodItem3D position={[-3, 0.5, -1]} type="apple" delay={0} />

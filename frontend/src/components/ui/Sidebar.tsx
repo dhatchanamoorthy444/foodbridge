@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface SidebarProps {
   items: Array<{ path: string; label: string; icon: React.ReactNode }>

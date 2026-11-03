@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, ContactShadows, Float } from '@react-three/drei'
 import * as THREE from 'three'
@@ -20,8 +20,8 @@ const foodModels = {
   },
   vegetables: {
     geometry: <coneGeometry args={[0.3, 1.5, 32]} />,
-    color: '#f97316',
-    emissive: '#f97316',
+    color: '#FF9F1C',
+    emissive: '#FF9F1C',
   },
   dairy: {
     geometry: <cylinderGeometry args={[0.5, 0.4, 1.2, 32]} />,
@@ -79,9 +79,10 @@ function FoodItemMesh({ item, index }: { item: FoodItem & { position: [number, n
   const model = foodModels[item.category as keyof typeof foodModels] || foodModels.other
 
   return (
-    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.2} initialPosition={item.position}>
+    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.2}>
       <group
         ref={meshRef}
+        position={item.position}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         scale={hovered ? 1.15 : 1}
@@ -106,8 +107,8 @@ function Scene({ items }: { items: Array<FoodItem & { position: [number, number,
     <>
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 10, 7]} intensity={1} castShadow />
-      <pointLight position={[-3, 5, -3]} intensity={0.8} color="#22c55e" />
-      <pointLight position={[3, -5, 3]} intensity={0.6} color="#f97316" />
+      <pointLight position={[-3, 5, -3]} intensity={0.8} color="#E0FF00" />
+      <pointLight position={[3, -5, 3]} intensity={0.6} color="#FF9F1C" />
 
       {items.map((item, index) => (
         <FoodItemMesh key={item.id} item={item} index={index} />
@@ -163,12 +164,12 @@ export default function ThreeJSFoodScene({ items = [], className = '', showContr
 
   if (!hasWebGL || prefersReducedMotion) {
     return (
-      <div className={className} style={{ minHeight: '300px', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}>
+      <div className={className} style={{ minHeight: '300px', background: 'linear-gradient(135deg, #0f172a 0%, rgb(var(--fb-panel)) 100%)' }}>
         <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <div className="text-6xl mb-4">📦</div>
-            <p className="text-slate-400">3D view unavailable</p>
-            <p className="text-sm text-slate-500 mt-1">WebGL not supported or reduced motion enabled</p>
+            <p className="text-muted">3D view unavailable</p>
+            <p className="text-sm text-muted mt-1">WebGL not supported or reduced motion enabled</p>
           </div>
         </div>
       </div>

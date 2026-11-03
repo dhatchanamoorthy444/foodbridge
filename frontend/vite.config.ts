@@ -6,7 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    open: true,
+    strictPort: true,
+    host: true,
+    open: false,
+  },
+  preview: {
+    port: 5173,
   },
   build: {
     outDir: 'dist',

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Search, X } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface FilterOption {
   key: string
@@ -52,7 +52,7 @@ export function FilterBar({ filters, onFilterChange, className }: FilterBarProps
             value={searchValue}
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search..."
-            className="w-full bg-[#12241b] border border-forest-600/40 rounded-lg pl-10 pr-4 py-2.5 text-cream placeholder-stone-dark/70 focus:outline-none focus:ring-2 focus:ring-botanical focus:border-transparent"
+            className="w-full bg-app-deep border-2 border-line/70 rounded-[10px] pl-10 pr-4 py-2.5 text-bone placeholder-muted/70 focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest"
           />
         </div>
 
@@ -79,7 +79,7 @@ export function FilterBar({ filters, onFilterChange, className }: FilterBarProps
                 <select
                   value={activeFilters[filter.key] || ''}
                   onChange={(e) => handleFilterChange(filter.key, e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-forest-600/40 bg-[#12241b] text-cream focus:outline-none focus:ring-2 focus:ring-botanical"
+                  className="w-full px-3 py-2 rounded-[10px] border-2 border-line/70 bg-app-deep text-bone focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest"
                 >
                   <option value="">{filter.label}</option>
                   {filter.options.map((option) => (
@@ -100,7 +100,7 @@ export function FilterBar({ filters, onFilterChange, className }: FilterBarProps
                   value={activeFilters[filter.key] || ''}
                   onChange={(e) => handleFilterChange(filter.key, e.target.value)}
                   placeholder={filter.label}
-                  className="w-full px-3 py-2 rounded-lg border border-forest-600/40 bg-[#12241b] text-cream placeholder-stone-dark/70 focus:outline-none focus:ring-2 focus:ring-botanical"
+                  className="w-full px-3 py-2 rounded-[10px] border-2 border-line/70 bg-app-deep text-bone placeholder-muted/70 focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest"
                 />
               </div>
             )

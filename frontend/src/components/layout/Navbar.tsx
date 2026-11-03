@@ -2,144 +2,185 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Bell,
+  CheckCircle2,
+  Heart,
   Search,
-  HelpCircle,
-  Menu,
+  Tag,
+  Truck,
   X,
-  Check,
+  AlertTriangle,
+  ShieldAlert,
+  Menu,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useAppStore from '../../store/useAppStore'
-import { cn, formatRelativeTime } from '../../lib/utils'
+import { formatRelativeTime } from '../../lib/utils'
 import { Notification } from '../../types'
 
-export default function Navbar() {
+const C = {
+  primary: '#dfff00', primaryContainer: '#0e5c35',
+  secondary: '#2bff88', secondaryFixed: '#6ffbbe', onSecondaryFixed: '#002113',
+  surface: '#0a0a0a', surfaceLowest: '#141614',
+  surfaceContainerLow: '#1b1e1b', surfaceContainer: '#232723',
+  surfaceContainerHigh: '#2e322e',
+  onSurface: '#ffffff', onSurfaceVariant: '#9aa39b',
+  error: '#ff4d4d',
+}
+
+function getNotificationIcon(type: Notification['type']) {
+  const icons: Record<string, React.ElementType> = {
+    expiry_warning: AlertTriangle,
+    match_found: Tag,
+    pickup_scheduled: Truck,
+    pickup_confirmed: CheckCircle2,
+    system_alert: ShieldAlert,
+    welcome: Heart,
+  }
+  const Icon = icons[type] || Bell
+  return <Icon className="h-4 w-4" style={{ color: C.secondary }} strokeWidth={2.4} />
+}
+
+export default function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, notifications, unreadCount, markNotificationRead, markAllNotificationsRead } = useAppStore()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isNotifOpen, setIsNotifOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      if (!target.closest('.notification-dropdown')) {
-        setIsNotifOpen(false)
-      }
-      if (!target.closest('.search-container')) {
-        setIsSearchOpen(false)
-      }
+      if (!target.closest('.notif-dropdown')) setIsNotifOpen(false)
     }
     document.addEventListener('click', handleClickOutside)
     return () => document.removeEventListener('click', handleClickOutside)
   }, [])
 
-  const getNotificationIcon = (type: Notification['type']) => {
-    const icons = {
-      expiry_warning: '🕐',
-      match_found: '🎯',
-      pickup_scheduled: '🚚',
-      pickup_confirmed: '✅',
-      system_alert: '🔔',
-      welcome: '👋',
-    }
-    return icons[type] || '📢'
-  }
-
   return (
-    <header className="h-16 bg-[#0b1510]/80 backdrop-blur-md border-b border-forest-600/30 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
-      {/* Search */}
-      <div className="search-container relative flex-1 max-w-md">
-        <AnimatePresence mode="wait">
+    <header
+      className="h-16 sticky top-0 z-30 flex items-center justify-between px-4 backdrop-blur-xl"
+      style={{
+        background: 'rgba(10,10,10,0.88)',
+        boxShadow: '0 1px 8px rgba(0,0,0,0.04)',
+        borderBottom: `1px solid ${C.surfaceContainerHigh}`,
+      }}
+    >
+      {/* Left: mobile menu + search */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <button
+          onClick={onMenuClick}
+          className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl transition-colors"
+          style={{ color: C.onSurfaceVariant }}
+          aria-label="Open menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        {/* Brand on mobile when sidebar is hidden */}
+        <div className="flex items-center gap-2 md:hidden">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: C.primary }}>
+            <Heart className="w-3.5 h-3.5" style={{ color: C.onSecondaryFixed }} strokeWidth={2.6} />
+          </div>
+          <span style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 18, color: C.primary, letterSpacing: '-0.01em' }}>FoodBridge</span>
+        </div>
+
+        {/* Search */}
+        <div className="relative flex-1 max-w-xs ml-2 hidden sm:block">
           {isSearchOpen ? (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '100%', opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              className="relative"
-            >
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone" />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: C.onSurfaceVariant }} />
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search inventory, recipients, pickups..."
-                className="w-full bg-[#12241b] border border-forest-600/40 rounded-lg pl-10 pr-10 py-2 text-cream placeholder-stone-dark focus:outline-none focus:ring-2 focus:ring-botanical"
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search surplus, farms, kitchens..."
                 autoFocus
+                className="w-full h-9 pl-10 pr-10 rounded-xl text-sm outline-none"
+                style={{ background: C.surfaceContainerLow, border: `1px solid ${C.surfaceContainerHigh}`, color: C.onSurface, fontFamily: 'Rubik, sans-serif' }}
               />
-              <button
-                onClick={() => setIsSearchOpen(false)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-forest-800 rounded text-stone hover:text-cream"
-              >
+              <button onClick={() => setIsSearchOpen(false)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+                style={{ color: C.onSurfaceVariant }}>
                 <X className="w-4 h-4" />
               </button>
-            </motion.div>
+            </div>
           ) : (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-stone hover:text-cream rounded-lg hover:bg-forest-800/40 transition-colors"
-            >
-              <Search className="w-5 h-5" />
-            </motion.button>
+            <button onClick={() => setIsSearchOpen(true)}
+              className="flex items-center gap-2 h-9 px-3 rounded-xl transition-colors"
+              style={{ background: C.surfaceContainerLow, color: C.onSurfaceVariant, fontFamily: 'Rubik, sans-serif', fontSize: 13 }}
+              aria-label="Search">
+              <Search className="w-4 h-4" />
+              <span className="hidden md:block">Search…</span>
+            </button>
           )}
-        </AnimatePresence>
+        </div>
       </div>
 
-      {/* Right side actions */}
-      <div className="flex items-center gap-3">
-        {/* Help */}
-        <Link to="/settings" className="p-2 text-stone hover:text-cream rounded-lg hover:bg-forest-800/40 transition-colors">
-          <HelpCircle className="w-5 h-5" />
-        </Link>
+      {/* Right: notifications + profile */}
+      <div className="flex items-center gap-2 flex-shrink-0">
 
         {/* Notifications */}
-        <div className="notification-dropdown relative">
+        <div className="notif-dropdown relative">
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
-            className="p-2 text-stone hover:text-cream rounded-lg hover:bg-forest-800/40 transition-colors relative"
+            className="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all active:scale-95"
+            style={{ color: C.onSurfaceVariant }}
+            aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
           >
             <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-botanical rounded-full" />
+              <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[1rem] px-1 items-center justify-center rounded-full font-bold text-[9px] shadow"
+                style={{ background: C.error, color: 'white', fontFamily: 'Be Vietnam Pro, sans-serif' }}>
+                {unreadCount}
+              </span>
             )}
           </button>
 
           <AnimatePresence>
             {isNotifOpen && (
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute right-0 mt-2 w-80 bg-[#0f291e] border border-forest-600/40 rounded-xl shadow-2xl overflow-hidden"
+                initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 mt-2 w-80 rounded-2xl overflow-hidden shadow-xl z-50"
+                style={{ background: C.surfaceLowest, border: `1px solid ${C.surfaceContainerHigh}` }}
               >
-                <div className="p-4 border-b border-forest-600/30 flex items-center justify-between">
-                  <h3 className="font-semibold text-cream">Notifications</h3>
+                <div className="px-4 py-3 flex items-center justify-between"
+                  style={{ borderBottom: `1px solid ${C.surfaceContainerHigh}` }}>
+                  <h3 style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, fontWeight: 700, color: C.onSurface }}>Notifications</h3>
                   {unreadCount > 0 && (
-                    <button onClick={markAllNotificationsRead} className="text-xs text-botanical-light hover:underline">
+                    <button onClick={markAllNotificationsRead}
+                      style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: C.secondary, letterSpacing: '0.04em' }}>
                       Mark all read
                     </button>
                   )}
                 </div>
-                <div className="max-h-96 overflow-y-auto">
+                <div className="max-h-80 overflow-y-auto">
                   {notifications.length === 0 ? (
-                    <div className="p-8 text-center text-stone text-sm">No notifications</div>
+                    <div className="p-8 text-center" style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, color: C.onSurfaceVariant }}>
+                      No notifications
+                    </div>
                   ) : (
-                    notifications.map((notif) => (
+                    notifications.map(notif => (
                       <div
                         key={notif.id}
-                        className={cn(
-                          "p-4 border-b border-forest-600/20 hover:bg-forest-800/20 transition-colors cursor-pointer",
-                          !notif.read && "bg-forest-900/30"
-                        )}
+                        className="p-4 cursor-pointer transition-colors"
+                        style={{
+                          borderBottom: `1px solid ${C.surfaceContainerHigh}`,
+                          background: notif.read ? 'transparent' : C.surfaceContainerLow,
+                        }}
                         onClick={() => markNotificationRead(notif.id)}
                       >
                         <div className="flex gap-3">
-                          <span className="text-xl">{getNotificationIcon(notif.type)}</span>
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
+                            style={{ background: C.surfaceContainer, border: `1px solid ${C.surfaceContainerHigh}` }}>
+                            {getNotificationIcon(notif.type)}
+                          </span>
                           <div>
-                            <p className="text-sm text-cream">{notif.message}</p>
-                            <p className="text-xs text-stone mt-1">{formatRelativeTime(notif.createdAt)}</p>
+                            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, color: C.onSurface }}>{notif.message}</p>
+                            <p style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 10, color: C.onSurfaceVariant, marginTop: 2 }}>
+                              {formatRelativeTime(notif.createdAt)}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -151,16 +192,21 @@ export default function Navbar() {
           </AnimatePresence>
         </div>
 
-        {/* User profile */}
-        <div className="flex items-center gap-3 pl-3 border-l border-forest-600/30">
+        {/* Profile avatar */}
+        <Link
+          to="/settings"
+          className="flex items-center gap-2.5 pl-3"
+          style={{ borderLeft: `1px solid ${C.surfaceContainerHigh}` }}
+        >
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-medium text-cream">{user?.fullName}</p>
-            <p className="text-xs text-stone capitalize">{user?.role}</p>
+            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 13, fontWeight: 600, color: C.onSurface }}>{user?.fullName}</p>
+            <p style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 9, fontWeight: 700, color: C.secondary, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{user?.role}</p>
           </div>
-          <div className="w-9 h-9 rounded-full bg-botanical flex items-center justify-center text-cream font-medium text-sm border border-forest-600/40">
-            {user?.fullName?.split(' ').map(n => n[0]).join('')}
+          <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shadow-sm"
+            style={{ background: C.primaryContainer, color: C.secondaryFixed, fontFamily: 'Anton, Impact, sans-serif', fontSize: 15 }}>
+            {user?.fullName?.split(' ').map(n => n[0]).join('') || 'U'}
           </div>
-        </div>
+        </Link>
       </div>
     </header>
   )

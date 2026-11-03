@@ -50,7 +50,7 @@ export function FileUpload({ label, onFileSelect, className, ...props }: FileUpl
             <FileText className="w-5 h-5 text-botanical-light" />
             <span className="text-sm text-cream truncate">{file.name}</span>
           </div>
-          <button onClick={removeFile} className="p-1 hover:bg-white/5 rounded">
+          <button onClick={removeFile} className="p-1 hover:bg-bone/5 rounded">
             <X className="w-4 h-4 text-stone hover:text-cream" />
           </button>
         </div>

@@ -86,7 +86,7 @@ export interface Recipient {
   organization: string
   maxCapacity: number
   storageCapabilities: StorageRequirement[]
-  acceptedCategories: FoodCategory[]
+  acceptedCategories: Array<FoodCategory | 'all'>
   pickupRadius: number // km
   pickupHours: string[]
   currentInventory: number
@@ -108,6 +108,7 @@ export interface MatchScore {
 }
 
 export interface MatchResult {
+  id: string
   recipientId: string
   foodItemId: string
   requestedQuantity: number
@@ -196,6 +197,12 @@ export interface Notification {
 }
 
 // Form validation types
+export interface InventoryFilters {
+  category?: FoodCategory[]
+  status?: ExpiryStatus[]
+  search?: string
+}
+
 export interface InventoryFormData {
   name: string
   description?: string

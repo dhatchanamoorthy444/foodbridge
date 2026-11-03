@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, forwardRef } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface InputValidationProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -68,7 +68,7 @@ const InputValidation = forwardRef<HTMLInputElement, InputValidationProps>(
             type={inputType}
             placeholder={getPlaceholder()}
             className={cn(
-              'w-full bg-[#12241b] border rounded-lg px-3.5 py-2.5 text-cream placeholder-stone-dark/70',
+              'w-full bg-app-deep border-2 rounded-[10px] px-3.5 py-2.5 text-bone placeholder-muted/70',
               'focus:outline-none focus:ring-2 transition-all duration-200 text-sm',
               getBorderColor(),
               showPasswordToggle ? 'pr-10' : '',

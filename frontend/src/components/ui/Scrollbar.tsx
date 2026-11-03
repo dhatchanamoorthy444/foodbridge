@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import { cn } from '../../lib/utils'
 import './Scrollbar.css'
 
 interface ScrollbarProps {
@@ -34,6 +35,3 @@ export function getScrollbarStyles(thumbColor: string, trackColor: string) {
     '--track-color': trackColor
   } as React.CSSProperties
 }
-
-// Re-export the CSS file for manual imports if needed
-export { Scrollbar }

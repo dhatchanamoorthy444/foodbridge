@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { format } from 'date-fns'
 import { Calendar } from './Calendar'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface DatePickerProps {
   value?: Date

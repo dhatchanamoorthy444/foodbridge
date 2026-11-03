@@ -2,7 +2,7 @@
 
 import React, { useState, forwardRef } from 'react'
 import { Search, X } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
@@ -39,8 +39,8 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             onChange={handleInputChange}
             placeholder={placeholder}
             className={cn(
-              'w-full bg-[#12241b] border border-forest-600/40 rounded-lg pl-10 pr-10 py-2.5 text-cream placeholder-stone-dark/70',
-              'focus:outline-none focus:ring-2 focus:ring-botanical focus:border-transparent',
+              'w-full bg-app-deep border-2 border-line/70 rounded-[10px] pl-10 pr-10 py-2.5 text-bone placeholder-muted/70',
+              'focus:outline-none focus:ring-2 focus:ring-harvest focus:border-harvest',
               'transition-all duration-200 text-sm'
             )}
             {...props}

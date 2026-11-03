@@ -1,0 +1,286 @@
+[2m8:40:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\project\collage_project\frontend\src\pages\LandingPage.tsx: Unexpected token (457:27)
+
+[0m [90m 455 |[31m       [33m<[31m[33m/[31m[33msection[31m[33m>[31m
+ [90m 456 |[31m
+[31m[1m>[22m[31m[90m 457 |[31m       [33m<[31m[33mCommunityStickerWall[31m()
+ [90m     |[31m                            [31m[1m^[22m[31m
+ [90m 458 |[31m
+ [90m 459 |[31m       {[90m/* Meal math */[31m}
+ [90m 460 |[31m       [33m<[31m[33msection[31m className[33m=[31m[32m"relative z-20 border-y-2 border-bone/15"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/project/collage_project/frontend/src/pages/LandingPage.tsx[39m:457:27
+[33m  455|        </section>
+  456|  
+  457|        <CommunityStickerWall()
+     |                             ^
+  458|  
+  459|        {/* Meal math */}[39m
+      at constructor (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:368:19)
+      at TypeScriptParserMixin.raise (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6631:19)
+      at TypeScriptParserMixin.unexpected (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6651:16)
+      at TypeScriptParserMixin.jsxParseIdentifier (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4590:12)
+      at TypeScriptParserMixin.jsxParseNamespacedName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4597:23)
+      at TypeScriptParserMixin.jsxParseAttribute (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4673:22)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4688:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13905:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4683:17)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4707:33)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4719:32)
+      at TypeScriptParserMixin.jsxParseElement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4770:17)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4780:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:39
+      at TypeScriptParserMixin.tryParse (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6994:20)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:18)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9424:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9491:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8663:28)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8319:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4785:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13661:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7753:23)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9419:16)
+      at TypeScriptParserMixin.parseExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10170:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9813:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13383:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9782:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9762:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10344:61)
+[2m8:40:49 pm[22m [31m[1m[vite][22m[39m Pre-transform error: D:\project\collage_project\frontend\src\pages\LandingPage.tsx: Unexpected token (457:27)
+
+[0m [90m 455 |[39m       [33m<[39m[33m/[39m[33msection[39m[33m>[39m
+ [90m 456 |[39m
+[31m[1m>[22m[39m[90m 457 |[39m       [33m<[39m[33mCommunityStickerWall[39m()
+ [90m     |[39m                            [31m[1m^[22m[39m
+ [90m 458 |[39m
+ [90m 459 |[39m       {[90m/* Meal math */[39m}
+ [90m 460 |[39m       [33m<[39m[33msection[39m className[33m=[39m[32m"relative z-20 border-y-2 border-bone/15"[39m[33m>[39m[0m
+[2m8:40:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\project\collage_project\frontend\src\pages\LandingPage.tsx: Unexpected token (457:27)
+
+[0m [90m 455 |[31m       [33m<[31m[33m/[31m[33msection[31m[33m>[31m
+ [90m 456 |[31m
+[31m[1m>[22m[31m[90m 457 |[31m       [33m<[31m[33mCommunityStickerWall[31m()
+ [90m     |[31m                            [31m[1m^[22m[31m
+ [90m 458 |[31m
+ [90m 459 |[31m       {[90m/* Meal math */[31m}
+ [90m 460 |[31m       [33m<[31m[33msection[31m className[33m=[31m[32m"relative z-20 border-y-2 border-bone/15"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/project/collage_project/frontend/src/pages/LandingPage.tsx[39m:457:27
+[33m  455|        </section>
+  456|  
+  457|        <CommunityStickerWall()
+     |                             ^
+  458|  
+  459|        {/* Meal math */}[39m
+      at constructor (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:368:19)
+      at TypeScriptParserMixin.raise (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6631:19)
+      at TypeScriptParserMixin.unexpected (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6651:16)
+      at TypeScriptParserMixin.jsxParseIdentifier (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4590:12)
+      at TypeScriptParserMixin.jsxParseNamespacedName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4597:23)
+      at TypeScriptParserMixin.jsxParseAttribute (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4673:22)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4688:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13905:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4683:17)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4707:33)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4719:32)
+      at TypeScriptParserMixin.jsxParseElement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4770:17)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4780:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:39
+      at TypeScriptParserMixin.tryParse (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6994:20)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:18)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9424:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9491:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8663:28)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8319:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4785:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13661:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7753:23)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9419:16)
+      at TypeScriptParserMixin.parseExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10170:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9813:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13383:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9782:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9762:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10344:61)
+[2m8:40:55 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\project\collage_project\frontend\src\pages\LandingPage.tsx: Unexpected token (457:27)
+
+[0m [90m 455 |[31m       [33m<[31m[33m/[31m[33msection[31m[33m>[31m
+ [90m 456 |[31m
+[31m[1m>[22m[31m[90m 457 |[31m       [33m<[31m[33mCommunityStickerWall[31m()
+ [90m     |[31m                            [31m[1m^[22m[31m
+ [90m 458 |[31m
+ [90m 459 |[31m       {[90m/* Meal math */[31m}
+ [90m 460 |[31m       [33m<[31m[33msection[31m className[33m=[31m[32m"relative z-20 border-y-2 border-bone/15"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/project/collage_project/frontend/src/pages/LandingPage.tsx[39m:457:27
+[33m  455|        </section>
+  456|  
+  457|        <CommunityStickerWall()
+     |                             ^
+  458|  
+  459|        {/* Meal math */}[39m
+      at constructor (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:368:19)
+      at TypeScriptParserMixin.raise (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6631:19)
+      at TypeScriptParserMixin.unexpected (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6651:16)
+      at TypeScriptParserMixin.jsxParseIdentifier (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4590:12)
+      at TypeScriptParserMixin.jsxParseNamespacedName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4597:23)
+      at TypeScriptParserMixin.jsxParseAttribute (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4673:22)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4688:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13905:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4683:17)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4707:33)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4719:32)
+      at TypeScriptParserMixin.jsxParseElement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4770:17)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4780:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:39
+      at TypeScriptParserMixin.tryParse (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6994:20)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:18)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9424:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9491:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8663:28)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8319:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4785:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13661:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7753:23)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9419:16)
+      at TypeScriptParserMixin.parseExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10170:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9813:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13383:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9782:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9762:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10344:61)
+[2m8:43:07 pm[22m [31m[1m[vite][22m[39m Pre-transform error: D:\project\collage_project\frontend\src\pages\LandingPage.tsx: Unexpected token (459:27)
+
+[0m [90m 457 |[39m       [33m<[39m[33m/[39m[33msection[39m[33m>[39m
+ [90m 458 |[39m
+[31m[1m>[22m[39m[90m 459 |[39m       [33m<[39m[33mCommunityStickerWall[39m()
+ [90m     |[39m                            [31m[1m^[22m[39m
+ [90m 460 |[39m
+ [90m 461 |[39m       {[90m/* Meal math */[39m}
+ [90m 462 |[39m       [33m<[39m[33msection[39m className[33m=[39m[32m"relative z-20 border-y-2 border-bone/15"[39m[33m>[39m[0m
+[2m8:43:07 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: D:\project\collage_project\frontend\src\pages\LandingPage.tsx: Unexpected token (459:27)
+
+[0m [90m 457 |[31m       [33m<[31m[33m/[31m[33msection[31m[33m>[31m
+ [90m 458 |[31m
+[31m[1m>[22m[31m[90m 459 |[31m       [33m<[31m[33mCommunityStickerWall[31m()
+ [90m     |[31m                            [31m[1m^[22m[31m
+ [90m 460 |[31m
+ [90m 461 |[31m       {[90m/* Meal math */[31m}
+ [90m 462 |[31m       [33m<[31m[33msection[31m className[33m=[31m[32m"relative z-20 border-y-2 border-bone/15"[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mD:/project/collage_project/frontend/src/pages/LandingPage.tsx[39m:459:27
+[33m  457|        </section>
+  458|  
+  459|        <CommunityStickerWall()
+     |                             ^
+  460|  
+  461|        {/* Meal math */}[39m
+      at constructor (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:368:19)
+      at TypeScriptParserMixin.raise (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6631:19)
+      at TypeScriptParserMixin.unexpected (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6651:16)
+      at TypeScriptParserMixin.jsxParseIdentifier (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4590:12)
+      at TypeScriptParserMixin.jsxParseNamespacedName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4597:23)
+      at TypeScriptParserMixin.jsxParseAttribute (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4673:22)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4688:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13905:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4683:17)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4707:33)
+      at TypeScriptParserMixin.jsxParseElementAt (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4719:32)
+      at TypeScriptParserMixin.jsxParseElement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4770:17)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4780:19)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:39
+      at TypeScriptParserMixin.tryParse (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:6994:20)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13650:18)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9424:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7769:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9491:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8663:28)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8319:23)
+      at TypeScriptParserMixin.parseExprAtom (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:4785:20)
+      at TypeScriptParserMixin.parseExprSubscripts (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8064:23)
+      at TypeScriptParserMixin.parseUpdate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8049:21)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:8029:23)
+      at TypeScriptParserMixin.parseMaybeUnary (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13712:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7875:61)
+      at TypeScriptParserMixin.parseExprOps (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7880:23)
+      at TypeScriptParserMixin.parseMaybeConditional (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7857:23)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7805:21)
+      at TypeScriptParserMixin.parseMaybeAssign (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13661:20)
+      at TypeScriptParserMixin.parseExpressionBase (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7753:23)
+      at D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:39
+      at TypeScriptParserMixin.allowInAnd (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9419:16)
+      at TypeScriptParserMixin.parseExpression (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:7749:17)
+      at TypeScriptParserMixin.parseReturnStatement (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10170:28)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9813:21)
+      at TypeScriptParserMixin.parseStatementContent (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:13383:18)
+      at TypeScriptParserMixin.parseStatementLike (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9782:17)
+      at TypeScriptParserMixin.parseStatementListItem (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:9762:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\project\collage_project\frontend\node_modules\@babel\parser\lib\index.js:10344:61)

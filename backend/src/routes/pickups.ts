@@ -183,3 +183,5 @@ router.patch('/:id/status', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' })
   }
 })
+
+export { router as pickupRoutes }

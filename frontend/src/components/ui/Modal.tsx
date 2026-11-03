@@ -51,18 +51,18 @@ export function Modal({ isOpen, onClose, title, description, children, size = 'm
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     {title && (
-                      <Dialog.Title className="text-lg font-semibold text-white">
+                      <Dialog.Title className="text-lg font-semibold text-bone">
                         {title}
                       </Dialog.Title>
                     )}
                     {description && (
-                      <Dialog.Description className="text-sm text-slate-400">
+                      <Dialog.Description className="text-sm text-muted">
                         {description}
                       </Dialog.Description>
                     )}
                     <button
                       onClick={onClose}
-                      className="ml-auto p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-colors"
+                      className="ml-auto p-1 rounded-lg text-muted hover:text-bone hover:bg-bone/5 transition-colors"
                     >
                       <X className="w-5 h-5" />
                     </button>

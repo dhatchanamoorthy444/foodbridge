@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface NavigationItemProps {
   to: string
