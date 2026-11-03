@@ -4,35 +4,63 @@
 
 @layer base {
   :root {
-    /* ── Dark + Neon (black / neon-yellow / green) — site theme ── */
-    --fb-app:       10 10 10;      /* #0a0a0a surface */
-    --fb-app-deep:  5 5 5;         /* #050505 surface-dim */
-    --fb-panel:     20 22 20;      /* #141614 surface-container-lowest */
-    --fb-elevated:  27 30 27;      /* #1b1e1b surface-container-low */
+    /* ── FoodBridge warm charcoal / forest / ivory / amber system ── */
+    --fb-app:              17 21 18;   /* #111512 background */
+    --fb-app-deep:         12 16 14;   /* #0C100E surface-dim */
+    --fb-panel:            25 30 26;   /* #191E1A surface */
+    --fb-elevated:         31 37 32;   /* #1F2520 elevated surface */
+    --fb-surface-container:35 42 36;   /* #232A24 */
+    --fb-surface-high:     42 50 43;   /* #2A322B */
+    --fb-surface-highest:  50 59 51;   /* #323B33 */
+    --fb-surface-variant:  58 68 59;   /* #3A443B */
 
-    --fb-text:      255 255 255;   /* #ffffff on-surface */
-    --fb-text-2:    154 163 155;   /* #9aa39b on-surface-variant */
-    --fb-text-3:    138 148 139;   /* #8a948b outline */
-    --fb-muted:     154 163 155;
-    --fb-line:      46 50 46;      /* #2e322e outline-variant */
+    --fb-text:             242 240 232; /* #F2F0E8 warm ivory */
+    --fb-text-2:           184 184 175; /* #B8B8AF secondary */
+    --fb-text-3:           146 149 141; /* #92958D muted */
+    --fb-muted:            146 149 141;
+    --fb-line:             52 60 53;    /* #343C35 neutral border */
 
-    --fb-accent:      223 255 0;   /* #dfff00 primary (neon) */
-    --fb-accent-soft: 43 255 136;  /* #2bff88 secondary (green) */
-    --fb-accent-deep: 14 92 53;    /* #0e5c35 primary-container */
+    --fb-primary:          47 107 74;   /* #2F6B4A forest action */
+    --fb-primary-hover:    58 125 89;   /* #3A7D59 */
+    --fb-primary-container:30 77 54;    /* #1E4D36 deep forest */
+    --fb-on-primary:       242 240 232; /* #F2F0E8 */
+    --fb-on-primary-container: 242 240 232;
+    --fb-primary-fixed:    183 205 175; /* #B7CDAF sage */
+    --fb-primary-fixed-dim:154 178 146; /* #9AB292 */
+    --fb-on-primary-fixed: 16 21 16;
 
-    --fb-leaf:       43 255 136;   /* #2bff88 */
-    --fb-leaf-deep:  14 92 53;
-    --fb-secondary:  43 255 136;
-    --fb-secondary-soft: 43 255 136;
-    --fb-secondary-deep: 14 92 53;
+    --fb-accent:           183 205 175; /* #B7CDAF text accent */
+    --fb-accent-soft:      217 182 111; /* #D9B66F warm amber */
+    --fb-accent-deep:      30 77 54;    /* #1E4D36 */
 
-    --fb-highlight:      255 213 77; /* #ffd54d tertiary */
-    --fb-highlight-soft: 58 48 0;    /* #3a3000 tertiary-container */
-    --fb-highlight-deep: 58 48 0;
+    --fb-secondary:        169 196 160; /* #A9C4A0 calm sage */
+    --fb-on-secondary:     16 21 16;
+    --fb-secondary-container: 42 59 47; /* #2A3B2F */
+    --fb-on-secondary-container: 221 232 215; /* #DDE8D7 */
+    --fb-secondary-fixed:  183 205 175;
+    --fb-secondary-fixed-dim: 154 178 146;
+    --fb-on-secondary-fixed: 16 21 16;
 
-    --fb-danger:      255 77 77;   /* #ff4d4d error */
-    --fb-danger-soft: 58 20 20;    /* #3a1414 error-container */
-    --fb-success:     43 255 136;
+    --fb-tertiary:         217 182 111; /* #D9B66F amber warning */
+    --fb-on-tertiary:      26 20 11;
+    --fb-tertiary-container: 58 46 24;  /* #3A2E18 */
+    --fb-on-tertiary-container: 240 217 174;
+    --fb-tertiary-fixed:   217 182 111;
+    --fb-tertiary-fixed-dim: 201 166 99;
+    --fb-on-tertiary-fixed: 26 20 11;
+
+    --fb-highlight:        217 182 111;
+    --fb-highlight-soft:   58 46 24;
+    --fb-highlight-deep:   217 182 111;
+
+    --fb-danger:           194 106 94;  /* #C26A5E muted red */
+    --fb-on-danger:        255 245 240;
+    --fb-danger-soft:      58 30 27;    /* #3A1E1B */
+    --fb-on-danger-soft:   245 200 190;
+
+    --fb-leaf:             159 191 154; /* #9FBF9A */
+    --fb-leaf-deep:        30 77 54;
+    --fb-success:          127 175 143; /* #7FAF8F */
   }
 
   * { box-sizing: border-box; }
@@ -52,6 +80,7 @@
   h1, h2 {
     font-family: 'Anton', Impact, sans-serif;
     letter-spacing: -0.01em;
+    color: rgb(var(--fb-text));
     -webkit-font-smoothing: subpixel-antialiased;
   }
 
@@ -59,19 +88,34 @@
     font-family: 'Rubik', system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.01em;
+    color: rgb(var(--fb-text));
   }
+
+  p { color: inherit; }
 
   ::selection {
-    background-color: #dfff00;
-    color: #0a0a0a;
+    background-color: rgb(var(--fb-primary));
+    color: rgb(var(--fb-text));
   }
 
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #2e322e; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #4a4f4a; }
+  :focus-visible {
+    outline: 2px solid rgb(var(--fb-primary-fixed));
+    outline-offset: 2px;
+  }
 
-  /* Tabular figures for metrics, timers, weights */
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(var(--fb-text-3) / 0.85);
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--fb-line));
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--fb-text-3)); }
+
   .tabular-nums, .font-mono, .metric {
     font-variant-numeric: tabular-nums;
   }
@@ -79,106 +123,97 @@
 
 /* ─────────────────────────────────────────────
    COMPONENTS
+   Solid surfaces replace the previous glass layers.
 ───────────────────────────────────────────── */
 @layer components {
-  /* Level 1 — Glass Card (dark) */
   .glass-card {
-    background: rgba(20, 22, 20, 0.82);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  }
-
-  /* Level 2 — Floating Popover (dark) */
-  .glass-popover {
-    background: rgba(27, 30, 27, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5rem;
-    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.6),
-      0 2px 6px -1px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  }
-
-  /* Level 3 — Modal / Bottom Sheet (dark) */
-  .glass-modal {
-    background: rgba(20, 22, 20, 0.97);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgb(var(--fb-panel));
+    border: 1px solid rgb(var(--fb-line));
     border-radius: 0.75rem;
-    box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.8);
   }
 
-  /* Solid surface card */
+  .glass-popover {
+    background: rgb(var(--fb-elevated));
+    border: 1px solid rgb(var(--fb-line));
+    border-radius: 0.75rem;
+    box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.9);
+  }
+
+  .glass-modal {
+    background: rgb(var(--fb-panel));
+    border: 1px solid rgb(var(--fb-line));
+    border-radius: 0.875rem;
+    box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.9);
+  }
+
   .botanical-card {
-    background: #141614;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    background: rgb(var(--fb-panel));
+    border: 1px solid rgb(var(--fb-line));
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 32px -26px rgba(0, 0, 0, 0.8);
   }
 
-  /* Primary button — neon */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
-    background: #dfff00;
-    color: #0a0a0a;
-    border-radius: 0.25rem;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+    background: rgb(var(--fb-primary));
+    color: rgb(var(--fb-on-primary));
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
     padding: 0.625rem 1.1rem;
     font-size: 0.875rem;
   }
-  .btn-primary:hover { background: #eaff4d; }
+  .btn-primary:hover { background: rgb(var(--fb-primary-hover)); }
 
-  /* Secondary button — dark with neon border */
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 active:scale-[0.98];
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(223, 255, 0, 0.45);
-    color: #dfff00;
-    border-radius: 0.25rem;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98];
+    background: rgb(var(--fb-elevated));
+    border: 1px solid rgb(var(--fb-line));
+    color: rgb(var(--fb-text));
+    border-radius: 0.5rem;
     padding: 0.625rem 1.1rem;
     font-size: 0.875rem;
-    backdrop-filter: blur(8px);
   }
-  .btn-secondary:hover { background: rgba(223, 255, 0, 0.1); }
+  .btn-secondary:hover {
+    background: rgb(var(--fb-surface-high));
+    border-color: rgb(var(--fb-primary-fixed) / 0.45);
+  }
 
-  /* Urgent rescue (tertiary) */
   .btn-urgent {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all active:scale-[0.98];
-    background: #ffd54d;
-    color: #0a0a0a;
-    border-radius: 0.25rem;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98];
+    background: rgb(var(--fb-tertiary));
+    color: rgb(var(--fb-on-tertiary));
+    border-radius: 0.5rem;
     padding: 0.625rem 1.1rem;
     font-size: 0.875rem;
   }
+  .btn-urgent:hover { filter: brightness(1.04); }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 font-medium transition-colors;
-    color: #9aa39b;
-    border-radius: 0.25rem;
+    color: rgb(var(--fb-text-2));
+    border-radius: 0.5rem;
     padding: 0.5rem 0.9rem;
     font-size: 0.875rem;
   }
-  .btn-ghost:hover { color: #dfff00; background: rgba(223, 255, 0, 0.08); }
+  .btn-ghost:hover {
+    color: rgb(var(--fb-text));
+    background: rgb(var(--fb-elevated));
+  }
 
-  /* Form fields (dark) */
   .input-field {
-    @apply w-full text-white outline-none transition-all;
-    background: #1b1e1b;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.25rem;
-    height: 42px;
-    padding: 0 0.75rem;
+    @apply w-full outline-none transition-all;
+    background: rgb(var(--fb-elevated));
+    border: 1px solid rgb(var(--fb-line));
+    border-radius: 0.5rem;
+    color: rgb(var(--fb-text));
+    height: 44px;
+    padding: 0 0.875rem;
     font-size: 1rem;
   }
-  .input-field::placeholder { color: rgba(154, 163, 155, 0.7); }
   .input-field:focus {
-    border-color: #dfff00;
-    box-shadow: 0 0 0 3px rgba(223, 255, 0, 0.18);
+    border-color: rgb(var(--fb-primary-fixed) / 0.7);
+    box-shadow: 0 0 0 3px rgb(var(--fb-primary-fixed) / 0.14);
   }
 
   .input-label {
@@ -187,46 +222,45 @@
     font-size: 0.75rem;
     line-height: 16px;
     letter-spacing: 0.04em;
-    color: #ffffff;
+    color: rgb(var(--fb-text-2));
   }
 
-  /* Expiry chips (dark) */
+  /* Expiry chips */
   .chip-fresh {
     @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
     font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.06em;
-    background: rgba(43, 255, 136, 0.12);
-    color: #2bff88;
-    border: 1px solid rgba(43, 255, 136, 0.35);
-    border-radius: 0.125rem;
+    background: rgb(var(--fb-secondary) / 0.12);
+    color: rgb(var(--fb-secondary));
+    border: 1px solid rgb(var(--fb-secondary) / 0.3);
+    border-radius: 0.375rem;
   }
   .chip-expiring {
     @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
     font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.06em;
-    background: rgba(255, 213, 77, 0.14);
-    color: #ffd54d;
-    border: 1px solid rgba(255, 213, 77, 0.35);
-    border-radius: 0.125rem;
+    background: rgb(var(--fb-tertiary) / 0.14);
+    color: rgb(var(--fb-tertiary));
+    border: 1px solid rgb(var(--fb-tertiary) / 0.32);
+    border-radius: 0.375rem;
   }
   .chip-critical {
     @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
     font-family: 'Be Vietnam Pro', system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.06em;
-    background: rgba(255, 77, 77, 0.12);
-    color: #ff9d9d;
-    border: 1px solid rgba(255, 77, 77, 0.35);
-    border-radius: 0.125rem;
+    background: rgb(var(--fb-danger) / 0.14);
+    color: rgb(var(--fb-on-danger-soft));
+    border: 1px solid rgb(var(--fb-danger) / 0.34);
+    border-radius: 0.375rem;
   }
 
-  /* Custom list marker — neon diamond, not a generic bullet */
   .custom-list { @apply space-y-3; }
   .custom-list li {
     @apply flex items-start gap-3;
-    color: #9aa39b;
+    color: rgb(var(--fb-text-2));
   }
   .custom-list li::before {
     content: '';
@@ -235,8 +269,8 @@
     height: 7px;
     min-width: 7px;
     margin-top: 6px;
-    background-color: #dfff00;
-    border-radius: 1px;
+    background-color: rgb(var(--fb-primary-fixed));
+    border-radius: 2px;
     transform: rotate(45deg);
   }
 }
@@ -277,7 +311,21 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fixed focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+  }
+
+  .photo-natural {
+    filter: none;
+    mix-blend-mode: normal;
+  }
+
+  .image-scrim {
+    background: linear-gradient(
+      to top,
+      rgb(8 10 9 / 0.92) 0%,
+      rgb(8 10 9 / 0.48) 42%,
+      rgb(8 10 9 / 0) 72%
+    );
   }
 }
 

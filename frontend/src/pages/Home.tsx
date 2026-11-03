@@ -153,7 +153,7 @@ export default function Home() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
           </span>
-          <span className="font-label-md text-label-md text-primary tracking-wide">
+          <span className="font-label-md text-label-md text-on-surface tracking-wide">
             Piedmont Bioregion Dispatch Active
           </span>
         </div>
@@ -169,7 +169,7 @@ export default function Home() {
           <span className="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">
             Ecological Redistribution Portal
           </span>
-          <h1 className="font-display-hero-mobile text-display-hero-mobile text-primary leading-[1.05] tracking-tight">
+          <h1 className="font-display-hero-mobile text-display-hero-mobile text-on-surface leading-[1.05] tracking-tight">
             Don't Waste Food.{' '}
             <span className="italic font-normal text-secondary">Bridge the Gap.</span>
           </h1>
@@ -194,7 +194,7 @@ export default function Home() {
             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-bright/90 backdrop-blur-md shadow-sm">
                 <Leaf className="w-3.5 h-3.5 text-secondary" />
-                <span className="font-label-sm text-label-sm text-primary uppercase font-bold">
+                <span className="font-label-sm text-label-sm text-on-surface uppercase font-bold">
                   100% Organic Rescue
                 </span>
               </div>
@@ -248,7 +248,7 @@ export default function Home() {
           </Link>
           <Link
             to="/matching"
-            className="w-full h-12 px-4 rounded-lg bg-surface-container-highest text-primary font-title-md text-title-md font-semibold flex items-center justify-center gap-2 hover:bg-surface-variant active:scale-[0.98] transition-all"
+            className="w-full h-12 px-4 rounded-lg bg-surface-container-highest text-on-surface font-title-md text-title-md font-semibold flex items-center justify-center gap-2 hover:bg-surface-variant active:scale-[0.98] transition-all"
           >
             <Search className="w-5 h-5" />
             <span>Find Available Food</span>
@@ -282,7 +282,7 @@ export default function Home() {
               unit: '',
               sub: '85 hubs mobilized',
               icon: UtensilsCrossed,
-              iconColor: 'text-primary',
+              iconColor: 'text-primary-fixed',
             },
             {
               label: 'Partner NGOs',
@@ -309,7 +309,7 @@ export default function Home() {
                 <span className="font-label-sm text-label-sm">{m.label}</span>
                 <m.icon className={cn('w-[18px] h-[18px]', m.iconColor)} />
               </div>
-              <span className="text-headline-md text-primary mt-1 font-bold tabular-nums">
+              <span className="text-headline-md text-on-surface mt-1 font-bold tabular-nums">
                 {m.value}{' '}
                 {m.unit && (
                   <span className="font-body-sm text-body-sm font-normal text-on-surface-variant">
@@ -331,7 +331,7 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-error animate-pulse" />
             <h2
-              className="text-headline-sm text-primary"
+              className="text-headline-sm text-on-surface"
               style={{ fontFamily: 'Anton, Impact, sans-serif' }}
             >
               Live Urgency Radar
@@ -365,7 +365,7 @@ export default function Home() {
                   <Timer className="w-3 h-3" />
                   <span>{item.timeLeft}</span>
                 </div>
-                <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm font-semibold">
+                <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm font-semibold">
                   {item.distance}
                 </div>
               </div>
@@ -378,7 +378,7 @@ export default function Home() {
                     {item.qty}
                   </span>
                 </div>
-                <h3 className="text-title-md text-primary font-semibold leading-tight">
+                <h3 className="text-title-md text-on-surface font-semibold leading-tight">
                   {item.title}
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">
@@ -418,7 +418,7 @@ export default function Home() {
             Synchronized Ecosystem
           </span>
           <h2
-            className="text-headline-sm text-primary"
+            className="text-headline-sm text-on-surface"
             style={{ fontFamily: 'Anton, Impact, sans-serif' }}
           >
             Tailored Views for Every Stakeholder
@@ -440,7 +440,7 @@ export default function Home() {
                 'flex-1 py-1.5 px-3 rounded-full text-center font-label-md text-label-md font-semibold transition-all whitespace-nowrap',
                 activeRole === tab.id
                   ? 'bg-primary-container text-on-primary-container shadow-sm'
-                  : 'text-on-surface-variant hover:text-primary'
+                  : 'text-on-surface-variant hover:text-on-surface'
               )}
             >
               {tab.label}
@@ -463,7 +463,7 @@ export default function Home() {
                   <RoleIcon className="w-[18px] h-[18px]" />
                 </div>
                 <div>
-                  <h4 className="text-title-md text-primary font-bold">{role.title}</h4>
+                  <h4 className="text-title-md text-on-surface font-bold">{role.title}</h4>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
                     {role.sub}
                   </p>
@@ -478,7 +478,7 @@ export default function Home() {
                 <span className="font-label-sm text-label-sm text-on-surface-variant">
                   {role.metricLabel}
                 </span>
-                <span className="text-title-lg text-primary font-semibold tabular-nums">
+                <span className="text-title-lg text-on-surface font-semibold tabular-nums">
                   {role.metric}
                 </span>
               </div>
@@ -499,7 +499,7 @@ export default function Home() {
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <h2
-            className="text-headline-sm text-primary"
+            className="text-headline-sm text-on-surface"
             style={{ fontFamily: 'Anton, Impact, sans-serif' }}
           >
             Harvest Dispatch Highlights
@@ -540,7 +540,7 @@ export default function Home() {
                 <div className="w-7 h-7 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-md text-label-md font-bold">
                   MA
                 </div>
-                <span className="font-body-sm text-body-sm text-primary font-medium">
+                <span className="font-body-sm text-body-sm text-on-surface font-medium">
                   Marcie Alverez · Field Coordinator
                 </span>
               </div>

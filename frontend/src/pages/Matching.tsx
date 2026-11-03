@@ -179,7 +179,7 @@ export default function Matching() {
             Harvesters Sanctuary Hub
           </span>
           <h1
-            className="text-headline-lg-mobile text-primary tracking-tight"
+            className="text-headline-lg-mobile text-on-surface tracking-tight"
             style={{ fontFamily: 'Anton, Impact, sans-serif' }}
           >
             Daily Surplus Discovery
@@ -224,7 +224,7 @@ export default function Matching() {
                 'flex-shrink-0 px-3.5 py-1.5 rounded-full font-label-md text-label-sm shadow-sm transition-transform active:scale-95',
                 activeFilter === f.id
                   ? 'bg-primary-container text-on-primary-container'
-                  : 'bg-surface-container text-on-surface-variant hover:text-primary'
+                  : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
               )}
             >
               {f.label}
@@ -304,7 +304,7 @@ export default function Matching() {
               ETA 15 min
             </span>
             <div className="mt-1 px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm tracking-widest font-mono font-semibold">
-              OTP: <span className="text-primary font-bold">#7492</span>
+              OTP: <span className="text-on-surface font-bold">#7492</span>
             </div>
           </div>
         </div>
@@ -366,7 +366,7 @@ export default function Matching() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-black/20" />
           <div className="absolute top-3 left-3 flex gap-2">
-            <span className="px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm font-bold uppercase tracking-wider shadow-sm">
+            <span className="px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm font-bold uppercase tracking-wider shadow-sm">
               Top Recommendation
             </span>
             <span className="px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1">
@@ -421,7 +421,7 @@ export default function Matching() {
       <div className="flex items-center justify-between pt-1">
         <div>
           <h2
-            className="text-headline-sm text-primary"
+            className="text-headline-sm text-on-surface"
             style={{ fontFamily: 'Anton, Impact, sans-serif' }}
           >
             Available Surplus Lots
@@ -495,7 +495,7 @@ export default function Matching() {
                     Fast Allocation Protocol
                   </span>
                   <h3
-                    className="text-headline-sm text-primary"
+                    className="text-headline-sm text-on-surface"
                     style={{ fontFamily: 'Anton, Impact, sans-serif' }}
                   >
                     {claimModal.title}
@@ -503,7 +503,7 @@ export default function Matching() {
                 </div>
                 <button
                   onClick={() => setClaimModal(null)}
-                  className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary"
+                  className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface"
                   aria-label="Close"
                 >
                   <X className="w-5 h-5" />
@@ -516,7 +516,7 @@ export default function Matching() {
                 </div>
                 <div className="flex justify-between py-1 border-b border-surface-container/60">
                   <span>Claim Quantity:</span>
-                  <span className="text-primary font-bold tabular-nums">
+                  <span className="text-on-surface font-bold tabular-nums">
                     {claimModal.qty}
                   </span>
                 </div>
@@ -580,7 +580,7 @@ export default function Matching() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse" />
-                  <h3 className="text-title-md text-primary font-bold">
+                  <h3 className="text-title-md text-on-surface font-bold">
                     Marcus Vance • Courier Active
                   </h3>
                 </div>
@@ -593,7 +593,7 @@ export default function Matching() {
                 </button>
               </div>
               <div className="w-full h-52 bg-surface-container rounded-lg relative overflow-hidden flex items-end p-3">
-                <div className="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-md text-primary font-label-sm text-label-sm font-bold shadow-md flex items-center gap-1.5">
+                <div className="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-md text-on-surface font-label-sm text-label-sm font-bold shadow-md flex items-center gap-1.5">
                   <Navigation className="w-4 h-4 text-secondary" />
                   <span className="tabular-nums">
                     2.1 km to Harvesters Sanctuary • 15 mins
@@ -658,7 +658,7 @@ function SurplusCard({
 
   const storageChip =
     lot.storageKind === 'chilled'
-      ? 'bg-surface-container text-primary'
+      ? 'bg-surface-container text-on-surface'
       : lot.storageKind === 'fresh'
         ? 'bg-secondary-container text-on-secondary-container'
         : 'bg-tertiary-fixed text-on-tertiary-fixed'
@@ -699,7 +699,7 @@ function SurplusCard({
         <div className="p-3 rounded-lg bg-surface-container-low flex flex-col gap-2">
           <div className="flex items-center justify-between font-label-md text-label-md">
             <span className="text-on-surface-variant">Claim Allocation:</span>
-            <span className="text-primary font-bold tabular-nums">
+            <span className="text-on-surface font-bold tabular-nums">
               {qty} kg / {lot.sliderMax} kg Max
             </span>
           </div>
@@ -755,7 +755,7 @@ function SurplusCard({
           className={cn(
             'px-3.5 py-2 rounded-lg font-label-md text-label-md font-semibold transition-all active:scale-95 flex items-center gap-1',
             lot.hasSlider
-              ? 'bg-surface-container text-primary hover:bg-primary hover:text-on-primary'
+              ? 'bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary'
               : 'bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary shadow-sm'
           )}
         >

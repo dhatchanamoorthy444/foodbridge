@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Navbar from './components/layout/Navbar'
 import Sidebar from './components/layout/Sidebar'
 import { CookieConsent } from './components/ui/CookieConsent'
+import { CursorGlow } from './components/ui/CursorGlow'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -57,17 +58,17 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="min-h-screen flex flex-col bg-surface text-on-surface">
-          <CookieConsent />
+        <div className="relative min-h-screen flex flex-col bg-surface text-on-surface">
+          <CursorGlow />`r`n          <CookieConsent />
 
           <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#141614',
-                color: '#ffffff',
-                border: '1px solid rgba(223,255,0,0.25)',
+                background: '#191E1A',
+                color: '#F2F0E8',
+                border: '1px solid #343C35',
                 borderRadius: '8px',
                 boxShadow: '0 12px 32px -4px rgba(0,0,0,0.55)',
               },
@@ -90,7 +91,7 @@ function App() {
                       <Sidebar />
                     </motion.div>
                     <div
-                      className="md:hidden fixed inset-0 bg-inverse-surface/40 z-30"
+                      className="md:hidden fixed inset-0 bg-[#080A09]/70 z-30"
                       onClick={() => setIsSidebarOpen(false)}
                     />
                   </>

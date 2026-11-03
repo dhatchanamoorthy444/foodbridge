@@ -19,7 +19,7 @@ export function LoadingSpinner({ size = 'md', variant = 'default', className }: 
 
   const variantClasses = {
     default: 'text-botanical',
-    primary: 'text-primary',
+    primary: 'text-primary-fixed',
     white: 'text-bone',
     botanical: 'text-botanical',
   }

@@ -31,7 +31,7 @@ const KPI_CARDS = [
     delta: 'Active',
     sub: 'FIFO queue enabled',
     icon: Package,
-    iconColor: 'text-primary',
+    iconColor: 'text-primary-fixed',
   },
   {
     label: 'Active Dispatches',
@@ -39,7 +39,7 @@ const KPI_CARDS = [
     delta: 'Transit',
     sub: 'Avg latency: 22m',
     icon: Route,
-    iconColor: 'text-primary',
+    iconColor: 'text-primary-fixed',
   },
 ]
 
@@ -49,7 +49,7 @@ export default function Analytics() {
 
       {/* Header banner */}
       <div className="rounded-xl bg-surface-container-high p-4 shadow-sm relative overflow-hidden">
-        <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-primary">
+        <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-on-surface">
           <Cpu className="w-[140px] h-[140px]" />
         </div>
         <div className="relative z-10 flex flex-col gap-1">
@@ -63,7 +63,7 @@ export default function Analytics() {
             </span>
           </div>
           <h1
-            className="text-headline-lg-mobile text-primary tracking-tight font-medium"
+            className="text-headline-lg-mobile text-on-surface tracking-tight font-medium"
             style={{ fontFamily: 'Anton, Impact, sans-serif' }}
           >
             Evaluation & Engine Core
@@ -89,7 +89,7 @@ export default function Analytics() {
               <kpi.icon className={cn('w-[18px] h-[18px]', kpi.iconColor)} />
             </div>
             <div className="mt-2 flex items-baseline gap-1">
-              <span className="text-headline-sm text-primary font-semibold tabular-nums">
+              <span className="text-headline-sm text-on-surface font-semibold tabular-nums">
                 {kpi.value}
               </span>
               <span

@@ -163,7 +163,7 @@ export function ThemeProvider({ children, defaultTheme = 'forest' }: ThemeProvid
       root.style.setProperty('--bg-primary', colors.background)
       root.style.setProperty('--bg-surface', colors.surface)
       root.style.setProperty('--bg-surface-elevated', colors.surfaceElevated)
-      root.style.setProperty('--text-primary', colors.text)
+      root.style.setProperty('--text-on-surface', colors.text)
       root.style.setProperty('--text-secondary', colors.textSecondary)
       root.style.setProperty('--text-tertiary', colors.textTertiary)
       root.style.setProperty('--border-color', colors.border)

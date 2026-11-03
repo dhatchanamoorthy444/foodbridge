@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Cookie, X } from 'lucide-react'
 
@@ -25,41 +25,69 @@ export function CookieConsent() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-md z-50 bg-panel border-2 border-line rounded-[10px] p-5 shadow-[8px_8px_0_0_rgb(var(--fb-accent))] text-bone animate-slide-up">
+    <section
+      aria-label="Privacy and cookie notice"
+      className="fixed bottom-4 left-4 right-4 z-50 max-w-md rounded-2xl border border-line bg-panel p-5 text-bone shadow-[0_24px_60px_-32px_rgba(0,0,0,0.9)] animate-slide-up md:bottom-6 md:left-6 md:right-auto"
+    >
       <div className="flex items-start gap-3">
-        <div className="p-2 rounded-[10px] border-2 border-harvest bg-harvest/10 text-harvest">
-          <Cookie className="w-5 h-5" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-elevated text-primary-fixed">
+          <Cookie className="h-5 w-5" aria-hidden="true" />
         </div>
-        <div className="flex-1 space-y-2">
-          <h3 className="font-bold text-base text-bone">Privacy & Cookie Notice</h3>
-          <p className="text-xs text-muted leading-relaxed">
-            We use essential session storage and authentication tokens to operate FoodBridge. No invasive marketing trackers are used. Read our{' '}
-            <Link to="/cookies" className="text-harvest underline hover:text-accent-soft">Cookie Policy</Link> and{' '}
-            <Link to="/privacy" className="text-harvest underline hover:text-accent-soft">Privacy Policy</Link>.
+
+        <div className="min-w-0 flex-1 space-y-2">
+          <h2 className="text-base font-bold text-bone">Privacy &amp; Cookie Notice</h2>
+          <p className="text-xs leading-relaxed text-muted">
+            We use essential session storage and authentication tokens to operate
+            FoodBridge. No invasive marketing trackers are used. Read our{' '}
+            <Link
+              to="/cookies"
+              className="font-semibold text-primary-fixed underline underline-offset-2 hover:text-bone"
+            >
+              Cookie Policy
+            </Link>{' '}
+            and{' '}
+            <Link
+              to="/privacy"
+              className="font-semibold text-primary-fixed underline underline-offset-2 hover:text-bone"
+            >
+              Privacy Policy
+            </Link>
+            .
           </p>
-          <div className="flex items-center gap-3 pt-2">
+
+          <div className="flex flex-wrap items-center gap-2 pt-2">
             <button
+              type="button"
               onClick={handleAccept}
-              className="px-4 py-1.5 bg-harvest hover:bg-accent-soft text-app-deep rounded-[10px] text-xs font-bold uppercase tracking-wider transition-all"
+              className="rounded-lg bg-primary px-4 py-2 text-xs font-bold uppercase tracking-wider text-on-primary transition-colors hover:bg-primary-hover focus-ring"
             >
               Accept Essential
             </button>
             <button
+              type="button"
               onClick={handleReject}
-              className="px-4 py-1.5 bg-app-deep hover:bg-elevated text-muted rounded-[10px] text-xs font-bold uppercase tracking-wider border-2 border-line transition-all"
+              className="rounded-lg border border-line bg-elevated px-4 py-2 text-xs font-bold uppercase tracking-wider text-bone transition-colors hover:border-primary-fixed/50 hover:bg-surface-high focus-ring"
             >
               Reject Optional
             </button>
+            <Link
+              to="/cookies"
+              className="px-1 py-2 text-xs font-semibold text-muted underline underline-offset-2 hover:text-bone focus-ring"
+            >
+              Manage
+            </Link>
           </div>
         </div>
+
         <button
+          type="button"
           onClick={() => setIsVisible(false)}
-          className="text-muted hover:text-bone p-1"
-          aria-label="Close"
+          className="rounded-lg p-1.5 text-muted transition-colors hover:bg-elevated hover:text-bone focus-ring"
+          aria-label="Dismiss cookie notice"
         >
-          <X className="w-4 h-4" />
+          <X className="h-4 w-4" aria-hidden="true" />
         </button>
       </div>
-    </div>
+    </section>
   )
 }
