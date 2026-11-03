@@ -15,6 +15,7 @@ const matching_1 = require("./routes/matching");
 const pickups_1 = require("./routes/pickups");
 const analytics_1 = require("./routes/analytics");
 const notifications_1 = require("./routes/notifications");
+const init_1 = require("./db/init");
 const app = (0, express_1.default)();
 // CORS origins: deployed frontend (FRONTEND_URL) plus optional extra origin (CORS_ORIGIN)
 const corsOrigins = [process.env.FRONTEND_URL, process.env.CORS_ORIGIN].filter((origin) => Boolean(origin));
@@ -35,9 +36,20 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 app.get('/api/health', (req, res) => {
+    const db = (0, init_1.getDbHealth)();
     res.status(200).json({
         status: 'success',
         message: 'FoodBridge backend is running',
+        database: {
+            ok: db.ok,
+            checkedAt: db.checkedAt,
+            tables: db.tables.map(({ table, ok, error, rows }) => ({
+                table,
+                ok,
+                ...(rows !== undefined ? { rows } : {}),
+                ...(error ? { error } : {}),
+            })),
+        },
         timestamp: new Date().toISOString(),
     });
 });

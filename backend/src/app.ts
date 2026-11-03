@@ -10,6 +10,7 @@ import { matchingRoutes } from './routes/matching'
 import { pickupRoutes } from './routes/pickups'
 import { analyticsRoutes } from './routes/analytics'
 import { notificationRoutes } from './routes/notifications'
+import { getDbHealth } from './db/init'
 
 const app = express()
 
@@ -37,9 +38,20 @@ app.get('/health', (req, res) => {
 })
 
 app.get('/api/health', (req, res) => {
+  const db = getDbHealth()
   res.status(200).json({
     status: 'success',
     message: 'FoodBridge backend is running',
+    database: {
+      ok: db.ok,
+      checkedAt: db.checkedAt,
+      tables: db.tables.map(({ table, ok, error, rows }) => ({
+        table,
+        ok,
+        ...(rows !== undefined ? { rows } : {}),
+        ...(error ? { error } : {}),
+      })),
+    },
     timestamp: new Date().toISOString(),
   })
 })

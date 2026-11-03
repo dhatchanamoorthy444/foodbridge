@@ -1,62 +1,96 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getDbHealth = getDbHealth;
+exports.verifySchema = verifySchema;
 exports.initializeDatabase = initializeDatabase;
 const supabase_1 = require("./supabase");
-async function initializeDatabase() {
+/**
+ * Read-only schema verification.
+ *
+ * The previous implementation called PostgREST RPCs such as
+ * `public.create_users_table()` that do not exist in this Supabase project
+ * (error PGRST202 at startup). This module now only VERIFIES the existing
+ * tables — it never attempts DDL, RPC calls or schema changes.
+ */
+const REQUIRED_TABLES = [
+    'profiles',
+    'recipient_preferences',
+    'food_donations',
+    'food_requests',
+    'allocations',
+    'pickups',
+    'notifications',
+    'audit_logs',
+];
+let dbHealth = { ok: false, checkedAt: new Date().toISOString(), tables: [] };
+function getDbHealth() {
+    return dbHealth;
+}
+async function verifyTable(table) {
     try {
-        // Create tables if they don't exist
-        await createUsersTable();
-        await createFoodItemsTable();
-        await createRecipientsTable();
-        await createMatchesTable();
-        await createPickupsTable();
-        await createNotificationsTable();
-        await createSecurityPolicies();
-        console.log('✅ Database initialized successfully');
+        // GET with count: 'exact' and no rows (limit 0). Using `head: true` here
+        // is unreliable: supabase-js returns { error: null, count: null } for
+        // PostgREST errors on HEAD requests, so a missing table would silently
+        // pass. A plain GET surfaces { code: 'PGRST205', ... } correctly.
+        const { count, error } = await supabase_1.supabaseAdmin
+            .from(table)
+            .select('*', { count: 'exact' })
+            .limit(0);
+        if (error) {
+            return {
+                table,
+                ok: false,
+                error: { code: error.code, message: error.message },
+            };
+        }
+        return { table, ok: true, rows: count ?? 0 };
     }
-    catch (error) {
-        console.error('❌ Failed to initialize database:', error);
-        throw error;
-    }
-}
-async function createUsersTable() {
-    const { error } = await supabase_1.supabaseAdmin.rpc('create_users_table');
-    if (error && !error.message.includes('already exists')) {
-        throw error;
-    }
-}
-async function createFoodItemsTable() {
-    const { error } = await supabase_1.supabaseAdmin.rpc('create_food_items_table');
-    if (error && !error.message.includes('already exists')) {
-        throw error;
+    catch (err) {
+        return {
+            table,
+            ok: false,
+            error: { code: 'UNEXPECTED', message: err instanceof Error ? err.message : String(err) },
+        };
     }
 }
-async function createRecipientsTable() {
-    const { error } = await supabase_1.supabaseAdmin.rpc('create_recipients_table');
-    if (error && !error.message.includes('already exists')) {
-        throw error;
-    }
+async function verifySchema() {
+    const tables = await Promise.all(REQUIRED_TABLES.map(verifyTable));
+    const okCount = tables.filter((t) => t.ok).length;
+    return {
+        ok: okCount === tables.length,
+        checkedAt: new Date().toISOString(),
+        tables,
+    };
 }
-async function createMatchesTable() {
-    const { error } = await supabase_1.supabaseAdmin.rpc('create_matches_table');
-    if (error && !error.message.includes('already exists')) {
-        throw error;
+async function initializeDatabase() {
+    console.log('🔍 Verifying Supabase schema (read-only check, no DDL)...');
+    dbHealth = await verifySchema();
+    const lines = [];
+    for (const status of dbHealth.tables) {
+        if (status.ok) {
+            lines.push(`  ✅ ${status.table} (${status.rows ?? 0} rows)`);
+        }
+        else {
+            const code = status.error?.code ? `[${status.error.code}] ` : '';
+            lines.push(`  ❌ ${status.table} — ${code}${status.error?.message ?? 'unknown error'}`);
+        }
     }
-}
-async function createPickupsTable() {
-    const { error } = await supabase_1.supabaseAdmin.rpc('create_pickups_table');
-    if (error && !error.message.includes('already exists')) {
-        throw error;
+    if (dbHealth.ok) {
+        console.log(`✅ Database initialized successfully — all ${dbHealth.tables.length} tables reachable:`);
+        console.log(lines.join('\n'));
+        return;
     }
-}
-async function createNotificationsTable() {
-    const { error } = await supabase_1.supabaseAdmin.rpc('create_notifications_table');
-    if (error && !error.message.includes('already exists')) {
-        throw error;
+    const okCount = dbHealth.tables.filter((t) => t.ok).length;
+    if (okCount === 0) {
+        console.error('❌ Database unreachable — no required Supabase table could be queried:');
+        console.error(lines.join('\n'));
+        throw new Error('Supabase schema verification failed: database unreachable (all checks failed).');
     }
-}
-async function createSecurityPolicies() {
-    // Row Level Security policies will be created via migrations or SQL scripts
-    console.log('💡 Note: Please run SQL migrations for RLS policies');
+    // Partial failure: do NOT crash-loop. The server still starts, the failure
+    // is reported here and again via /api/health, and the affected table's
+    // endpoints will surface the same PostgREST error per request.
+    console.error(`⚠️ Database initialized with ${okCount}/${dbHealth.tables.length} tables reachable:`);
+    console.error(lines.join('\n'));
+    console.error('⚠️ Starting server in degraded mode — affected endpoints will return PostgREST errors until the missing tables are restored.');
 }
 //# sourceMappingURL=init.js.map
