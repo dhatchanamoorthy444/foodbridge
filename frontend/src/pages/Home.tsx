@@ -181,14 +181,15 @@ export default function Home() {
         </p>
 
         {/* Harvest basket hero card */}
-        <div className="relative w-full rounded-xl overflow-hidden shadow-lg bg-surface-container-low mt-1">
-          <div className="relative h-64 w-full">
+        <div className="relative w-full rounded-xl p-[2px] mt-1 bg-gradient-to-br from-primary via-secondary to-primary/70 shadow-[0_10px_36px_-14px_rgba(223,255,0,0.55)]">
+          <div className="relative h-64 w-full overflow-hidden rounded-[10px] bg-surface-container-low">
             <img
               src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1000&q=80"
               alt="Rustic farm stand with wooden crates of fresh produce and bread"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+            <div className="absolute inset-0 rounded-[10px] ring-1 ring-inset ring-white/10 pointer-events-none" />
             {/* Floating badges */}
             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-bright/90 backdrop-blur-md shadow-sm">
@@ -211,9 +212,9 @@ export default function Home() {
               </span>
             </div>
             {/* Footer overlay */}
-            <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between text-surface-bright">
+            <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between text-white">
               <div className="flex flex-col">
-                <span className="font-label-sm text-label-sm text-surface-variant uppercase tracking-wider">
+                <span className="font-label-sm text-label-sm text-secondary-fixed/80 uppercase tracking-wider">
                   Provenance Route #409
                 </span>
                 <span
