@@ -30,7 +30,10 @@ export function Menu({ trigger, items, className, align = 'left' }: MenuProps) {
     <div className={cn('relative inline-block', className)}>
       <div className="relative">
         {React.isValidElement(trigger)
-          ? React.cloneElement(trigger, { onClick: () => setIsOpen(!isOpen) })
+          ? React.cloneElement(
+              trigger as React.ReactElement<{ onClick?: ((e: React.MouseEvent) => void) | undefined }>,
+              { onClick: () => setIsOpen(!isOpen) }
+            )
           : (
             <button
               onClick={() => setIsOpen(!isOpen)}
