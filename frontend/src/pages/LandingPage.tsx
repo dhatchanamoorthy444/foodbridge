@@ -29,42 +29,14 @@ const MUTED = 'rgba(255,255,255,0.65)'
 const FAINT = 'rgba(255,255,255,0.45)'
 
 const IMPACT = [
-  { label: 'Food Rescued', value: '14,820', unit: 'kg', sub: '↑ 12.4% this week', Icon: Scale },
-  { label: 'Meals Served', value: '32,450', unit: '', sub: '85 hubs mobilized', Icon: UtensilsCrossed },
-  { label: 'Partner NGOs', value: '184', unit: '', sub: '99% verified tier', Icon: Users },
-  { label: 'Rescue Rate', value: '99.4', unit: '%', sub: 'Near-zero spoilage', Icon: ShieldCheck },
-]
-
-const URGENCY = [
-  { id: 'u1', name: 'Heritage Country Sourdough', source: "L'Etoile Boulangerie", location: 'Central Quarter', qty: '18 loaves', time: '03h 42m', distance: '0.8 km', critical: true },
-  { id: 'u2', name: 'Hydroponic Salad Medley', source: 'Verdant Urban Farms', location: 'Dockside Greenhouse', qty: '24 crates', time: '07h 15m', distance: '1.4 km', critical: false },
-  { id: 'u3', name: 'Pasture Milk & Curd', source: 'Alder Brook Cooperative', location: 'West Market Depot', qty: '40 units', time: '02h 10m', distance: '2.1 km', critical: true },
-]
-
-const ROLES = [
-  { id: 'donor' as const, label: 'Donor Portal', Icon: Store },
-  { id: 'recipient' as const, label: 'Recipient Portal', Icon: HandHeart },
-  { id: 'admin' as const, label: 'Admin Authority', Icon: Activity },
+  { label: 'Freshness', value: 'First', unit: '', sub: 'Expiry-first listings', Icon: ShieldCheck },
+  { label: 'Zero Cost', value: 'Always', unit: '', sub: 'Donations stay free', Icon: Scale },
+  { label: 'Realtime', value: 'Live', unit: '', sub: 'Listing updates as they happen', Icon: Users },
+  { label: 'Privacy', value: 'Built-in', unit: '', sub: 'Contacts stay hidden until accepted', Icon: UtensilsCrossed },
 ]
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const { login } = useAppStore()
-  const [activeRole, setActiveRole] = useState<(typeof ROLES)[number]['id']>('donor')
-
-  const handleLogin = (role: 'donor' | 'recipient' | 'admin') => {
-    login({
-      id: '1',
-      email: `${role}@foodbridge.demo`,
-      fullName: role === 'donor' ? 'Alex Chen' : role === 'recipient' ? 'Maria Santos' : 'Admin User',
-      role,
-      status: 'active',
-      organization:
-        role === 'donor' ? 'Green Leaf Bakery & Supermarket' : role === 'recipient' ? 'Hope Community Kitchen' : 'Central Admin Authority',
-      createdAt: new Date(),
-    })
-    navigate('/')
-  }
 
   return (
     <div className="min-h-screen" style={{ background: BLACK, color: '#ffffff' }}>
@@ -170,7 +142,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <button
-                onClick={() => handleLogin('donor')}
+                onClick={() => navigate('/register')}
                 className="group relative h-14 px-7 rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] overflow-hidden"
                 style={{ background: NEON, color: BLACK }}
               >
@@ -181,84 +153,13 @@ export default function LandingPage() {
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
-                onClick={() => handleLogin('recipient')}
+                onClick={() => navigate('/login')}
                 className="h-14 px-7 rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] border"
                 style={{ borderColor: OUTLINE, color: '#ffffff', fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 14, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}
               >
-                <Play className="w-4 h-4" fill="currentColor" /> Live Demo Mode
+                Sign In
               </button>
             </div>
-
-            {/* Instant role switch */}
-            <div className="flex flex-wrap items-center gap-4 pt-5 border-t mt-2" style={{ borderColor: OUTLINE }}>
-              <span
-                style={{
-                  fontFamily: 'Be Vietnam Pro, sans-serif',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: FAINT,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Instant Role Switch
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {ROLES.map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => setActiveRole(r.id)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-lg transition-all"
-                    style={{
-                      background: activeRole === r.id ? NEON : 'transparent',
-                      color: activeRole === r.id ? BLACK : '#ffffff',
-                      border: `1px solid ${activeRole === r.id ? 'transparent' : OUTLINE}`,
-                      fontFamily: 'Be Vietnam Pro, sans-serif',
-                      fontSize: 12,
-                      fontWeight: 700,
-                      letterSpacing: '0.04em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    <r.Icon className="w-3.5 h-3.5" />
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Compact role preview */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeRole}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.18 }}
-                className="rounded-xl px-4 py-3 flex items-center justify-between gap-3"
-                style={{ background: CARD, border: `1px solid ${OUTLINE}` }}
-              >
-                <div className="flex flex-col">
-                  <span style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, fontWeight: 600, color: '#ffffff' }}>
-                    {activeRole === 'donor' ? 'Purveyor Quick-Post' : activeRole === 'recipient' ? 'Pantry Allocation Radar' : 'Redistribution Engine'}
-                  </span>
-                  <span style={{ fontFamily: 'Rubik, sans-serif', fontSize: 12, color: MUTED }}>
-                    {activeRole === 'donor'
-                      ? 'Log batch expiry in under 30 seconds.'
-                      : activeRole === 'recipient'
-                        ? 'Pre-reserve deliveries by inventory deficit.'
-                        : 'Algorithmic waste balance and hub telemetry.'}
-                  </span>
-                </div>
-                <button
-                  onClick={() => handleLogin(activeRole)}
-                  className="shrink-0 h-9 px-4 rounded"
-                  style={{ background: NEON, color: BLACK, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}
-                >
-                  {activeRole === 'admin' ? 'Metrics' : activeRole === 'donor' ? 'Post Batch' : 'Receive'}
-                </button>
-              </motion.div>
-            </AnimatePresence>
           </div>
 
           {/* ─── Right column — big food image card ─── */}
