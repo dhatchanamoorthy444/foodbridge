@@ -10,7 +10,7 @@ import {
   Truck,
   Snowflake,
   BellRing,
-  LoopHorizontal,
+  ArrowLeftRight,
   Leaf,
   ScanSearch,
   Hourglass,
@@ -22,7 +22,7 @@ import HeroCanvas from '../components/animations/HeroCanvas'
 
 const revealVariants: Variants = {
   hidden: { opacity: 0, y: 26 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+      show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 }
 
 function Reveal({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -167,11 +167,11 @@ export default function LandingPage() {
                 transition={{ duration: 0.55, delay: 0.18 }}
                 className="flex flex-col gap-3 sm:flex-row"
               >
-                <Link to="/register" className="btn-primary h-13 rounded-xl px-7 py-3.5 text-[15px]">
+                <Link to="/register" className="btn-primary rounded-xl px-7 py-3.5 text-[15px]">
                   Start Redistributing
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <a href="#how" className="btn-secondary h-13 rounded-xl px-7 py-3.5 text-[15px]">
+                <a href="#how" className="btn-secondary rounded-xl px-7 py-3.5 text-[15px]">
                   Explore FoodBridge
                   <ArrowRight className="h-4 w-4 rotate-90" />
                 </a>
@@ -214,7 +214,7 @@ export default function LandingPage() {
         </section>
 
         {/* ══════════════ HOW IT WORKS ══════════════ */}
-        <section id="how" className="scroll-mt-16 bg-app py-16 lg:py-24" style={{ scrollMarginTop: '68px' }}>
+        <section id="how" className="bg-app py-16 lg:py-24">
           <div className="mx-auto max-w-[1440px] px-5 md:px-8 lg:px-10">
             <SectionHeading
               kicker="Three steps"
@@ -266,7 +266,7 @@ export default function LandingPage() {
         </section>
 
         {/* ══════════════ EXPIRY MONITORING ══════════════ */}
-        <section id="expiry" className="scroll-mt-16 bg-app-deep py-16 lg:py-24" style={{ scrollMarginTop: '68px' }}>
+        <section id="expiry" className="bg-app-deep py-16 lg:py-24">
           <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:px-8 lg:grid-cols-2 lg:gap-14 lg:px-10">
             <Reveal>
               <div className="relative overflow-hidden rounded-2xl border border-line">
@@ -328,7 +328,7 @@ export default function LandingPage() {
         </section>
 
         {/* ══════════════ EMERGENCY ALERTS ══════════════ */}
-        <section id="alerts" className="scroll-mt-16 bg-app py-16 lg:py-24" style={{ scrollMarginTop: '68px' }}>
+        <section id="alerts" className="bg-app py-16 lg:py-24">
           <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:px-8 lg:grid-cols-2 lg:gap-14 lg:px-10">
             <div className="order-2 flex flex-col gap-7 lg:order-1">
               <SectionHeading
@@ -358,7 +358,7 @@ export default function LandingPage() {
                 <div className="grid grid-cols-3 gap-3">
                   {[
                     { Icon: BellRing, label: 'Broadcast' },
-                    { Icon: HandIcon, label: 'Respond' },
+                    { Icon: HeartHandshake, label: 'Respond' },
                     { Icon: ClipboardCheck, label: 'Accept' },
                   ].map(({ Icon, label }) => (
                     <div key={label} className="rounded-xl border border-line bg-panel p-3.5 text-center">
@@ -390,7 +390,7 @@ export default function LandingPage() {
         </section>
 
         {/* ══════════════ IMPACT & SUSTAINABILITY ══════════════ */}
-        <section id="impact" className="scroll-mt-16 bg-app-deep py-16 lg:py-24" style={{ scrollMarginTop: '68px' }}>
+        <section id="impact" className="bg-app-deep py-16 lg:py-24">
           <div className="mx-auto max-w-[1440px] px-5 md:px-8 lg:px-10">
             <SectionHeading
               kicker="Impact"
@@ -561,5 +561,3 @@ export default function LandingPage() {
     </div>
   )
 }
-
-import { Heart as HandIcon } from 'lucide-react'
