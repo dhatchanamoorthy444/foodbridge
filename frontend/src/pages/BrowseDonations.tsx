@@ -212,7 +212,6 @@ export default function BrowseDonations() {
                   </button>
                 </div>
               </div>
-              </div>
             })
           }
     </div>
