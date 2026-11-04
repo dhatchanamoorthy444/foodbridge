@@ -5,7 +5,6 @@ import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, HeartHandshake, Loade
 import toast from 'react-hot-toast'
 import useAppStore from '../store/useAppStore'
 import { authService } from '../services/api'
-import { isSupabaseConfigured } from '../lib/supabase'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -19,7 +18,6 @@ export default function Login() {
   const [showPwd, setShowPwd] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const configured = isSupabaseConfigured
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,7 +54,12 @@ export default function Login() {
       </header>
 
       <div className="flex-1 pt-16 flex items-center justify-center px-4 py-12">
-        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }} className="w-full max-w-sm space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="w-full max-w-sm space-y-6"
+        >
           <div className="text-center space-y-2">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-16 w-16 mx-auto object-contain" />
             <h1 className="font-display text-3xl text-text tracking-tight">Welcome Back</h1>
@@ -65,7 +68,7 @@ export default function Login() {
 
           {resetSent && (
             <div className="p-3 rounded-xl border border-line bg-elevated text-sm text-text-2">
-              Check your email â€” a password reset link is on its way.
+              Check your email — a password reset link is on its way.
             </div>
           )}
 
@@ -106,14 +109,22 @@ export default function Login() {
                   placeholder="Your password"
                   className="input-field pl-10 pr-10"
                 />
-                <button type="button" onClick={() => setShowPwd((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3" aria-label={showPwd ? 'Hide password' : 'Show password'}>
+                <button
+                  type="button"
+                  onClick={() => setShowPwd((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3"
+                  aria-label={showPwd ? 'Hide password' : 'Show password'}
+                >
                   {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <button type="submit" disabled={loading || !configured} className="btn-primary w-full h-12 text-[15px]">
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>}
+            <button type="submit" disabled={loading} className="btn-primary w-full h-12 text-[15px]">
+              {loading
+                ? <Loader2 className="w-5 h-5 animate-spin" />
+                : <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>
+              }
             </button>
           </form>
 
@@ -121,7 +132,6 @@ export default function Login() {
             <button
               type="button"
               onClick={async () => {
-                if (!configured) return toast.error('Authentication not configured')
                 if (!email) return toast.error('Enter your email above first')
                 try {
                   await authService.requestPasswordReset(email)
@@ -135,7 +145,8 @@ export default function Login() {
               Forgot your password?
             </button>
             <p className="text-[13px] text-text-2">
-              Don't have an account? <Link to="/register" className="text-primary-fixed font-semibold">Sign up free</Link>
+              Don't have an account?{' '}
+              <Link to="/register" className="text-primary-fixed font-semibold">Sign up free</Link>
             </p>
           </div>
 
