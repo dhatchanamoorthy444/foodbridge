@@ -76,12 +76,6 @@ export default function Login() {
             </div>
           )}
 
-          {!configured && (
-            <div className="p-3 rounded-xl border border-line bg-elevated text-[13px] text-text-2">
-              Authentication is not configured on this deployment yet. Set <code className="text-primary-fixed">VITE_SUPABASE_URL</code> and <code className="text-primary-fixed">VITE_SUPABASE_ANON_KEY</code> to enable sign-in.
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
               <label htmlFor="email" className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Email</label>

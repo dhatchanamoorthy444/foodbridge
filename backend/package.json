@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "prestart": "npm run build",
     "start": "node dist/server.js",
     "test": "vitest",
     "lint": "eslint src --ext .ts"
