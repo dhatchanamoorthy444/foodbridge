@@ -25,7 +25,8 @@ export default function BrowseDonations() {
   const clearFilters = () => { setCategory('all'); setCity(''); setSearch('') }
 
   return (
-    <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
+    <>
+      <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
       {/* ── Operational Header ── */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
         <div className="flex flex-col">
@@ -211,8 +212,7 @@ export default function BrowseDonations() {
                     REQUEST ALLOCATION →
                   </button>
                 </div>
-              </div>
             })
     </div>
-  )
-}
+</>)}
+
