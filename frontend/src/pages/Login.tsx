@@ -5,6 +5,7 @@ import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, HeartHandshake, Loade
 import toast from 'react-hot-toast'
 import useAppStore from '../store/useAppStore'
 import { authService } from '../services/api'
+import { isSupabaseConfigured } from '../lib/supabase'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -12,6 +13,7 @@ export default function Login() {
   const resetSent = searchParams.get('reset') === 'sent'
   const setUser = useAppStore((s) => s.setUser)
   const setDemoSession = useAppStore((s) => s.setDemoSession)
+  const configured = isSupabaseConfigured
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
