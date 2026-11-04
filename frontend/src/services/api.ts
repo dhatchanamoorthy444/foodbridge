@@ -81,23 +81,6 @@ export const authService = {
     if (error) throw error
   },
 
-  async updateProfile(patch: Record<string, string>): Promise<Profile | null> {
-    if (!supabase) return null
-    try {
-      const userId = (await supabase.auth.getSession()).data.session?.user.id
-      if (!userId) return null
-      const { data, error } = await supabase
-        .from('profiles')
-        .update(patch)
-        .eq('id', userId)
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as Profile
-    } catch (e) {
-      throw e
-    }
-  },
 
   async fetchProfile(): Promise<Profile | null> {
     if (!supabase) return null
