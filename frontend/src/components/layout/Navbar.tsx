@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Menu, Bell, CheckCheck, LogOut, Settings as SettingsIcon, User as UserIcon } from 'lucide-react'
 import useAppStore from '../../store/useAppStore'
 import { authService } from '../../services/api'
 import { useNotifications, useMarkNotificationRead, useMarkAllNotificationsRead } from '../../hooks/useAppData'
@@ -13,6 +12,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
   const [openNotifications, setOpenNotifications] = useState(false)
   const [openMenu, setOpenMenu] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
 
   const notificationsQuery = useNotifications()
   const markRead = useMarkNotificationRead()
@@ -35,149 +35,180 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
   const displayName =
     user?.organization?.trim() ||
     user?.full_name ||
-    user?.email.split('@')[0] ||
-    'Account'
+    user?.email?.split('@')[0] ||
+    'Station Ops'
 
   const handleLogout = async () => {
     try {
       await authService.signOut()
     } catch {
-      /* clearing local state regardless */
+      /* clear locally */
     }
     logoutLocal()
-    window.location.assign('/')
+    navigate('/login', { replace: true })
   }
 
   return (
-    <header className="sticky top-0 z-30 bg-app border-b border-line" ref={rootRef}>
-      <div className="h-14 px-3 md:px-4 flex items-center justify-between gap-2">
-        {/* Mobile menu */}
+    <header className="sticky top-0 z-30 h-20 bg-[#090B09] border-b border-[#262E26] px-4 md:px-8 flex items-center justify-between" ref={rootRef}>
+      {/* Left: Mobile Trigger & Telemetry indicator */}
+      <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="md:hidden p-2 rounded-lg text-text-2 hover:bg-elevated transition-colors"
+          className="md:hidden p-2 rounded-lg text-[#B8BDB6] hover:bg-[#1C221C] transition-colors"
           aria-label="Toggle navigation"
         >
-          <Menu className="w-5 h-5" />
+          <span className="material-symbols-outlined text-[24px]">menu</span>
         </button>
 
-        {/* Logo (mobile) */}
-        <Link to="/" className="md:hidden flex items-center gap-2">
-          <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-8 w-8 object-contain" />
-          <span className="font-['Anton'] text-lg text-text tracking-tight">FOODBRIDGE</span>
-        </Link>
-
-        <div className="hidden md:flex items-center gap-2 min-w-0">
-          <span className="font-label-sm text-[11px] uppercase tracking-widest text-text-3">
-            {user?.role === 'donor' ? 'Donor workspace' : 'Recipient workspace'}
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-[11px] text-[#D7EF4A] uppercase px-2.5 py-1 rounded bg-[#0D231A] border border-[#262E26] font-bold">
+            RESILIENCE OPS
           </span>
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="font-mono text-[11px] text-[#858C84] uppercase">TELEMETRY SYNC:</span>
+            <span className="font-mono text-[11px] text-[#D7EF4A] font-bold">REAL-TIME ACTIVE</span>
+          </div>
         </div>
+      </div>
 
-        <div className="flex items-center gap-1.5">
-          {/* Notifications */}
-          <div className="relative">
-            <button
-              onClick={() => { setOpenNotifications((v) => !v); setOpenMenu(false) }}
-              className="relative p-2 rounded-lg text-text-2 hover:bg-elevated transition-colors"
-              aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
-            >
-              <Bell className="w-5 h-5" />
-              {unread > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-danger text-white text-[9px] font-bold flex items-center justify-center">
-                  {unread > 9 ? '9+' : unread}
-                </span>
-              )}
-              {notificationsQuery.connected && unread === 0 && (
-                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-secondary" aria-label="Live" />
-              )}
-            </button>
+      {/* Right: Quick Actions & Notifications */}
+      <div className="flex items-center gap-3">
+        {user?.role === 'donor' && (
+          <Link
+            to="/donor/new"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all"
+          >
+            <span className="material-symbols-outlined text-[18px]">add_circle</span>
+            <span>LOG BATCH</span>
+          </Link>
+        )}
 
-            <AnimatePresence>
-              {openNotifications && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                  transition={{ duration: 0.16 }}
-                  className="absolute right-0 mt-2 w-[320px] max-h-[420px] overflow-y-auto rounded-xl bg-panel border border-line shadow-popover z-50"
-                >
-                  <div className="flex items-center justify-between px-3 py-2 border-b border-line">
-                    <p className="text-[12px] font-bold uppercase tracking-widest text-text-2">Notifications</p>
+        {/* Notifications Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setOpenNotifications((v) => !v)
+              setOpenMenu(false)
+            }}
+            className="relative p-2.5 rounded-lg text-[#B8BDB6] hover:bg-[#1C221C] hover:text-white transition-colors"
+            aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ''}`}
+          >
+            <span className="material-symbols-outlined text-[22px]">notifications</span>
+            {unread > 0 && (
+              <span className="absolute 1.5 top-1.5 right-1.5 h-4 min-w-4 px-1 rounded-full bg-[#FF5449] text-white text-[9px] font-bold flex items-center justify-center">
+                {unread > 9 ? '9+' : unread}
+              </span>
+            )}
+          </button>
+
+          <AnimatePresence>
+            {openNotifications && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 mt-2 w-80 md:w-96 rounded-xl border border-[#262E26] bg-[#131713] shadow-2xl p-3 z-50"
+              >
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#262E26]">
+                  <div className="flex items-center gap-2">
+                    <span className="font-['Anton'] text-sm uppercase text-white tracking-wide">Radar Alerts</span>
+                    <span className="font-mono text-[10px] text-[#D7EF4A] font-bold">{unread} pending</span>
+                  </div>
+                  {unread > 0 && (
                     <button
                       onClick={() => markAllRead.mutate()}
-                      disabled={markAllRead.isPending || unread === 0}
-                      className="text-[11px] font-semibold text-primary-fixed hover:text-text transition-colors disabled:opacity-40"
+                      className="font-mono text-[10px] uppercase text-[#B8BDB6] hover:text-[#D7EF4A] transition-colors"
                     >
-                      Mark all read
+                      Acknowledge all
                     </button>
-                  </div>
-                  {notificationsQuery.isLoading ? (
-                    <div className="p-4 text-center text-sm text-text-2">Loading…</div>
-                  ) : items.length === 0 ? (
-                    <div className="p-6 text-center">
-                      <Bell className="w-6 h-6 mx-auto mb-2 text-text-3" />
-                      <p className="text-sm text-text-2">No notifications yet</p>
-                      <p className="text-[12px] text-text-3 mt-0.5">Activity on your food will appear here</p>
+                  )}
+                </div>
+
+                <div className="max-h-80 overflow-y-auto space-y-1.5">
+                  {items.length === 0 ? (
+                    <div className="py-8 text-center text-xs text-[#858C84] uppercase font-mono">
+                      All dispatch queues clear
                     </div>
                   ) : (
-                    <ul>
-                      {items.slice(0, 20).map((n) => (
-                        <li key={n.id} className={`px-3 py-2.5 border-b border-line last:border-b-0 ${!n.read ? 'bg-elevated/60' : ''}`}>
-                          <button
-                            onClick={() => { if (!n.read) markRead.mutate(n.id) }}
-                            className="w-full text-left"
-                          >
-                            <div className="flex items-start gap-2">
-                              <span className={`mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0 ${n.read ? 'bg-line' : 'bg-primary'}`} />
-                              <div className="min-w-0">
-                                <p className={`text-[13px] leading-snug ${n.read ? 'text-text-2' : 'text-text font-medium'}`}>{n.title}</p>
-                                <p className="text-[12px] text-text-3 leading-snug line-clamp-2">{n.message}</p>
-                                <p className="text-[10px] text-text-3 mt-0.5">{formatRelativeTime(n.created_at)}</p>
-                              </div>
-                            </div>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                    items.map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={() => !item.read && markRead.mutate(item.id)}
+                        className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
+                          item.read
+                            ? 'bg-[#0E120E] border-[#262E26] text-[#858C84]'
+                            : 'bg-[#1C221C] border-[#D7EF4A]/30 text-white'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-xs font-semibold leading-tight">{item.title}</p>
+                          <span className="font-mono text-[9px] text-[#858C84] whitespace-nowrap">
+                            {formatRelativeTime(item.created_at)}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#B8BDB6] mt-1">{item.message}</p>
+                      </div>
+                    ))
                   )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-          {/* Account menu */}
-          <div className="relative">
-            <button
-              onClick={() => { setOpenMenu((v) => !v); setOpenNotifications(false) }}
-              className="flex items-center gap-2 pl-1.5 pr-2.5 py-1.5 rounded-lg hover:bg-elevated transition-colors"
-              aria-label="Account menu"
-            >
-              <span className="h-8 w-8 rounded-full bg-primary-container text-on-primary-container text-[12px] font-bold flex items-center justify-center uppercase">
-                {displayName.slice(0, 1)}
-              </span>
-              <span className="hidden md:block max-w-[140px] truncate text-[13px] font-semibold text-text">{displayName}</span>
-            </button>
+        {/* User Menu */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setOpenMenu((v) => !v)
+              setOpenNotifications(false)
+            }}
+            className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-[#1C221C] transition-colors"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#D7EF4A] text-[#090B09] flex items-center justify-center font-bold text-xs uppercase shadow-sm">
+              {displayName[0]}
+            </div>
+            <div className="hidden lg:flex flex-col text-left">
+              <span className="text-xs font-bold text-white leading-tight">{displayName}</span>
+              <span className="font-mono text-[9px] text-[#D7EF4A] uppercase">{user?.role}</span>
+            </div>
+          </button>
 
-            <AnimatePresence>
-              {openMenu && (
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.16 }}
-                  className="absolute right-0 mt-2 w-52 rounded-xl bg-panel border border-line shadow-popover z-50 overflow-hidden">
-                  <div className="px-3 py-2.5 border-b border-line">
-                    <p className="text-[13px] font-semibold text-text truncate">{displayName}</p>
-                    <p className="text-[11px] text-text-3 truncate">{user?.email}</p>
-                  </div>
-                  <Link to="/settings" onClick={() => setOpenMenu(false)} className="flex items-center gap-2 px-3 py-2.5 text-[13px] text-text-2 hover:text-text hover:bg-elevated transition-colors">
-                    <SettingsIcon className="w-4 h-4" /> Settings
+          <AnimatePresence>
+            {openMenu && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 mt-2 w-52 rounded-xl border border-[#262E26] bg-[#131713] shadow-2xl p-1.5 z-50"
+              >
+                <div className="px-3 py-2 border-b border-[#262E26]">
+                  <p className="text-xs font-bold text-white truncate">{displayName}</p>
+                  <p className="font-mono text-[9px] text-[#858C84] truncate">{user?.email}</p>
+                </div>
+
+                <div className="py-1">
+                  <Link
+                    to="/settings"
+                    onClick={() => setOpenMenu(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-[#B8BDB6] hover:text-white hover:bg-[#1C221C] rounded-lg transition-colors uppercase tracking-wider font-mono"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">settings</span>
+                    Station Config
                   </Link>
-                  <Link to="/" onClick={() => setOpenMenu(false)} className="flex items-center gap-2 px-3 py-2.5 text-[13px] text-text-2 hover:text-text hover:bg-elevated transition-colors">
-                    <UserIcon className="w-4 h-4" /> My workspace
-                  </Link>
-                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2.5 text-[13px] text-danger hover:bg-danger-soft transition-colors border-t border-line">
-                    <LogOut className="w-4 h-4" /> Sign out <CheckCheck className="w-0 h-0" />
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-[#FF5449] hover:bg-[#410002] rounded-lg transition-colors uppercase tracking-wider font-mono text-left"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">logout</span>
+                    Disconnect
                   </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </header>

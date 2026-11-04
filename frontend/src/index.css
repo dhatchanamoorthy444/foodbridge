@@ -4,339 +4,256 @@
 
 @layer base {
   :root {
-    /* ── FoodBridge warm charcoal / forest / ivory / amber system ── */
-    --fb-app:              17 21 18;   /* #111512 background */
-    --fb-app-deep:         12 16 14;   /* #0C100E surface-dim */
-    --fb-panel:            25 30 26;   /* #191E1A surface */
-    --fb-elevated:         31 37 32;   /* #1F2520 elevated surface */
-    --fb-surface-container:35 42 36;   /* #232A24 */
-    --fb-surface-high:     42 50 43;   /* #2A322B */
-    --fb-surface-highest:  50 59 51;   /* #323B33 */
-    --fb-surface-variant:  58 68 59;   /* #3A443B */
+    color-scheme: dark;
+    /* FoodBridge Stitch palette — Night Black / Forest / Neon Lemon / White */
+    --fb-night: #090B09;
+    --fb-forest: #0D231A;
+    --fb-forest-2: #143527;
+    --fb-card: #131713;
+    --fb-card-hover: #1C221C;
+    --fb-lemon: #D7EF4A;
+    --fb-lemon-dim: #BCD147;
+    --fb-lemon-soft: #E8F5A4;
+    --fb-white: #F6F7F2;
+    --fb-muted: #B8BDB6;
+    --fb-dim: #858C84;
+    --fb-border: #262E26;
 
-    --fb-text:             242 240 232; /* #F2F0E8 warm ivory */
-    --fb-text-2:           184 184 175; /* #B8B8AF secondary */
-    --fb-text-3:           146 149 141; /* #92958D muted */
-    --fb-muted:            146 149 141;
-    --fb-line:             52 60 53;    /* #343C35 neutral border */
+    /* RGB variants for Tailwind opacity modifiers */
+    --fb-night-rgb: 9 11 9;
+    --fb-forest-rgb: 13 35 26;
+    --fb-forest-2-rgb: 20 53 39;
+    --fb-card-rgb: 19 23 19;
+    --fb-card-hover-rgb: 28 34 28;
+    --fb-lemon-rgb: 215 239 74;
+    --fb-white-rgb: 246 247 242;
+    --fb-muted-rgb: 184 189 182;
+    --fb-dim-rgb: 133 140 132;
+    --fb-border-rgb: 38 46 38;
 
-    --fb-primary:          47 107 74;   /* #2F6B4A forest action */
-    --fb-primary-hover:    58 125 89;   /* #3A7D59 */
-    --fb-primary-container:30 77 54;    /* #1E4D36 deep forest */
-    --fb-on-primary:       242 240 232; /* #F2F0E8 */
-    --fb-on-primary-container: 242 240 232;
-    --fb-primary-fixed:    183 205 175; /* #B7CDAF sage */
-    --fb-primary-fixed-dim:154 178 146; /* #9AB292 */
-    --fb-on-primary-fixed: 16 21 16;
+    /* Semantic tokens for existing component styles */
+    --fb-app: 9 11 9;
+    --fb-app-deep: 7 8 7;
+    --fb-panel: 19 23 19;
+    --fb-elevated: 28 34 28;
+    --fb-surface-container: 24 30 24;
+    --fb-surface-high: 34 42 34;
+    --fb-surface-highest: 44 54 44;
+    --fb-surface-variant: 44 54 44;
 
-    --fb-accent:           183 205 175; /* #B7CDAF text accent */
-    --fb-accent-soft:      217 182 111; /* #D9B66F warm amber */
-    --fb-accent-deep:      30 77 54;    /* #1E4D36 */
+    --fb-text: 246 247 242;
+    --fb-text-2: 184 189 182;
+    --fb-text-3: 133 140 132;
+    --fb-line: 38 46 38;
 
-    --fb-secondary:        169 196 160; /* #A9C4A0 calm sage */
-    --fb-on-secondary:     16 21 16;
-    --fb-secondary-container: 42 59 47; /* #2A3B2F */
-    --fb-on-secondary-container: 221 232 215; /* #DDE8D7 */
-    --fb-secondary-fixed:  183 205 175;
-    --fb-secondary-fixed-dim: 154 178 146;
-    --fb-on-secondary-fixed: 16 21 16;
+    --fb-primary: 215 239 74;
+    --fb-primary-hover: 232 245 164;
+    --fb-primary-container: 20 53 39;
+    --fb-on-primary: 9 11 9;
+    --fb-on-primary-container: 215 239 74;
+    --fb-primary-fixed: 215 239 74;
+    --fb-primary-fixed-dim: 188 209 71;
+    --fb-on-primary-fixed: 25 30 0;
 
-    --fb-tertiary:         217 182 111; /* #D9B66F amber warning */
-    --fb-on-tertiary:      26 20 11;
-    --fb-tertiary-container: 58 46 24;  /* #3A2E18 */
-    --fb-on-tertiary-container: 240 217 174;
-    --fb-tertiary-fixed:   217 182 111;
-    --fb-tertiary-fixed-dim: 201 166 99;
-    --fb-on-tertiary-fixed: 26 20 11;
+    --fb-secondary: 188 209 71;
+    --fb-on-secondary: 25 30 0;
+    --fb-secondary-container: 38 51 0;
+    --fb-on-secondary-container: 216 237 97;
+    --fb-secondary-fixed: 216 237 97;
+    --fb-secondary-fixed-dim: 188 209 71;
 
-    --fb-highlight:        217 182 111;
-    --fb-highlight-soft:   58 46 24;
-    --fb-highlight-deep:   217 182 111;
+    --fb-tertiary: 255 255 255;
+    --fb-on-tertiary: 13 35 26;
+    --fb-tertiary-container: 20 53 39;
+    --fb-on-tertiary-container: 200 232 241;
 
-    --fb-danger:           194 106 94;  /* #C26A5E muted red */
-    --fb-on-danger:        255 245 240;
-    --fb-danger-soft:      58 30 27;    /* #3A1E1B */
-    --fb-on-danger-soft:   245 200 190;
-
-    --fb-leaf:             159 191 154; /* #9FBF9A */
-    --fb-leaf-deep:        30 77 54;
-    --fb-success:          127 175 143; /* #7FAF8F */
+    --fb-danger: 255 84 73;
+    --fb-on-danger: 105 0 5;
+    --fb-danger-soft: 65 0 2;
+    --fb-on-danger-soft: 255 218 214;
   }
 
   * { box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
-    background-color: rgb(var(--fb-app));
-    color: rgb(var(--fb-text));
-    font-family: 'Rubik', system-ui, sans-serif;
+    background-color: var(--fb-night) !important;
+    color: var(--fb-white);
+    font-family: 'DM Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    font-weight: 400;
   }
 
-  h1, h2 {
+  h1, h2, h3, .font-headline {
     font-family: 'Anton', Impact, sans-serif;
-    letter-spacing: -0.01em;
-    color: rgb(var(--fb-text));
-    -webkit-font-smoothing: subpixel-antialiased;
+    letter-spacing: 0.02em;
+    color: var(--fb-white);
   }
-
-  h3 {
-    font-family: 'Rubik', system-ui, sans-serif;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: rgb(var(--fb-text));
-  }
-
-  p { color: inherit; }
 
   ::selection {
-    background-color: rgb(var(--fb-primary));
-    color: rgb(var(--fb-text));
+    background: var(--fb-lemon);
+    color: var(--fb-night);
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--fb-primary-fixed));
+    outline: 2px solid var(--fb-lemon) !important;
     outline-offset: 2px;
   }
 
-  input::placeholder,
-  textarea::placeholder {
-    color: rgb(var(--fb-text-3) / 0.85);
+  input, select, textarea {
+    background-color: #0E120E !important;
+    border-color: var(--fb-border) !important;
+    color: var(--fb-white) !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--fb-dim) !important;
   }
 
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgb(var(--fb-line));
+    background: var(--fb-border);
     border-radius: 999px;
   }
-  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--fb-text-3)); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--fb-dim); }
 
-  .tabular-nums, .font-mono, .metric {
+  .tabular-nums, .font-mono {
     font-variant-numeric: tabular-nums;
   }
 }
 
-/* ─────────────────────────────────────────────
-   COMPONENTS
-   Solid surfaces replace the previous glass layers.
-───────────────────────────────────────────── */
 @layer components {
-  .glass-card {
-    background: rgb(var(--fb-panel));
-    border: 1px solid rgb(var(--fb-line));
+  /* Common Stitch UI Cards */
+  .stitch-card {
+    background-color: var(--fb-card);
+    border: 1px solid var(--fb-border);
     border-radius: 0.75rem;
-    box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.8);
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .stitch-card:hover {
+    background-color: var(--fb-card-hover);
+    border-color: rgba(215, 239, 74, 0.2);
+  }
+
+  .glass-card, .botanical-card {
+    background: var(--fb-card);
+    border: 1px solid var(--fb-border);
+    border-radius: 0.75rem;
   }
 
   .glass-popover {
-    background: rgb(var(--fb-elevated));
-    border: 1px solid rgb(var(--fb-line));
+    background: var(--fb-card);
+    border: 1px solid var(--fb-border);
     border-radius: 0.75rem;
-    box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 18px 42px -10px rgba(0, 0, 0, 0.85);
   }
 
   .glass-modal {
-    background: rgb(var(--fb-panel));
-    border: 1px solid rgb(var(--fb-line));
+    background: #0E120E;
+    border: 1px solid var(--fb-border);
     border-radius: 0.875rem;
-    box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.95);
   }
 
-  .botanical-card {
-    background: rgb(var(--fb-panel));
-    border: 1px solid rgb(var(--fb-line));
-    border-radius: 0.75rem;
-    box-shadow: 0 12px 32px -26px rgba(0, 0, 0, 0.8);
-  }
-
+  /* Primary Stitch Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
-    background: rgb(var(--fb-primary));
-    color: rgb(var(--fb-on-primary));
-    border: 1px solid transparent;
-    border-radius: 0.5rem;
-    padding: 0.625rem 1.1rem;
-    font-size: 0.875rem;
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+    background: var(--fb-lemon);
+    color: #090B09;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.8125rem;
   }
-  .btn-primary:hover { background: rgb(var(--fb-primary-hover)); }
+  .btn-primary:hover {
+    background: var(--fb-lemon-soft);
+    box-shadow: 0 0 20px rgba(215, 239, 74, 0.3);
+  }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98];
-    background: rgb(var(--fb-elevated));
-    border: 1px solid rgb(var(--fb-line));
-    color: rgb(var(--fb-text));
-    border-radius: 0.5rem;
-    padding: 0.625rem 1.1rem;
-    font-size: 0.875rem;
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98];
+    background: #1C221C;
+    border: 1px solid var(--fb-border);
+    color: var(--fb-white);
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.8125rem;
   }
   .btn-secondary:hover {
-    background: rgb(var(--fb-surface-high));
-    border-color: rgb(var(--fb-primary-fixed) / 0.45);
+    background: #252B25;
+    border-color: rgba(215, 239, 74, 0.3);
   }
 
   .btn-urgent {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98];
-    background: rgb(var(--fb-tertiary));
-    color: rgb(var(--fb-on-tertiary));
-    border-radius: 0.5rem;
-    padding: 0.625rem 1.1rem;
-    font-size: 0.875rem;
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98];
+    background: #410002;
+    border: 1px solid #FF5449;
+    color: #FFDAD6;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.8125rem;
   }
-  .btn-urgent:hover { filter: brightness(1.04); }
+  .btn-urgent:hover {
+    background: #690005;
+    box-shadow: 0 0 20px rgba(255, 84, 73, 0.35);
+  }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 font-medium transition-colors;
-    color: rgb(var(--fb-text-2));
-    border-radius: 0.5rem;
-    padding: 0.5rem 0.9rem;
-    font-size: 0.875rem;
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-colors;
+    color: var(--fb-muted);
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
   }
   .btn-ghost:hover {
-    color: rgb(var(--fb-text));
-    background: rgb(var(--fb-elevated));
+    color: var(--fb-white);
+    background: #1C221C;
   }
 
   .input-field {
     @apply w-full outline-none transition-all;
-    background: rgb(var(--fb-elevated));
-    border: 1px solid rgb(var(--fb-line));
+    background: #0E120E !important;
+    border: 1px solid var(--fb-border) !important;
     border-radius: 0.5rem;
-    color: rgb(var(--fb-text));
+    color: var(--fb-white) !important;
     height: 44px;
     padding: 0 0.875rem;
-    font-size: 1rem;
+    font-size: 0.9375rem;
   }
   .input-field:focus {
-    border-color: rgb(var(--fb-primary-fixed) / 0.7);
-    box-shadow: 0 0 0 3px rgb(var(--fb-primary-fixed) / 0.14);
+    border-color: var(--fb-lemon) !important;
+    box-shadow: 0 0 0 2px rgba(215, 239, 74, 0.2);
   }
 
   .input-label {
-    @apply block font-semibold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
-    font-size: 0.75rem;
-    line-height: 16px;
-    letter-spacing: 0.04em;
-    color: rgb(var(--fb-text-2));
+    @apply block font-bold uppercase tracking-wider;
+    font-size: 0.6875rem;
+    color: var(--fb-muted);
   }
 
   /* Expiry chips */
   .chip-fresh {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    @apply inline-flex items-center gap-1 px-2.5 py-1 font-bold uppercase tracking-wider;
     font-size: 10px;
-    letter-spacing: 0.06em;
-    background: rgb(var(--fb-secondary) / 0.12);
-    color: rgb(var(--fb-secondary));
-    border: 1px solid rgb(var(--fb-secondary) / 0.3);
-    border-radius: 0.375rem;
+    background: rgba(188, 209, 71, 0.15);
+    color: var(--fb-lemon);
+    border: 1px solid rgba(188, 209, 71, 0.3);
+    border-radius: 0.25rem;
   }
   .chip-expiring {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    @apply inline-flex items-center gap-1 px-2.5 py-1 font-bold uppercase tracking-wider;
     font-size: 10px;
-    letter-spacing: 0.06em;
-    background: rgb(var(--fb-tertiary) / 0.14);
-    color: rgb(var(--fb-tertiary));
-    border: 1px solid rgb(var(--fb-tertiary) / 0.32);
-    border-radius: 0.375rem;
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 0.25rem;
   }
   .chip-critical {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    @apply inline-flex items-center gap-1 px-2.5 py-1 font-bold uppercase tracking-wider animate-pulse;
     font-size: 10px;
-    letter-spacing: 0.06em;
-    background: rgb(var(--fb-danger) / 0.14);
-    color: rgb(var(--fb-on-danger-soft));
-    border: 1px solid rgb(var(--fb-danger) / 0.34);
-    border-radius: 0.375rem;
-  }
-
-  .custom-list { @apply space-y-3; }
-  .custom-list li {
-    @apply flex items-start gap-3;
-    color: rgb(var(--fb-text-2));
-  }
-  .custom-list li::before {
-    content: '';
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    min-width: 7px;
-    margin-top: 6px;
-    background-color: rgb(var(--fb-primary-fixed));
-    border-radius: 2px;
-    transform: rotate(45deg);
-  }
-}
-
-/* ─────────────────────────────────────────────
-   UTILITIES
-───────────────────────────────────────────── */
-@layer utilities {
-  .font-headline-sm        { font-family: 'Anton', Impact, sans-serif; }
-  .font-headline-md        { font-family: 'Anton', Impact, sans-serif; }
-  .font-headline-lg        { font-family: 'Anton', Impact, sans-serif; }
-  .font-headline-lg-mobile { font-family: 'Anton', Impact, sans-serif; }
-  .font-display-hero       { font-family: 'Anton', Impact, sans-serif; }
-  .font-display-hero-mobile{ font-family: 'Anton', Impact, sans-serif; }
-  .font-title-md  { font-family: 'Rubik', system-ui, sans-serif; font-weight: 600; }
-  .font-title-lg  { font-family: 'Rubik', system-ui, sans-serif; font-weight: 600; }
-  .font-body-lg   { font-family: 'Rubik', system-ui, sans-serif; }
-  .font-body-md   { font-family: 'Rubik', system-ui, sans-serif; }
-  .font-body-sm   { font-family: 'Rubik', system-ui, sans-serif; }
-  .font-label-md  { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 600; }
-  .font-label-sm  { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 700; }
-
-  .text-display-hero        { font-size: 56px; line-height: 64px; letter-spacing: -0.02em; }
-  .text-display-hero-mobile { font-size: 38px; line-height: 44px; letter-spacing: -0.015em; }
-  .text-headline-lg         { font-size: 36px; line-height: 44px; letter-spacing: -0.015em; }
-  .text-headline-lg-mobile  { font-size: 28px; line-height: 34px; letter-spacing: -0.01em; }
-  .text-headline-md         { font-size: 26px; line-height: 32px; letter-spacing: -0.01em; }
-  .text-headline-sm         { font-size: 20px; line-height: 26px; }
-  .text-title-lg            { font-size: 18px; line-height: 24px; letter-spacing: -0.01em; }
-  .text-title-md            { font-size: 16px; line-height: 22px; }
-  .text-body-lg             { font-size: 16px; line-height: 26px; }
-  .text-body-md             { font-size: 14px; line-height: 22px; }
-  .text-body-sm             { font-size: 12px; line-height: 18px; letter-spacing: 0.01em; }
-  .text-label-md            { font-size: 12px; line-height: 16px; letter-spacing: 0.04em; }
-  .text-label-sm            { font-size: 10px; line-height: 14px; letter-spacing: 0.06em; }
-
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-  .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-fixed focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
-  }
-
-  .photo-natural {
-    filter: none;
-    mix-blend-mode: normal;
-  }
-
-  .image-scrim {
-    background: linear-gradient(
-      to top,
-      rgb(8 10 9 / 0.92) 0%,
-      rgb(8 10 9 / 0.48) 42%,
-      rgb(8 10 9 / 0) 72%
-    );
-  }
-}
-
-/* ─────────────────────────────────────────────
-   REDUCED MOTION
-───────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    background: #410002;
+    color: #FF5449;
+    border: 1px solid #FF5449;
+    border-radius: 0.25rem;
   }
 }

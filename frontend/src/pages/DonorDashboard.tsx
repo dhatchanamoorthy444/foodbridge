@@ -1,18 +1,41 @@
 import { useState, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
-import {
-  Package, Plus, Clock, Truck, ClipboardList, AlertTriangle, Pencil, Trash2, X, Images,
-} from 'lucide-react'
 import toast from 'react-hot-toast'
 import useAppStore from '../store/useAppStore'
 import { donationsService, dashboardService } from '../services/api'
 import { useMyDonationsLive } from '../hooks/useAppData'
-import { EmptyState, ErrorState, SkeletonList, ExpiryBadge } from '../components/ui/Feedback'
-import { storagePublicUrl } from '../lib/supabase'
-import { CATEGORY_LABELS, UNIT_LABELS, Donation } from '../types/api'
-import { cn } from '../lib/utils'
+import { formatRelativeTime } from '../lib/utils'
+import { Donation } from '../types/api'
+
+export function StatusChip({ status }: { status: string }) {
+  if (status === 'available') {
+    return (
+      <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#263300] text-[#D7EF4A] border border-[#BCD147]/30">
+        Available
+      </span>
+    )
+  }
+  if (status === 'partially_fulfilled') {
+    return (
+      <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#1C221C] text-[#BCD147] border border-[#262E26]">
+        Partially Allocated
+      </span>
+    )
+  }
+  if (status === 'completed') {
+    return (
+      <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#131713] text-[#858C84] border border-[#262E26]">
+        Dispatched
+      </span>
+    )
+  }
+  return (
+    <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#410002] text-[#FF5449] border border-[#FF5449]/40">
+      Cancelled
+    </span>
+  )
+}
 
 export default function DonorDashboard() {
   const user = useAppStore((s) => s.user)
@@ -36,176 +59,375 @@ export default function DonorDashboard() {
   const cancelMutation = async (donation: Donation) => {
     try {
       await donationsService.cancel(donation.id)
-      toast.success('Donation cancelled')
+      toast.success('Batch cancelled successfully')
       setConfirmCancel(null)
       invalidate()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Cancel failed')
+      toast.error(err instanceof Error ? err.message : 'Cancellation failed')
     }
   }
 
   const stats = statsQuery.data
   const donations = useMemo(() => donationsQuery.data?.data ?? [], [donationsQuery.data])
 
+  // Split donations into critical expiry vs active
+  const criticalBatches = useMemo(() => {
+    return donations.filter((d) => {
+      if (d.status === 'cancelled' || d.status === 'completed') return false
+      if (!d.expires_at) return false
+      const expiry = new Date(d.expires_at).getTime()
+      const now = Date.now()
+      const diffHours = (expiry - now) / (1000 * 60 * 60)
+      return diffHours <= 6
+    })
+  }, [donations])
+
+  const facilityName =
+    user?.organization?.trim() || user?.full_name || 'CENTRAL RESILIENCE COMMISSARY'
+
   return (
-    <div className="max-w-4xl mx-auto flex flex-col gap-5 pb-10">
-      {/* Header */}
-      <div className="flex items-center justify-between gap-3">
-        <div>
-          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Donor Dashboard</h1>
-          <p className="text-[13px] text-text-2">
-            {user?.organization?.trim() || user?.full_name || user?.email}'s actual inventory
-          </p>
-        </div>
-        <button onClick={() => navigate('/donor/new')} className="btn-primary rounded-xl px-4 py-2.5 text-[13px] flex items-center gap-1.5">
-          <Plus className="h-4 w-4" /> New Donation
-        </button>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Active donations" value={stats?.myDonations ?? 0} icon={<Package className="h-4 w-4" />} loading={statsQuery.isLoading} />
-        <StatCard label="Available qty" value={stats?.availableQuantity ?? 0} icon={<ClipboardList className="h-4 w-4" />} loading={statsQuery.isLoading} subtle="Current unclaimed stock" />
-        <StatCard label="Pending requests" value={stats?.pendingRequests ?? 0} icon={<Clock className="h-4 w-4" />} loading={statsQuery.isLoading} tone={stats && stats.pendingRequests > 0 ? 'warn' : 'default'} />
-        <StatCard label="Upcoming pickups" value={stats?.upcomingPickups ?? 0} icon={<Truck className="h-4 w-4" />} loading={statsQuery.isLoading} />
-      </div>
-
-      {/* Emergency alerts needing help */}
-      {stats && stats.openEmergencyAlerts > 0 && (
-        <Link to="/alerts" className="flex items-center gap-3 rounded-xl border border-line bg-tertiary-container/40 p-3.5 hover:bg-tertiary-container/60 transition-colors">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-tertiary-container text-tertiary">
-            <AlertTriangle className="h-4 w-4" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-semibold text-text">{stats.openEmergencyAlerts} emergency alert{stats.openEmergencyAlerts === 1 ? '' : 's'} need support</p>
-            <p className="text-[12px] text-text-2">Recipients nearby have urgent food requirements</p>
+    <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
+      {/* ── Operational Hub Breadcrumb / Header Strip ── */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-[#D7EF4A] text-[#090B09] font-mono text-[10px] uppercase font-bold tracking-wider">
+              LIVE NODE
+            </span>
+            <span className="font-mono text-xs text-[#858C84] uppercase tracking-wider">
+              DONOR PORTAL // FACILITY ID: DN-{user?.id ? user.id.slice(0, 6).toUpperCase() : '8041'}
+            </span>
           </div>
-          <span className="text-[12px] font-semibold text-tertiary">View</span>
-        </Link>
-      )}
-
-      {/* Donation list */}
-      <section>
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-[13px] font-bold uppercase tracking-widest text-text-2">My donations</h2>
-          {stats && stats.completedDonations > 0 && (
-            <span className="text-[11px] text-text-3">{stats.completedDonations} fully allocated</span>
-          )}
+          <h1 className="font-['Anton'] text-2xl md:text-3xl text-white uppercase tracking-wide mt-1.5">
+            {facilityName}
+          </h1>
         </div>
 
-        {donationsQuery.isLoading ? (
-          <SkeletonList count={3} />
-        ) : donationsQuery.isError ? (
-          <ErrorState message="Could not load your donations" onRetry={() => donationsQuery.refetch()} />
-        ) : donations.length === 0 ? (
-          <EmptyState
-            icon={<Images className="h-6 w-6" />}
-            title="Your donation history will appear here"
-            message="No donations published yet. Share your first surplus batch and eligible recipients will see it instantly."
-            action={
-              <button onClick={() => navigate('/donor/new')} className="btn-primary rounded-lg px-4 py-2 text-[13px]">
-                Create first donation
-              </button>
-            }
-          />
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#131713] border border-[#262E26]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#D7EF4A] animate-pulse" />
+            <span className="font-mono text-[11px] text-[#F6F7F2] uppercase tracking-wider font-bold">
+              STATUS: ACTIVE DISPATCH MODE
+            </span>
+          </div>
+          <div className="px-3 py-1.5 rounded-lg bg-[#1C221C] border border-[#262E26] font-mono text-[11px] text-[#BCD147] uppercase font-bold">
+            SYNC: LIVE
+          </div>
+        </div>
+      </div>
+
+      {/* ── Primary Operations Bar ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 rounded-xl bg-[#131713] border border-[#262E26] shadow-xl">
+        <div className="lg:col-span-6 flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={() => navigate('/donor/new')}
+            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#D7EF4A] text-[#090B09] font-mono text-xs uppercase tracking-wider font-extrabold hover:bg-[#E8F5A4] transition-all cursor-pointer shadow-lg active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[18px]">add_circle</span>
+            LOG SURPLUS BATCH (+)
+          </button>
+          <button
+            onClick={() => navigate('/alerts')}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#410002] border border-[#FF5449]/40 text-[#FFDAD6] font-mono text-xs uppercase tracking-wider font-bold hover:bg-[#690005] transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">crisis_alert</span>
+            EMERGENCY RADAR ({stats?.openEmergencyAlerts ?? 0})
+          </button>
+          <button
+            onClick={() => navigate('/pickups')}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#1C221C] border border-[#262E26] text-white font-mono text-xs uppercase tracking-wider hover:bg-[#252B25] transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">local_shipping</span>
+            TRANSITS
+          </button>
+        </div>
+
+        <div className="lg:col-span-6 flex items-center justify-end gap-6 text-right">
+          <div className="flex flex-col">
+            <span className="font-mono text-[10px] text-[#858C84] uppercase">Live Batches</span>
+            <span className="font-['Anton'] text-xl text-[#D7EF4A]">{stats?.myDonations ?? 0} ACTIVE</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-mono text-[10px] text-[#858C84] uppercase">Unclaimed Qty</span>
+            <span className="font-['Anton'] text-xl text-white">{stats?.availableQuantity ?? 0} UNITS</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-mono text-[10px] text-[#858C84] uppercase">Pending Requests</span>
+            <span className="font-['Anton'] text-xl text-[#BCD147]">{stats?.pendingRequests ?? 0} QUEUED</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Operational KPI Metric Array ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div className="p-4 rounded-xl bg-[#131713] border border-[#262E26] flex flex-col justify-between shadow-md hover:bg-[#1C221C] transition-all">
+          <div className="flex items-center justify-between text-[#858C84]">
+            <span className="font-mono text-[11px] uppercase tracking-wider font-bold">Active Inventory</span>
+            <span className="material-symbols-outlined text-[20px] text-[#D7EF4A]">inventory_2</span>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="font-['Anton'] text-3xl text-white">{stats?.myDonations ?? 0}</span>
+            <span className="font-mono text-[10px] text-[#D7EF4A] font-bold">BATCHES</span>
+          </div>
+          <span className="text-xs text-[#858C84] mt-1">Ready for regional matching</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#131713] border border-[#262E26] flex flex-col justify-between shadow-md hover:bg-[#1C221C] transition-all">
+          <div className="flex items-center justify-between text-[#858C84]">
+            <span className="font-mono text-[11px] uppercase tracking-wider font-bold">Available Portions</span>
+            <span className="material-symbols-outlined text-[20px] text-[#D7EF4A]">restaurant</span>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="font-['Anton'] text-3xl text-[#BCD147]">{stats?.availableQuantity ?? 0}</span>
+            <span className="font-mono text-[10px] text-[#858C84] font-bold">SERVINGS</span>
+          </div>
+          <span className="text-xs text-[#858C84] mt-1">Surplus meal stock unallocated</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#131713] border border-[#262E26] flex flex-col justify-between shadow-md hover:bg-[#1C221C] transition-all">
+          <div className="flex items-center justify-between text-[#858C84]">
+            <span className="font-mono text-[11px] uppercase tracking-wider font-bold">Upcoming Pickups</span>
+            <span className="material-symbols-outlined text-[20px] text-[#D7EF4A]">local_shipping</span>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="font-['Anton'] text-3xl text-white">{stats?.upcomingPickups ?? 0}</span>
+            <span className="font-mono text-[10px] text-[#D7EF4A] font-bold">DISPATCHES</span>
+          </div>
+          <span className="text-xs text-[#858C84] mt-1">Shelters / drivers in transit</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#131713] border border-[#262E26] flex flex-col justify-between shadow-md hover:bg-[#1C221C] transition-all">
+          <div className="flex items-center justify-between text-[#858C84]">
+            <span className="font-mono text-[11px] uppercase tracking-wider font-bold">Emergency Requisitions</span>
+            <span className="material-symbols-outlined text-[20px] text-[#FF5449]">crisis_alert</span>
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="font-['Anton'] text-3xl text-white">{stats?.openEmergencyAlerts ?? 0}</span>
+            <span className="font-mono text-[10px] text-[#FF5449] font-bold">CRITICAL</span>
+          </div>
+          <span className="text-xs text-[#858C84] mt-1">Local shelter distress alerts</span>
+        </div>
+      </div>
+
+      {/* ── Expiry Critical Monitoring Radar ── */}
+      <div className="flex flex-col space-y-3 pt-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#D7EF4A] text-[22px]">radar</span>
+            <h2 className="font-['Anton'] text-xl text-white uppercase tracking-wide">
+              EXPIRY CRITICAL MONITORING RADAR
+            </h2>
+          </div>
+          <span className="font-mono text-[11px] text-[#858C84] uppercase">
+            MONITORED BATCHES: {String(criticalBatches.length).padStart(2, '0')}
+          </span>
+        </div>
+
+        {criticalBatches.length === 0 ? (
+          <div className="p-6 rounded-xl bg-[#131713] border border-[#262E26] text-center">
+            <span className="material-symbols-outlined text-3xl text-[#BCD147] mb-2">verified_user</span>
+            <p className="text-sm font-bold text-white uppercase font-mono">Radar Status Clear</p>
+            <p className="text-xs text-[#858C84] mt-1">No monitored batches currently in critical expiry danger.</p>
+          </div>
         ) : (
-          <div className="flex flex-col gap-3">
-            {donations.map((d, i) => (
-              <DonationRow key={d.id} donation={d} index={i} onEdit={() => navigate(`/donor/${d.id}/edit`)} onDelete={() => setConfirmCancel(d)} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {criticalBatches.slice(0, 3).map((batch) => {
+              const expiryMs = batch.expires_at ? new Date(batch.expires_at).getTime() : Date.now() + 3600000
+              const diffHours = Math.max(0, (expiryMs - Date.now()) / (1000 * 60 * 60))
+              const hours = Math.floor(diffHours)
+              const mins = Math.floor((diffHours - hours) * 60)
+              const urgency = diffHours <= 2 ? 'CRITICAL RESCUE' : diffHours <= 4 ? 'HIGH' : 'MEDIUM'
+              const percentage = Math.min(100, Math.max(10, Math.round((diffHours / 12) * 100)))
+
+              return (
+                <div
+                  key={batch.id}
+                  className="relative p-5 rounded-xl bg-[#131713] border border-[#262E26] flex flex-col justify-between shadow-lg overflow-hidden group hover:bg-[#1C221C] transition-all"
+                >
+                  {diffHours <= 2 && (
+                    <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#FF5449]/10 rounded-full blur-xl pointer-events-none" />
+                  )}
+                  <div className="flex items-start justify-between">
+                    <div className="flex flex-col">
+                      <span className="font-mono text-[10px] text-[#D7EF4A] font-bold uppercase tracking-wider">
+                        BATCH #{batch.id.slice(0, 7).toUpperCase()}
+                      </span>
+                      <h3 className="font-['Anton'] text-lg text-white uppercase mt-1">
+                        {batch.food_name}
+                      </h3>
+                      <span className="text-xs text-[#858C84] mt-0.5">
+                        {batch.quantity} {batch.unit} • {batch.food_category?.toUpperCase() || 'COOKED MEALS'}
+                      </span>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold tracking-wider ${
+                        diffHours <= 2
+                          ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse'
+                          : 'bg-[#263300] text-[#D7EF4A]'
+                      }`}
+                    >
+                      {urgency}
+                    </span>
+                  </div>
+
+                  <div className="my-5 flex items-center gap-4">
+                    {/* SVG Radial countdown */}
+                    <div className="relative w-16 h-16 flex-shrink-0">
+                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                        <path
+                          className="text-[#252B25] stroke-current"
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          strokeWidth="3"
+                        />
+                        <path
+                          className={`${diffHours <= 2 ? 'text-[#FF5449]' : 'text-[#D7EF4A]'} stroke-current`}
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          strokeDasharray={`${percentage}, 100`}
+                          strokeLinecap="round"
+                          strokeWidth="3"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="font-mono text-[11px] text-white font-bold leading-none">
+                          {hours}h {mins}m
+                        </span>
+                        <span className="font-mono text-[7px] text-[#858C84] uppercase mt-0.5">
+                          REMAINING
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col space-y-1 min-w-0">
+                      <span className="font-mono text-[10px] text-[#D7EF4A] font-bold uppercase truncate">
+                        STORAGE: {batch.storage_requirement?.toUpperCase() || 'HOT-HOLDING'}
+                      </span>
+                      <span className="text-xs text-[#858C84] line-clamp-2">
+                        {batch.description || 'Verified food batch prepared under hygienic safety standard.'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-[#262E26]">
+                    <span className="font-mono text-[10px] text-[#858C84] uppercase font-bold">
+                      {batch.status.toUpperCase()}
+                    </span>
+                    <button
+                      onClick={() => navigate(`/donor/${batch.id}/edit`)}
+                      className="px-3 py-1 rounded bg-[#1C221C] text-white font-mono text-[10px] uppercase font-bold hover:bg-[#D7EF4A] hover:text-[#090B09] transition-colors"
+                    >
+                      MANAGE BATCH →
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* ── Complete Live Inventory Ledger ── */}
+      <div className="rounded-xl bg-[#131713] border border-[#262E26] p-5 shadow-md flex flex-col space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#262E26]">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#D7EF4A] text-[20px]">list_alt</span>
+            <h3 className="font-['Anton'] text-lg text-white uppercase tracking-wide">
+              FACILITY SURPLUS INVENTORY LOG ({donations.length})
+            </h3>
+          </div>
+          <button
+            onClick={() => navigate('/donor/new')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all"
+          >
+            <span className="material-symbols-outlined text-[16px]">add</span>
+            Add Entry
+          </button>
+        </div>
+
+        {donations.length === 0 ? (
+          <div className="py-12 text-center text-sm text-[#858C84] font-mono">
+            No surplus inventory posted yet. Click "LOG SURPLUS BATCH" to publish your first entry.
+          </div>
+        ) : (
+          <div className="divide-y divide-[#262E26]">
+            {donations.map((d) => (
+              <div
+                key={d.id}
+                className="py-3.5 flex flex-wrap items-center justify-between gap-4 hover:bg-[#1C221C]/40 px-2 rounded-lg transition-colors"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#143527] border border-[#262E26] flex items-center justify-center flex-shrink-0 text-[#D7EF4A]">
+                    <span className="material-symbols-outlined text-[20px]">restaurant</span>
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-white text-sm truncate">{d.food_name}</span>
+                      <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-[#1C221C] text-[#D7EF4A] border border-[#262E26] uppercase">
+                        {d.food_category}
+                      </span>
+                    </div>
+                    <span className="font-mono text-xs text-[#858C84] mt-0.5">
+                      {d.quantity} {d.unit} • Expires: {d.expires_at ? new Date(d.expires_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'} ({d.expires_at ? formatRelativeTime(d.expires_at) : ''})
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <StatusChip status={d.status} />
+
+                  <button
+                    onClick={() => navigate(`/donor/${d.id}/edit`)}
+                    className="p-1.5 text-[#858C84] hover:text-white transition-colors"
+                    title="Edit batch"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">edit</span>
+                  </button>
+
+                  {d.status === 'available' && (
+                    <button
+                      onClick={() => setConfirmCancel(d)}
+                      className="p-1.5 text-[#858C84] hover:text-[#FF5449] transition-colors"
+                      title="Cancel batch"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         )}
-      </section>
+      </div>
 
-      {/* Cancel confirm */}
+      {/* Cancellation confirmation modal */}
       {confirmCancel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-app-deep/70" onClick={(e) => e.target === e.currentTarget && setConfirmCancel(null)}>
-          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-full max-w-sm rounded-2xl bg-panel border border-line p-5">
-            <div className="flex items-start justify-between">
-              <h3 className="font-semibold text-text">Cancel this donation?</h3>
-              <button onClick={() => setConfirmCancel(null)} className="text-text-3 hover:text-text" aria-label="Close"><X className="h-4 w-4" /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4">
+          <div className="w-full max-w-md rounded-2xl bg-[#131713] border border-[#FF5449]/40 p-6 space-y-4">
+            <div className="flex items-center gap-2 text-[#FF5449]">
+              <span className="material-symbols-outlined text-2xl">warning</span>
+              <h3 className="font-['Anton'] text-lg uppercase">Withdraw Surplus Batch?</h3>
             </div>
-            <p className="mt-2 text-[13px] text-text-2">"{confirmCancel.food_name}" ({confirmCancel.available_quantity} {confirmCancel.unit} unclaimed) will be removed from browse lists and pending requests will be declined.</p>
-            <div className="mt-4 flex gap-2">
-              <button className="btn-secondary flex-1 rounded-lg py-2.5 text-[13px]" onClick={() => setConfirmCancel(null)}>Keep it</button>
-              <button className="flex-1 rounded-lg bg-danger text-white py-2.5 text-[13px] font-semibold hover:opacity-90" onClick={() => cancelMutation(confirmCancel)}>Cancel donation</button>
+            <p className="text-xs text-[#B8BDB6]">
+              Are you sure you want to cancel the batch <strong className="text-white">"{confirmCancel.food_name}"</strong>? Any active notifications sent to shelters will be marked as cancelled.
+            </p>
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                onClick={() => setConfirmCancel(null)}
+                className="px-4 py-2 rounded-lg bg-[#1C221C] text-white font-mono text-xs uppercase font-bold"
+              >
+                Nevermind
+              </button>
+              <button
+                onClick={() => cancelMutation(confirmCancel)}
+                className="px-4 py-2 rounded-lg bg-[#410002] border border-[#FF5449] text-[#FFDAD6] font-mono text-xs uppercase font-bold hover:bg-[#690005]"
+              >
+                Confirm Cancel
+              </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
     </div>
   )
-}
-
-function StatCard({ label, value, icon, loading, tone = 'default', subtle }: {
-  label: string
-  value: number
-  icon: React.ReactNode
-  loading?: boolean
-  tone?: 'default' | 'warn'
-  subtle?: string
-}) {
-  return (
-    <div className="rounded-xl border border-line bg-panel p-4">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-text-3">{label}</span>
-        <span className={cn('flex h-6 w-6 items-center justify-center rounded-md', tone === 'warn' ? 'bg-tertiary-container text-tertiary' : 'bg-elevated text-text-2')}>{icon}</span>
-      </div>
-      {loading ? (
-        <div className="mt-2 h-7 w-14 animate-pulse rounded bg-elevated" />
-      ) : (
-        <p className="mt-1 font-['Anton'] text-[24px] tracking-tight text-text tabular-nums">{value}</p>
-      )}
-      {subtle && <p className="text-[10px] text-text-3">{subtle}</p>}
-    </div>
-  )
-}
-
-function DonationRow({ donation: d, onEdit, onDelete }: { donation: Donation; index: number; onEdit: () => void; onDelete: () => void }) {
-  const imageUrl = storagePublicUrl(d.image_path)
-  const claimed = d.quantity - d.available_quantity
-  return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-line bg-panel p-4">
-      <div className="flex gap-3">
-        <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl bg-elevated">
-          {imageUrl ? <img src={imageUrl} alt={d.food_name} className="h-full w-full object-cover" loading="lazy" /> : <span className="flex h-full w-full items-center justify-center"><Package className="h-5 w-5 text-text-3" /></span>}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0">
-              <p className="truncate text-[14px] font-semibold text-text">{d.food_name}</p>
-              <p className="mt-0.5 text-[12px] text-text-2">
-                {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} {claimed > 0 && `· ${claimed} claimed`}
-              </p>
-            </div>
-            <div className="flex flex-shrink-0 gap-1">
-              <button onClick={onEdit} className="rounded-lg p-2 text-text-3 hover:bg-elevated hover:text-text transition-colors" aria-label="Edit donation"><Pencil className="h-3.5 w-3.5" /></button>
-              <button onClick={onDelete} className="rounded-lg p-2 text-text-3 hover:bg-danger-soft hover:text-danger transition-colors" aria-label="Cancel donation"><Trash2 className="h-3.5 w-3.5" /></button>
-            </div>
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-            <StatusChip status={d.status} />
-            <ExpiryBadge expiresAt={d.expires_at} />
-            <span className="text-[11px] text-text-3">{d.city}</span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-export function StatusChip({ status }: { status: Donation['status'] }) {
-  const cfg: Record<string, string> = {
-    available: 'bg-primary-container text-on-primary-container',
-    partially_fulfilled: 'bg-tertiary-container text-tertiary',
-    completed: 'bg-elevated text-text-2',
-    cancelled: 'bg-danger-soft text-danger',
-  }
-  const label: Record<string, string> = {
-    available: 'Available',
-    partially_fulfilled: 'Partially claimed',
-    completed: 'Fully allocated',
-    cancelled: 'Cancelled',
-  }
-  return <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider', cfg[status])}>{label[status]}</span>
 }

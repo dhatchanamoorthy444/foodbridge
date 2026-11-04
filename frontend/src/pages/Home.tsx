@@ -1,16 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import {
-  Package, Plus, Search, Truck, AlarmClock, ClipboardList, ArrowRight, Leaf,
-} from 'lucide-react'
 import useAppStore from '../store/useAppStore'
 import { dashboardService, donationsService } from '../services/api'
-import { SkeletonList, EmptyState } from '../components/ui/Feedback'
-import { storagePublicUrl } from '../lib/supabase'
-import { CATEGORY_LABELS, UNIT_LABELS, Donation, DonorStats, RecipientStats } from '../types/api'
+import { formatRelativeTime } from '../lib/utils'
+import { Donation, DonorStats, RecipientStats } from '../types/api'
 
 export default function Home() {
   const user = useAppStore((s) => s.user)
+  const navigate = useNavigate()
   const isDonor = user?.role === 'donor'
 
   const donorStats = useQuery<DonorStats, Error>({
@@ -34,103 +31,186 @@ export default function Home() {
     enabled: !!user,
   })
 
+  const batches = recent.data?.data ?? []
+
   return (
-    <div className="max-w-4xl mx-auto pb-10">
-      {/* Greeting */}
-      <div className="rounded-2xl border border-line bg-panel p-5">
-        <p className="font-label-sm text-[10px] uppercase tracking-[0.2em] text-primary-fixed">FoodBridge workspace</p>
-        <h1 className="mt-2 font-['Anton'] text-2xl tracking-tight text-text md:text-3xl">
-          Neighbourhood rescue, one real batch at a time
-        </h1>
-        <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-text-2">
-          No estimated figures on this page — every number below is measured from your live FoodBridge
-          account. Recipients broadcasting alerts are real, donor listings are freshly time-stamped, and
-          nothing here is mocked.
-        </p>
+    <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
+      {/* ── Operational Station Banner ── */}
+      <div className="relative rounded-2xl bg-[#131713] border border-[#262E26] p-6 shadow-xl overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#143527]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-col max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-[#D7EF4A] text-[#090B09] font-mono text-[10px] uppercase font-bold tracking-wider">
+                LIVE TELEMETRY
+              </span>
+              <span className="font-mono text-xs text-[#858C84] uppercase tracking-wider">
+                NODE // {isDonor ? 'PURVEYOR TERMINAL' : 'RECEIVING STATION'}
+              </span>
+            </div>
+            <h1 className="font-['Anton'] text-3xl md:text-4xl text-white uppercase tracking-wide mt-2">
+              {user?.organization || user?.full_name || 'FoodBridge Station Ops'}
+            </h1>
+            <p className="text-sm text-[#B8BDB6] mt-1.5 leading-relaxed">
+              Real-time food redistribution network active. Expiry tracking, verified logistics, and zero-waste telemetry connected.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            {isDonor ? (
+              <button
+                onClick={() => navigate('/donor/new')}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#D7EF4A] text-[#090B09] font-mono text-xs uppercase tracking-wider font-extrabold hover:bg-[#E8F5A4] transition-all shadow-lg active:scale-95"
+              >
+                <span className="material-symbols-outlined text-[18px]">add_circle</span>
+                LOG SURPLUS BATCH (+)
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/browse')}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#D7EF4A] text-[#090B09] font-mono text-xs uppercase tracking-wider font-extrabold hover:bg-[#E8F5A4] transition-all shadow-lg active:scale-95"
+              >
+                <span className="material-symbols-outlined text-[18px]">storefront</span>
+                BROWSE MARKETPLACE →
+              </button>
+            )}
+            <button
+              onClick={() => navigate('/alerts')}
+              className="flex items-center gap-2 px-4 py-3 rounded-xl bg-[#410002] border border-[#FF5449]/40 text-[#FFDAD6] font-mono text-xs uppercase tracking-wider font-bold hover:bg-[#690005] transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">crisis_alert</span>
+              RADAR ALERTS
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Quick actions */}
-      <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+      {/* ── Key Operational Telemetry Grid ── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {isDonor ? (
           <>
-            <QuickAction to="/donor/new" icon={<Plus className="h-4 w-4" />} label="New donation" />
-            <QuickAction to="/donor" icon={<Package className="h-4 w-4" />} label="My donations" />
-            <QuickAction to="/alerts" icon={<AlarmClock className="h-4 w-4" />} label="Emergency alerts" />
-            <QuickAction to="/pickups" icon={<Truck className="h-4 w-4" />} label="Pickups" />
+            <MetricTile
+              label="Active Surplus Batches"
+              value={donorStats.data?.myDonations ?? 0}
+              unit="BATCHES"
+              icon="inventory_2"
+              loading={statsLoading}
+              accent
+            />
+            <MetricTile
+              label="Available Inventory"
+              value={donorStats.data?.availableQuantity ?? 0}
+              unit="UNITS"
+              icon="restaurant"
+              loading={statsLoading}
+            />
+            <MetricTile
+              label="Queued Requests"
+              value={donorStats.data?.pendingRequests ?? 0}
+              unit="SHELTERS"
+              icon="pending_actions"
+              loading={statsLoading}
+            />
+            <MetricTile
+              label="Active Fleet Transits"
+              value={donorStats.data?.upcomingPickups ?? 0}
+              unit="DISPATCH"
+              icon="local_shipping"
+              loading={statsLoading}
+            />
           </>
         ) : (
           <>
-            <QuickAction to="/browse" icon={<Search className="h-4 w-4" />} label="Browse food" />
-            <QuickAction to="/my-requests" icon={<ClipboardList className="h-4 w-4" />} label="My requests" />
-            <QuickAction to="/alerts" icon={<AlarmClock className="h-4 w-4" />} label="Post urgent need" />
-            <QuickAction to="/pickups" icon={<Truck className="h-4 w-4" />} label="My pickups" />
+            <MetricTile
+              label="Active Requests"
+              value={recipientStats.data?.myRequestsTotal ?? 0}
+              unit="CLAIMS"
+              icon="receipt_long"
+              loading={statsLoading}
+              accent
+            />
+            <MetricTile
+              label="Approved Allocations"
+              value={recipientStats.data?.approvedRequests ?? 0}
+              unit="PORTIONS"
+              icon="volunteer_activism"
+              loading={statsLoading}
+            />
+            <MetricTile
+              label="Active Transits"
+              value={recipientStats.data?.upcomingPickups ?? 0}
+              unit="PICKUPS"
+              icon="local_shipping"
+              loading={statsLoading}
+            />
+            <MetricTile
+              label="Urgent Broadcasts"
+              value={recipientStats.data?.myOpenAlerts ?? 0}
+              unit="ACTIVE"
+              icon="crisis_alert"
+              loading={statsLoading}
+            />
           </>
         )}
       </div>
 
-      {/* Live numbers */}
-      <p className="font-label-sm mt-6 text-[10px] uppercase tracking-[0.2em] text-text-3">Your live account</p>
-      <div className="mt-2 grid grid-cols-2 gap-3 md:grid-cols-4">
-        {isDonor ? (
-          <>
-            <LiveStat label="Active donations" value={donorStats.data?.myDonations} loading={statsLoading} />
-            <LiveStat label="Pending requests" value={donorStats.data?.pendingRequests} loading={statsLoading} />
-            <LiveStat label="Upcoming pickups" value={donorStats.data?.upcomingPickups} loading={statsLoading} />
-            <LiveStat label="Available qty" value={donorStats.data?.availableQuantity} loading={statsLoading} />
-          </>
-        ) : (
-          <>
-            <LiveStat label="Open listings" value={recipientStats.data?.availableDonations} loading={statsLoading} />
-            <LiveStat label="My open requests" value={recipientStats.data?.pendingRequests} loading={statsLoading} />
-            <LiveStat label="My allocations" value={recipientStats.data?.myAllocations} loading={statsLoading} />
-            <LiveStat label="My active alerts" value={recipientStats.data?.myOpenAlerts} loading={statsLoading} />
-          </>
-        )}
-      </div>
+      {/* ── Live Batch Feed ── */}
+      <div className="rounded-xl bg-[#131713] border border-[#262E26] p-5 shadow-md flex flex-col space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#262E26]">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#D7EF4A] text-[20px]">radar</span>
+            <h3 className="font-['Anton'] text-lg text-white uppercase tracking-wide">
+              {isDonor ? 'RECENT DISPATCH INVENTORY' : 'LIVE SURPLUS RADAR FEED'}
+            </h3>
+          </div>
+          <Link
+            to={isDonor ? '/donor' : '/browse'}
+            className="font-mono text-xs text-[#D7EF4A] hover:text-[#E8F5A4] uppercase font-bold tracking-wider"
+          >
+            VIEW ALL →
+          </Link>
+        </div>
 
-      {/* Recent listings strip */}
-      <p className="font-label-sm mt-6 text-[10px] uppercase tracking-[0.2em] text-text-3">
-        {isDonor ? 'Your latest batches' : 'Newest donations near you'}
-      </p>
-      <div className="mt-2">
         {recent.isLoading ? (
-          <SkeletonList count={2} />
-        ) : (recent.data?.data.length ?? 0) === 0 ? (
-          <EmptyState
-            icon={<Leaf className="h-6 w-6" />}
-            title={isDonor ? 'No donations yet' : 'No listings yet'}
-            message={isDonor
-              ? 'Publish your first batch and it will show up here.'
-              : 'Check back soon — new donations appear in realtime.'}
-            action={
-              isDonor ? (
-                <Link to="/donor/new" className="btn-primary rounded-lg px-4 py-2 text-[13px]">Create donation</Link>
-              ) : (
-                <Link to="/browse" className="btn-primary rounded-lg px-4 py-2 text-[13px]">Browse</Link>
-              )
-            }
-          />
+          <div className="py-12 text-center font-mono text-xs text-[#858C84] uppercase">
+            Syncing telemetry feed...
+          </div>
+        ) : batches.length === 0 ? (
+          <div className="py-12 text-center font-mono text-xs text-[#858C84] uppercase">
+            No live batches reported on radar
+          </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            {recent.data!.data.slice(0, 4).map((d) => {
-              const img = storagePublicUrl(d.image_path)
-              return (
-                <Link key={d.id} to={isDonor ? '/donor' : `/donation/${d.id}`} className="flex items-center gap-3 rounded-xl border border-line bg-panel p-3 hover:border-text-3 transition-colors">
-                  {img ? (
-                    <img src={img} alt={d.food_name} className="photo-natural h-14 w-14 flex-shrink-0 rounded-lg object-cover" loading="lazy" />
-                  ) : (
-                    <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-elevated"><Package className="h-5 w-5 text-text-3" /></span>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13px] font-semibold text-text">{d.food_name}</p>
-                    <p className="text-[11px] text-text-3">
-                      {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.available_quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} · {d.city}
-                    </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {batches.map((b) => (
+              <div
+                key={b.id}
+                onClick={() => navigate(isDonor ? `/donor/${b.id}/edit` : `/browse/${b.id}`)}
+                className="p-4 rounded-xl bg-[#1C221C] border border-[#262E26] hover:border-[#D7EF4A]/40 transition-all cursor-pointer flex items-center justify-between group"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#143527] text-[#D7EF4A] flex items-center justify-center font-bold flex-shrink-0">
+                    <span className="material-symbols-outlined text-[20px]">restaurant</span>
                   </div>
-                  <ArrowRight className="flex-shrink-0 text-text-3 h-3.5 w-3.5" />
-                </Link>
-              )
-            })}
+                  <div className="flex flex-col min-w-0">
+                    <h4 className="font-bold text-white text-sm truncate uppercase group-hover:text-[#D7EF4A] transition-colors">
+                      {b.food_name}
+                    </h4>
+                    <span className="font-mono text-[11px] text-[#858C84]">
+                      {b.available_quantity ?? b.quantity} {b.unit} • {b.food_category?.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-end flex-shrink-0">
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#263300] text-[#D7EF4A] uppercase font-bold">
+                    {b.status}
+                  </span>
+                  <span className="font-mono text-[9px] text-[#858C84] mt-1">
+                    {b.expires_at ? formatRelativeTime(b.expires_at) : ''}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -138,24 +218,41 @@ export default function Home() {
   )
 }
 
-function QuickAction({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) {
+function MetricTile({
+  label,
+  value,
+  unit,
+  icon,
+  loading,
+  accent,
+}: {
+  label: string
+  value?: number
+  unit: string
+  icon: string
+  loading: boolean
+  accent?: boolean
+}) {
   return (
-    <Link to={to} className="flex items-center gap-2.5 rounded-xl border border-line bg-panel px-3.5 py-3 text-[13px] font-semibold text-text transition-colors hover:border-primary-fixed/50">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-container text-on-primary-container">{icon}</span>
-      {label}
-    </Link>
-  )
-}
-
-function LiveStat({ label, value, loading }: { label: string; value?: number; loading?: boolean }) {
-  return (
-    <div className="rounded-xl border border-line bg-panel p-4">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-text-3">{label}</p>
-      {loading ? (
-        <div className="mt-1.5 h-7 w-12 animate-pulse rounded bg-elevated" />
-      ) : (
-        <p className="mt-1 font-['Anton'] text-2xl tabular-nums text-text">{value ?? 0}</p>
-      )}
+    <div className="p-4 rounded-xl bg-[#131713] border border-[#262E26] flex flex-col justify-between shadow-md hover:bg-[#1C221C] transition-all">
+      <div className="flex items-center justify-between text-[#858C84]">
+        <span className="font-mono text-[10px] uppercase tracking-wider font-bold truncate">
+          {label}
+        </span>
+        <span className={`material-symbols-outlined text-[20px] ${accent ? 'text-[#D7EF4A]' : 'text-[#858C84]'}`}>
+          {icon}
+        </span>
+      </div>
+      <div className="mt-3 flex items-baseline gap-2">
+        {loading ? (
+          <div className="h-8 w-16 bg-[#1C221C] animate-pulse rounded" />
+        ) : (
+          <span className={`font-['Anton'] text-3xl ${accent ? 'text-[#D7EF4A]' : 'text-white'}`}>
+            {value ?? 0}
+          </span>
+        )}
+        <span className="font-mono text-[10px] text-[#858C84] font-bold">{unit}</span>
+      </div>
     </div>
   )
 }
