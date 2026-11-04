@@ -176,4 +176,39 @@ export const foodRequestsService = {
     }
     await audit(donorId, 'food_request.approve', 'food_requests', requestId)
   },
+
+  /** Recipient withdraws their own pending request — never touches stock, which
+   *  is reserved only once the donor approves (create_allocation RPC). */
+  async cancel(requestId: string, recipientId: string): Promise<void> {
+    const row = await this.byId(requestId)
+    if (!row) throw new Error('NOT_FOUND: request')
+    if (row.recipient_id !== recipientId) throw new Error('FORBIDDEN')
+    if (row.status !== 'pending') {
+      throw new Error(`REQUEST_STATE: a ${row.status} request cannot be cancelled`)
+    }
+    const { error, count } = await supabaseAdmin
+      .from('food_requests')
+      .update({
+        status: 'cancelled',
+        decided_by: recipientId,
+        decided_at: new Date().toISOString(),
+      })
+      .eq('id', requestId)
+      .eq('status', 'pending')
+    if (error) throw new Error(error.message)
+    if ((count ?? 0) === 0) {
+      throw new Error('REQUEST_STATE: request already resolved')
+    }
+    const donation = await this.getDonation(row.donation_id)
+    if (donation) {
+      await notify({
+        userId: donation.donor_id,
+        type: 'system_alert',
+        title: 'Request withdrawn',
+        message: `A recipient withdrew their request for "${donation.food_name}".`,
+        eventKey: 'fr_cancel:' + requestId,
+      })
+    }
+    await audit(recipientId, 'food_request.cancel', 'food_requests', requestId)
+  },
 }

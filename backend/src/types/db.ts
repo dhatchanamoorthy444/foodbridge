@@ -83,6 +83,7 @@ export interface FoodRequestRow {
   decided_at: string | null
   created_at: string
   updated_at: string
+  donation?: { food_name: string | null; unit: string | null } | null
 }
 
 export interface AllocationRow {
@@ -113,6 +114,8 @@ export interface PickupRow {
   completed_at: string | null
   created_at: string
   updated_at: string
+  allocation?: { quantity: number | null; unit: string | null } | null
+  donation?: { food_name: string | null } | null
 }
 
 export interface NotificationRow {

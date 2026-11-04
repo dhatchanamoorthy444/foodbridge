@@ -18,7 +18,9 @@ export const pickupsService = {
   async listMine(userId: string): Promise<PickupRow[]> {
     const { data, error } = await supabaseAdmin
       .from('pickups')
-      .select('*')
+      .select(
+        '*, allocation:allocations(quantity, unit), donation:food_donations(food_name)'
+      )
       .or(`donor_id.eq.${userId},recipient_id.eq.${userId}`)
       .order('scheduled_at', { ascending: true })
     if (error) throw error

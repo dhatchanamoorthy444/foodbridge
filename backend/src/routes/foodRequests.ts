@@ -112,4 +112,17 @@ router.patch(
   }
 )
 
+router.post(
+  '/:id/cancel',
+  requireRecipient,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await foodRequestsService.cancel(req.params.id, req.user!.userId)
+      return res.json({ ok: true })
+    } catch (e) {
+      next(e)
+    }
+  }
+)
+
 export { router as foodRequestsRoutes }
