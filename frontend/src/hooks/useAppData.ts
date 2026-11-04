@@ -115,7 +115,7 @@ export function useMyPickups(enabled: boolean): { data?: Pickup[]; isLoading: bo
   }, [])
 
   return {
-    data: query.data?.data,
+    data: query.data,
     isLoading: query.isLoading,
     refetch: () => query.refetch(),
   }

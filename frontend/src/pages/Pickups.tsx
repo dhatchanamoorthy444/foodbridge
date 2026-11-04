@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Truck, RefreshCw, Clock, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
-import toastApiError, { pickupsService } from '../services/api'
+import { toastApiError, pickupsService } from '../services/api'
 import { useAppStore } from '../store/useAppStore'
 import { EmptyState, ErrorState, SkeletonList } from '../components/ui/Feedback'
 import type { Pickup, PickupStatus } from '../types/api'

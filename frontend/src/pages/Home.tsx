@@ -9,20 +9,23 @@ import { SkeletonList, EmptyState } from '../components/ui/Feedback'
 import { storagePublicUrl } from '../lib/supabase'
 import { CATEGORY_LABELS, UNIT_LABELS, Donation, DonorStats, RecipientStats } from '../types/api'
 
-type Stats = DonorStats | RecipientStats
-
 export default function Home() {
   const user = useAppStore((s) => s.user)
   const isDonor = user?.role === 'donor'
 
-  const stats = useQuery<Stats, Error>({
-    queryKey: ['home-stats'],
-    queryFn: async (): Promise<Stats> => {
-      const s = isDonor ? await dashboardService.donor() : await dashboardService.recipient()
-      return s as Stats
-    },
-    enabled: !!user,
+  const donorStats = useQuery<DonorStats, Error>({
+    queryKey: ['home-stats-donor'],
+    queryFn: () => dashboardService.donor(),
+    enabled: !!user && isDonor,
   })
+
+  const recipientStats = useQuery<RecipientStats, Error>({
+    queryKey: ['home-stats-recipient'],
+    queryFn: () => dashboardService.recipient(),
+    enabled: !!user && !isDonor,
+  })
+
+  const statsLoading = isDonor ? donorStats.isLoading : recipientStats.isLoading
 
   const recent = useQuery<{ data: Donation[]; total: number }, Error>({
     queryKey: isDonor ? ['home-my-donations'] : ['home-browse'],
@@ -70,17 +73,17 @@ export default function Home() {
       <div className="mt-2 grid grid-cols-2 gap-3 md:grid-cols-4">
         {isDonor ? (
           <>
-            <LiveStat label="Active donations" value={stats.data?.myDonations} loading={stats.isLoading} />
-            <LiveStat label="Pending requests" value={stats.data?.pendingRequests} loading={stats.isLoading} />
-            <LiveStat label="Upcoming pickups" value={stats.data?.upcomingPickups} loading={stats.isLoading} />
-            <LiveStat label="Available qty" value={stats.data?.availableQuantity} loading={stats.isLoading} />
+            <LiveStat label="Active donations" value={donorStats.data?.myDonations} loading={statsLoading} />
+            <LiveStat label="Pending requests" value={donorStats.data?.pendingRequests} loading={statsLoading} />
+            <LiveStat label="Upcoming pickups" value={donorStats.data?.upcomingPickups} loading={statsLoading} />
+            <LiveStat label="Available qty" value={donorStats.data?.availableQuantity} loading={statsLoading} />
           </>
         ) : (
           <>
-            <LiveStat label="Open listings" value={stats.data?.availableDonations} loading={stats.isLoading} />
-            <LiveStat label="My open requests" value={stats.data?.pendingRequests} loading={stats.isLoading} />
-            <LiveStat label="My allocations" value={stats.data?.myAllocations} loading={stats.isLoading} />
-            <LiveStat label="My active alerts" value={stats.data?.myOpenAlerts} loading={stats.isLoading} />
+            <LiveStat label="Open listings" value={recipientStats.data?.availableDonations} loading={statsLoading} />
+            <LiveStat label="My open requests" value={recipientStats.data?.pendingRequests} loading={statsLoading} />
+            <LiveStat label="My allocations" value={recipientStats.data?.myAllocations} loading={statsLoading} />
+            <LiveStat label="My active alerts" value={recipientStats.data?.myOpenAlerts} loading={statsLoading} />
           </>
         )}
       </div>

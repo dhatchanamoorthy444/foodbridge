@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { ClipboardList, RefreshCw, Clock } from 'lucide-react'
-import toastApiError, { requestsService } from '../services/api'
+import { requestsService } from '../services/api'
 import { EmptyState, ErrorState, SkeletonList } from '../components/ui/Feedback'
 import { UNIT_LABELS } from '../types/api'
 import { formatDateTime } from '../lib/utils'

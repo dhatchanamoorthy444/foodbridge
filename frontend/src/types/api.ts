@@ -198,12 +198,15 @@ export interface Pickup {
   response_id: string | null
   donor_id: string
   recipient_id: string
+  quantity: number
+  unit: string
   scheduled_at: string | null
   pickup_address: string | null
   pickup_instructions: string | null
   status: PickupStatus
   completed_at: string | null
   created_at: string
+  donation?: { food_name: string } | null
 }
 
 export type AlertStatus =

@@ -36,8 +36,8 @@ export function apiErrorMessage(err: unknown): string {
   return 'Unexpected error'
 }
 
-export function toastApiError(err: unknown): void {
-  toast.error(apiErrorMessage(err))
+export function toastApiError(err: unknown, fallback?: string): void {
+  toast.error(fallback ? `${fallback}: ${apiErrorMessage(err)}` : apiErrorMessage(err))
 }
 
 export async function isBackendHealthy(): Promise<boolean> {
