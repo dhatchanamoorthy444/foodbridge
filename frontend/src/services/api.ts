@@ -96,20 +96,6 @@ export const authService = {
     return row as Profile
   },
 
-  async updateProfile(patch: Partial<Profile>): Promise<Profile | null> {
-    if (!supabase) return null
-    const { data } = await supabase.auth.getSession()
-    const session = data.session
-    if (!session) return null
-    const { data: row, error } = await supabase
-      .from('profiles')
-      .update(patch)
-      .eq('id', session.user.id)
-      .single()
-    if (error) return null
-    return row as Profile
-  },
-
   async updateProfile(patch: Record<string, unknown>): Promise<Profile | null> {
     if (!supabase) throw new Error('Authentication is not configured')
     const { data: sessionData } = await supabase.auth.getSession()
