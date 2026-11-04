@@ -1,9 +1,10 @@
 import axios, { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 import { supabase, isSupabaseConfigured } from './supabase'
+import { normalizeApiBaseUrl } from './apiBase'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://foodbridge-backend-wu2b.onrender.com/api',
+  baseURL: normalizeApiBaseUrl(import.meta.env.VITE_API_URL),
   headers: { 'Content-Type': 'application/json' },
   timeout: 60_000,
 })

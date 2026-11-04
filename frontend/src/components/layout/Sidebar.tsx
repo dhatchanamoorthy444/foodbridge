@@ -24,7 +24,6 @@ export default function Sidebar() {
         { label: 'Log Surplus', icon: 'add_circle', path: '/donor/new' },
         { label: 'Dispatch & Logistics', icon: 'local_shipping', path: '/pickups' },
         { label: 'Emergency Radar', icon: 'crisis_alert', path: '/alerts' },
-        { label: 'Marketplace Feed', icon: 'storefront', path: '/' },
         { label: 'Station Settings', icon: 'tune', path: '/settings' },
       ]
     : [

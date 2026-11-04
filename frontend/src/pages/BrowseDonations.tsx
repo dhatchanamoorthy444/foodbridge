@@ -144,76 +144,78 @@ export default function BrowseDonations() {
             const imageUrl = storagePublicUrl(d.image_path)
 
             return (
-              <div
-                key={d.id}
-                onClick={() => navigate(`/browse/${d.id}`)}
-                className="relative rounded-xl bg-[#131713] border border-[#262E26] overflow-hidden flex flex-col justify-between hover:border-[#D7EF4A]/40 transition-all cursor-pointer group shadow-lg"
-              >
-                {/* Photo or Pattern Header */}
-                <div className="relative h-40 w-full bg-[#1C221C] overflow-hidden">
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt={d.food_name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-[#D7EF4A]/30 bg-gradient-to-br from-[#143527]/30 to-[#0D231A]">
-                      <span className="material-symbols-outlined text-5xl">restaurant</span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#131713] via-transparent to-transparent" />
-
-                  {/* Category Pill */}
-                  <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-[#090B09]/80 backdrop-blur border border-[#262E26] font-mono text-[9px] text-[#D7EF4A] uppercase font-bold">
-                    {d.food_category?.toUpperCase()}
-                  </span>
-
-                  {/* Expiry Pill */}
-                  <span
-                    className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${
-                      diffHours <= 3
-                        ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse'
-                        : 'bg-[#263300] text-[#D7EF4A]'
-                    }`}
-                  >
-                    {hours}H {mins}M LEFT
-                  </span>
-                </div>
-
-                {/* Details */}
-                <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
-                  <div>
-                    <h3 className="font-['Anton'] text-lg text-white uppercase group-hover:text-[#D7EF4A] transition-colors line-clamp-1">
-                      {d.food_name}
-                    </h3>
-                    <p className="text-xs text-[#858C84] line-clamp-2 mt-1">
-                      {d.description || 'Prepared fresh and verified under safe hygiene standards.'}
-                    </p>
+            <div
+              key={d.id}
+              onClick={() => navigate(`/browse/${d.id}`)}
+              className="relative rounded-xl bg-[#131713] border border-[#262E26] overflow-hidden flex flex-col justify-between hover:border-[#D7EF4A]/40 transition-all cursor-pointer group shadow-lg"
+            >
+              {/* Photo or Pattern Header */}
+              <div className="relative h-40 w-full bg-[#1C221C] overflow-hidden">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={d.food_name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-[#D7EF4A]/30 bg-gradient-to-br from-[#143527]/30 to-[#0D231A]">
+                    <span className="material-symbols-outlined text-5xl">restaurant</span>
                   </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#131713] via-transparent to-transparent" />
 
-                  <div className="pt-2 border-t border-[#262E26] space-y-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-mono text-[#858C84] uppercase">Available:</span>
-                      <span className="font-mono font-bold text-white">
-                        {d.available_quantity ?? d.quantity} {d.unit}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-mono text-[#858C84] uppercase">Location:</span>
-                      <span className="font-mono text-[#BCD147] truncate max-w-[180px]">
-                        {d.city || 'Regional Center'}
-                      </span>
-                    </div>
-                  </div>
+                {/* Category Pill */}
+                <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-[#090B09]/80 backdrop-blur border border-[#262E26] font-mono text-[9px] text-[#D7EF4A] uppercase font-bold">
+                  {d.food_category?.toUpperCase()}
+                </span>
 
-                  <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
-                    REQUEST ALLOCATION →
-                  </button>
-                </div>
+                {/* Expiry Pill */}
+                <span
+                  className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${
+                    diffHours <= 3
+                      ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse'
+                      : 'bg-[#263300] text-[#D7EF4A]'
+                  }`}
+                >
+                  {hours}H {mins}M LEFT
+                </span>
               </div>
+
+              {/* Details */}
+              <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
+                <div>
+                  <h3 className="font-['Anton'] text-lg text-white uppercase group-hover:text-[#D7EF4A] transition-colors line-clamp-1">
+                    {d.food_name}
+                  </h3>
+                  <p className="text-xs text-[#858C84] line-clamp-2 mt-1">
+                    {d.description || 'Prepared fresh and verified under safe hygiene standards.'}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-[#262E26] space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-mono text-[#858C84] uppercase">Available:</span>
+                    <span className="font-mono font-bold text-white">
+                      {d.available_quantity ?? d.quantity} {d.unit}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-mono text-[#858C84] uppercase">Location:</span>
+                    <span className="font-mono text-[#BCD147] truncate max-w-[180px]">
+                      {d.city || 'Regional Center'}
+                    </span>
+                  </div>
+                </div>
+
+                <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
+                  REQUEST ALLOCATION →
+                </button>
+              </div>
+            </div>
             )}
         )}
       </div>
-    )
+    )}
+    </div>
+  )
 }
