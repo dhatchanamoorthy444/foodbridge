@@ -68,7 +68,9 @@ export const authService = {
 
   async requestPasswordReset(email: string): Promise<void> {
     if (!supabase) throw new Error('Authentication is not configured')
-    const redirectTo = `${window.location.origin}/login?reset=sent`
+    // supabase.auth.resetPasswordForEmail only accepts the absolute redirect URL
+    // that the user will land on after clicking the magic link in their inbox.
+    const redirectTo = `${window.location.origin}/reset-password`
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo })
     if (error) throw error
   },
