@@ -23,6 +23,12 @@ export function useNotifications() {
     onChange: () => queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEY }),
   })
 
+  useEffect(() => {
+    return () => {
+      void 0
+    }
+  }, [])
+
   return { ...query, connected }
 }
 

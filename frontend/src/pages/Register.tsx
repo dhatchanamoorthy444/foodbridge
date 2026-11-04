@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ArrowLeft, Loader2, Building2, MapPin, Phone, User, Users, Home } from 'lucide-react'
 import useAppStore from '../store/useAppStore'
 import { authService, SignUpPayload } from '../services/api'
-import { isSupabaseConfigured } from '../lib/supabase'
 import { DONOR_ACCOUNT_TYPES, RECIPIENT_ACCOUNT_TYPES, UNIT_LABELS } from '../types/api'
 
 type Role = 'donor' | 'recipient'
@@ -29,10 +28,9 @@ const STEPS = ['Role', 'Identity', 'Contact', 'Review'] as const
 export default function Register() {
   const navigate = useNavigate()
   const setUser = useAppStore((s) => s.setUser)
-  const configured = isSupabaseConfigured
 
   const [step, setStep] = useState(0)
-  const [form, setForm] = useState<FormState>({
+  const [form, setForm] = useState<FormState>{
     role: 'donor',
     fullName: '',
     organization: '',
