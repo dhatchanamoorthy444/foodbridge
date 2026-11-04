@@ -10,9 +10,13 @@ export const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   if (isSupabaseConfigured && supabase) {
-    const { data } = await supabase.auth.getSession()
-    const token = data.session?.access_token
-    if (token) config.headers.Authorization = `Bearer ${token}`
+    try {
+      const { data } = await supabase.auth.getSession()
+      const token = data.session?.access_token
+      if (token) config.headers.Authorization = `Bearer ${token}`
+    } catch (e) {
+      console.warn('[api interceptor] auth.getSession error', e)
+    }
   }
   return config
 })
