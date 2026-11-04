@@ -119,7 +119,7 @@ export default function Alerts() {
                       <AlarmClock className="h-4 w-4 text-danger flex-shrink-0" /> {a.food_name}
                     </p>
                     <p className="mt-0.5 text-[12px] text-text-2">
-                      {CATEGORY_LABELS[a.food_category] ?? a.food_category} Â· needs {remaining} of {a.required_quantity} {UNIT_LABELS[a.unit]?.toLowerCase() ?? a.unit} Â· by {formatDateTime(a.required_by)}
+                      {CATEGORY_LABELS[a.food_category] ?? a.food_category} · needs {remaining} of {a.required_quantity} {UNIT_LABELS[a.unit]?.toLowerCase() ?? a.unit} · by {formatDateTime(a.required_by)}
                     </p>
                   </div>
                   <div className="flex flex-shrink-0 items-center gap-2">
@@ -137,7 +137,7 @@ export default function Alerts() {
                 <p className="mt-2 text-[12px] text-text-3">{a.reason}</p>
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-3">
-                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {a.emergency_location}{a.area ? `, ${a.area}` : ''} Â· {a.city}</span>
+                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {a.emergency_location}{a.area ? `, ${a.area}` : ''} · {a.city}</span>
                   {a.people_to_feed ? <span>~{a.people_to_feed} people affected</span> : null}
                   <span className="flex items-center gap-1"><Megaphone className="h-3 w-3" /> {isMine ? 'your alert' : (a.recipient_org_name || 'verified recipient')}</span>
                 </div>
@@ -198,7 +198,7 @@ function AlertResponses({ alertId, onDecide, busy }: {
           <div className="min-w-0">
             <p className="truncate text-[12px] font-semibold text-text">
               {r.food_name} â€” {r.offered_quantity} {UNIT_LABELS[r.unit]?.toLowerCase() ?? r.unit}
-              {r.message ? <span className="ml-1 text-text-3">Â· "{r.message}"</span> : null}
+              {r.message ? <span className="ml-1 text-text-3">· "{r.message}"</span> : null}
             </p>
             <p className="text-[10px] uppercase tracking-wider text-text-3">{r.status}</p>
           </div>

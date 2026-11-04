@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ArrowLeft, Loader2, Building2, MapPin, Phone, User, Users, Home } from 'lucide-react'
 import useAppStore from '../store/useAppStore'
 import { authService, SignUpPayload } from '../services/api'
-import { isSupabaseConfigured } from '../lib/supabase'
 import { DONOR_ACCOUNT_TYPES, RECIPIENT_ACCOUNT_TYPES, UNIT_LABELS } from '../types/api'
 
 type Role = 'donor' | 'recipient'
@@ -29,7 +28,6 @@ const STEPS = ['Role', 'Identity', 'Contact', 'Review'] as const
 export default function Register() {
   const navigate = useNavigate()
   const setUser = useAppStore((s) => s.setUser)
-  const configured = isSupabaseConfigured
 
   const [step, setStep] = useState(0)
   const [form, setForm] = useState<FormState>({
@@ -182,12 +180,6 @@ export default function Register() {
             </div>
           )}
 
-          {!configured && (
-            <div className="p-3 rounded-xl border border-line bg-elevated text-[13px] text-text-2">
-              Authentication is not configured on this deployment. Set <code className="text-primary-fixed">VITE_SUPABASE_URL</code> / <code className="text-primary-fixed">VITE_SUPABASE_ANON_KEY</code> to enable registration.
-            </div>
-          )}
-
           <AnimatePresence mode="wait">
             {step === 0 && (
               <motion.div key="s0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-3">
@@ -231,7 +223,7 @@ export default function Register() {
                     )}
                   </div>
                   {form.role === 'recipient' && (
-                    <input value={form.organization} onChange={(e) => set('organization', e.target.value)} placeholder="Organization (optional â€” NGO name)" className="input-field mt-2" />
+                    <input value={form.organization} onChange={(e) => set('organization', e.target.value)} placeholder="Organization (optional — NGO name)" className="input-field mt-2" />
                   )}
                 </div>
                 <div>
@@ -320,15 +312,15 @@ export default function Register() {
                   Our team reviews recipient accounts before donation contact sharing becomes visible.
                 </div>
                 <SummaryRow label="Role" value={form.role === 'donor' ? 'Donor' : 'Recipient'} />
-                <SummaryRow label="Name / Org" value={form.fullName || form.organization || 'â€”'} />
+                <SummaryRow label="Name / Org" value={form.fullName || form.organization || '—'} />
                 <SummaryRow label="Email" value={form.email} />
                 <SummaryRow label="Phone" value={form.phone} />
                 <SummaryRow label="Type" value={accountTypes.find((t) => t.value === form.account_type)?.label ?? form.account_type} />
-                <SummaryRow label="City" value={[form.address, form.city, form.postal_code].filter(Boolean).join(', ') || 'â€”'} />
+                <SummaryRow label="City" value={[form.address, form.city, form.postal_code].filter(Boolean).join(', ') || '—'} />
                 {form.role === 'recipient' && (
-                  <SummaryRow label="People served" value={form.beneficiary_count ? `${form.beneficiary_count}` : 'â€”'} />
+                  <SummaryRow label="People served" value={form.beneficiary_count ? `${form.beneficiary_count}` : '—'} />
                 )}
-                <p className="text-[11px] text-text-3">Units supported for donations: {Object.keys(UNIT_LABELS).slice(0, 4).join(', ')}â€¦</p>
+                <p className="text-[11px] text-text-3">Units supported for donations: {Object.keys(UNIT_LABELS).slice(0, 4).join(', ')}…</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -356,7 +348,7 @@ export default function Register() {
             ) : (
               <button
                 onClick={submit}
-                disabled={loading || !configured}
+                disabled={loading}
                 className="btn-primary flex-1 h-12 rounded-xl flex items-center justify-center gap-1.5 disabled:opacity-60"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Create account</span><ArrowRight className="w-4 h-4" /></>}

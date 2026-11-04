@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom'
+﻿import { useNavigate, Link } from 'react-router-dom'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import {
   HeartHandshake,
@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import HeroCanvas from '../components/animations/HeroCanvas'
 
-/* ── Scratch palette constants for the few inline gradients ── */
+/* â”€â”€ Scratch palette constants for the few inline gradients â”€â”€ */
 
 const revealVariants: Variants = {
   hidden: { opacity: 0, y: 26 },
@@ -74,7 +74,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-app-deep text-text">
-      {/* ══════════════ NAVIGATION ══════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• NAVIGATION â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <header className="fixed top-0 z-50 w-full border-b border-line/70 bg-app-deep/85 backdrop-blur-md">
         <nav className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between px-5 md:px-8 lg:px-10">
           <Link to="/" className="flex items-center gap-3" aria-label="FoodBridge home">
@@ -117,7 +117,7 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* ══════════════ HERO ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section className="relative overflow-hidden pt-[68px]">
           <div
             className="pointer-events-none absolute inset-0"
@@ -157,7 +157,7 @@ export default function LandingPage() {
                 className="max-w-xl text-[16px] leading-[1.65] text-text-2"
               >
                 Turn surplus into opportunity. Track food freshness, connect communities
-                and make every donation count — restaurants, hotels, grocers and markets
+                and make every donation count â€” restaurants, hotels, grocers and markets
                 feed NGOs, shelters and community kitchens on one bridge.
               </motion.p>
 
@@ -213,7 +213,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════ HOW IT WORKS ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• HOW IT WORKS â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section id="how" className="bg-app py-16 lg:py-24">
           <div className="mx-auto max-w-[1440px] px-5 md:px-8 lg:px-10">
             <SectionHeading
@@ -235,9 +235,9 @@ export default function LandingPage() {
                 },
                 {
                   step: '02',
-                  Icon: LoopHorizontal,
+                  Icon: ArrowLeftRight,
                   title: 'Requests meet stock atomically',
-                  desc: 'Recipients request what their community needs. Approval creates an allocation in a PostgreSQL transaction — stock can never be double-claimed.',
+                  desc: 'Recipients request what their community needs. Approval creates an allocation in a PostgreSQL transaction â€” stock can never be double-claimed.',
                 },
                 {
                   step: '03',
@@ -265,7 +265,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════ EXPIRY MONITORING ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• EXPIRY MONITORING â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section id="expiry" className="bg-app-deep py-16 lg:py-24">
           <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:px-8 lg:grid-cols-2 lg:gap-14 lg:px-10">
             <Reveal>
@@ -288,7 +288,7 @@ export default function LandingPage() {
             <div className="flex flex-col gap-7">
               <SectionHeading
                 kicker="Expiry watch"
-                title={<>Every batch carries a clock — and FoodBridge reads it.</>}
+                title={<>Every batch carries a clock â€” and FoodBridge reads it.</>}
               />
               <Reveal className="flex flex-col gap-4">
                 <ul className="custom-list text-[14px] leading-[1.6]">
@@ -299,7 +299,7 @@ export default function LandingPage() {
                   </li>
                   <li>
                     <span className="text-text">Expiry is business logic:</span> expired
-                    batches are never newly allocated — approval and emergency offers both
+                    batches are never newly allocated â€” approval and emergency offers both
                     fail closed, enforced server-side.
                   </li>
                   <li>
@@ -327,7 +327,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════ EMERGENCY ALERTS ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• EMERGENCY ALERTS â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section id="alerts" className="bg-app py-16 lg:py-24">
           <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:px-8 lg:grid-cols-2 lg:gap-14 lg:px-10">
             <div className="order-2 flex flex-col gap-7 lg:order-1">
@@ -349,7 +349,7 @@ export default function LandingPage() {
                   </li>
                   <li>
                     <span className="text-text">Private stays private:</span> contact
-                    numbers and exact addresses are never shown publicly — they unlock only
+                    numbers and exact addresses are never shown publicly â€” they unlock only
                     when an offer is accepted.
                   </li>
                 </ul>
@@ -389,7 +389,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════ IMPACT & SUSTAINABILITY ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• IMPACT & SUSTAINABILITY â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section id="impact" className="bg-app-deep py-16 lg:py-24">
           <div className="mx-auto max-w-[1440px] px-5 md:px-8 lg:px-10">
             <SectionHeading
@@ -399,7 +399,7 @@ export default function LandingPage() {
             <Reveal>
               <p className="mt-4 max-w-2xl text-[14px] leading-[1.7] text-text-2">
                 FoodBridge never fabricates impact statistics. Every number inside the
-                dashboards is measured live from your own account — donations listed,
+                dashboards is measured live from your own account â€” donations listed,
                 requests approved, pickups completed. What we can promise below is the
                 architecture behind each promise.
               </p>
@@ -412,7 +412,7 @@ export default function LandingPage() {
                   desc: 'Roles, ownership checks and Row Level Security keep every record in the right hands.',
                 },
                 {
-                  Icon: LoopHorizontal,
+                  Icon: ArrowLeftRight,
                   title: 'Atomic allocation',
                   desc: 'Row-locked PostgreSQL transactions make double-claiming impossible.',
                 },
@@ -441,7 +441,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════ COMMUNITY BAND ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• COMMUNITY BAND â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section className="bg-app py-16 lg:py-20">
           <div className="mx-auto grid max-w-[1440px] items-stretch gap-6 px-5 md:px-8 lg:grid-cols-[1.4fr_1fr] lg:px-10">
             <Reveal>
@@ -482,7 +482,7 @@ export default function LandingPage() {
                     Nothing wasted
                   </span>
                   <p className="mt-1 text-[17px] font-semibold text-text">
-                    Natural food, natural colours — the rescue is the only tint.
+                    Natural food, natural colours â€” the rescue is the only tint.
                   </p>
                 </div>
               </div>
@@ -490,7 +490,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════ CTA BAND ══════════════ */}
+        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• CTA BAND â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section className="bg-primary text-[#050807]">
           <div className="mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center md:px-8 lg:px-10">
             <div className="flex flex-col gap-2">
@@ -520,7 +520,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* ══════════════ FOOTER ══════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â• FOOTER â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <footer className="bg-app-deep py-12">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-8 px-5 md:px-8 lg:px-10">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
@@ -553,7 +553,7 @@ export default function LandingPage() {
             </nav>
           </div>
           <div className="flex flex-col items-start justify-between gap-3 border-t border-line pt-6 text-[11px] text-text-3 md:flex-row md:items-center">
-            <p>© {new Date().getFullYear()} FoodBridge — Smart Food Expiry Monitoring &amp; Surplus Redistribution.</p>
+            <p>Â© {new Date().getFullYear()} FoodBridge â€” Smart Food Expiry Monitoring &amp; Surplus Redistribution.</p>
             <p className="font-semibold text-primary-fixed">Good Food. Better Future.</p>
           </div>
         </div>

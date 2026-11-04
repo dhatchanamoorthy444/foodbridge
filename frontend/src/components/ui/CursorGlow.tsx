@@ -100,7 +100,7 @@ export function CursorGlow({ size = 720, className }: CursorGlowProps) {
         width: size,
         height: size,
         background:
-          'radial-gradient(circle, rgba(47,107,74,0.18) 0%, rgba(47,107,74,0.07) 42%, rgba(47,107,74,0) 70%)',
+          'radial-gradient(circle, rgba(183,217,106,0.10) 0%, rgba(16,60,45,0.10) 42%, rgba(16,60,45,0) 70%)',
         opacity: 0.9,
         willChange: 'transform',
       }}

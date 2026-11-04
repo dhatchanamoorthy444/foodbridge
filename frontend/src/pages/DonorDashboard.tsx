@@ -175,7 +175,7 @@ function DonationRow({ donation: d, onEdit, onDelete }: { donation: Donation; in
             <div className="min-w-0">
               <p className="truncate text-[14px] font-semibold text-text">{d.food_name}</p>
               <p className="mt-0.5 text-[12px] text-text-2">
-                {CATEGORY_LABELS[d.food_category] ?? d.food_category} Â· {d.quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} {claimed > 0 && `Â· ${claimed} claimed`}
+                {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} {claimed > 0 && `· ${claimed} claimed`}
               </p>
             </div>
             <div className="flex flex-shrink-0 gap-1">

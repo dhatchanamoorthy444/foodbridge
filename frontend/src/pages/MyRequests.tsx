@@ -64,7 +64,7 @@ export default function MyRequests() {
                 </p>
                 <p className="mt-0.5 text-[12px] text-text-2">
                   {r.requested_quantity} {UNIT_LABELS[r.unit]?.toLowerCase() ?? r.unit}
-                  {r.people_to_feed ? ` Â· feeding ~${r.people_to_feed} people` : ''}
+                  {r.people_to_feed ? ` · feeding ~${r.people_to_feed} people` : ''}
                 </p>
               </div>
               <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-3">

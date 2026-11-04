@@ -73,7 +73,7 @@ export default function Sidebar() {
           <div className="min-w-0">
             <p className="font-display text-lg leading-none text-text tracking-tight">FOODBRIDGE</p>
             <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.18em] text-primary-fixed">
-              Connect Â· Donate Â· Feed
+              Connect · Donate · Feed
             </p>
           </div>
         </div>
@@ -101,13 +101,13 @@ export default function Sidebar() {
             key={item.path}
             to={item.path}
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors',
+              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] transition-colors',
               isActive(item.path)
-                ? 'bg-primary-container text-on-primary-container'
+                ? 'bg-primary text-on-primary font-semibold shadow-[0_6px_20px_-12px_rgb(var(--fb-primary)/0.6)]'
                 : 'text-text-2 hover:text-text hover:bg-elevated'
             )}
           >
-            <item.icon className={cn('h-4 w-4', isActive(item.path) ? 'text-on-primary-container' : 'text-text-3')} />
+            <item.icon className={cn('h-4 w-4', isActive(item.path) ? 'text-on-primary' : 'text-text-3')} />
             {item.label}
           </NavLink>
         ))}

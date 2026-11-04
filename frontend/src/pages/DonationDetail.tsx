@@ -99,7 +99,7 @@ export default function DonationDetail() {
             <div>
               <h1 className="font-display text-2xl text-text tracking-tight">{donation.food_name}</h1>
               <p className="mt-0.5 text-[13px] text-text-2">
-                {CATEGORY_LABELS[donation.food_category] ?? donation.food_category} Â·
+                {CATEGORY_LABELS[donation.food_category] ?? donation.food_category} ·
                 {' '}{donation.available_quantity} {UNIT_LABELS[donation.unit]?.toLowerCase() ?? donation.unit} available
               </p>
             </div>

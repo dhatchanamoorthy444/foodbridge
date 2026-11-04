@@ -40,8 +40,15 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-app">
-      <header className="fixed top-0 w-full z-50 bg-app border-b border-line">
+    <div className="relative min-h-screen flex flex-col bg-app-deep">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(55% 45% at 82% 6%, rgba(183,217,106,0.09) 0%, rgba(5,8,7,0) 55%), radial-gradient(45% 40% at 6% 92%, rgba(16,60,45,0.55) 0%, rgba(5,8,7,0) 60%)',
+        }}
+      />
+      <header className="fixed top-0 w-full z-50 bg-app-deep/85 backdrop-blur-md border-b border-line">
         <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
           <Link to="/" className="flex items-center gap-2.5">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-9 w-9 rounded-lg object-contain" />
@@ -53,7 +60,7 @@ export default function Login() {
         </div>
       </header>
 
-      <div className="flex-1 pt-16 flex items-center justify-center px-4 py-12">
+      <div className="relative flex-1 pt-16 flex items-center justify-center px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}

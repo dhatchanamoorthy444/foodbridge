@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
+﻿import { useRef, useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Tag } from 'lucide-react'
 
@@ -11,28 +11,28 @@ interface Food {
 }
 
 const FOODS: Food[] = [
-  { emoji: '🥣', name: 'Idli', tamil: 'இட்லி', color: '#E0FF00', note: 'Steamed cloud, sambar soul.' },
-  { emoji: '🥞', name: 'Dosa', tamil: 'தோசை', color: '#ECFB7E', note: 'Paper-thin, ghee-kissed.' },
-  { emoji: '🍩', name: 'Vada', tamil: 'வடை', color: '#BAD306', note: 'Crisp ring, pepper bite.' },
-  { emoji: '🍲', name: 'Pongal', tamil: 'பொங்கல்', color: '#667210', note: 'Harvest rice, ghee, pepper.' },
-  { emoji: '🫕', name: 'Sambar', tamil: 'சாம்பார்', color: '#C4C4C4', note: 'Lentil, tamarind, drumstick.' },
-  { emoji: '☕', name: 'Filter Coffee', tamil: 'பில்டர் காபி', color: '#747474', note: 'Brass dabara, frothy top.' },
-  { emoji: '🥘', name: 'Biryani', tamil: 'பிரியாணி', color: '#E0FF00', note: 'Seeraga samba, saffron.' },
-  { emoji: '🫓', name: 'Parotta', tamil: 'பரோட்டா', color: '#ECFB7E', note: 'Layered, flaky, street-side.' },
-  { emoji: '🧆', name: 'Kuzhi Paniyaram', tamil: 'குழி பணியாரம்', color: '#BAD306', note: 'Crisp outside, soft inside.' },
-  { emoji: '🍜', name: 'Idiyappam', tamil: 'இடியாப்பம்', color: '#667210', note: 'Rice noodles, coconut milk.' },
-  { emoji: '🍚', name: 'Puliyodarai', tamil: 'புளியோதரை', color: '#C4C4C4', note: 'Tamarind rice, temple prasadam.' },
-  { emoji: '🥣', name: 'Rasam', tamil: 'ரசம்', color: '#747474', note: 'Pepper, tomato, comfort.' },
-  { emoji: '🍮', name: 'Payasam', tamil: 'பாயசம்', color: '#ECFB7E', note: 'Jaggery, milk, cardamom.' },
-  { emoji: '🌶️', name: 'Chili', tamil: 'மிளகாய்', color: '#FF4630', note: 'Heat that wakes the plate.' },
-  { emoji: '🥭', name: 'Mango', tamil: 'மாம்பழம்', color: '#ECFB7E', note: 'Summer gold, sticky fingers.' },
-  { emoji: '🥥', name: 'Coconut', tamil: 'தேங்காய்', color: '#F8F8F8', note: 'Sweet, cool, tropical.' },
-  { emoji: '🥬', name: 'Banana Leaf', tamil: 'வாழை இலை', color: '#667210', note: 'The plate of the south.' },
-  { emoji: '🍬', name: 'Murukku', tamil: 'முறுக்கு', color: '#E0FF00', note: 'Spiral crunch, rice flour.' },
-  { emoji: '🍪', name: 'Adhirasam', tamil: 'அதிரசம்', color: '#BAD306', note: 'Jaggery doughnut, deep-fried.' },
-  { emoji: '🍫', name: 'Mysore Pak', tamil: 'மைசூர் பாகு', color: '#ECFB7E', note: 'Ghee, gram flour, melt.' },
-  { emoji: '🌾', name: 'Sugarcane', tamil: 'கரும்பு', color: '#667210', note: 'Pongal harvest symbol.' },
-  { emoji: '🛕', name: 'Kolam', tamil: 'கோலம்', color: '#C4C4C4', note: 'Rice-flour doorstep art.' },
+  { emoji: 'ð¥£', name: 'Idli', tamil: 'à®à®à¯à®²à®¿', color: '#E0FF00', note: 'Steamed cloud, sambar soul.' },
+  { emoji: 'ð¥', name: 'Dosa', tamil: 'à®¤à¯à®à¯', color: '#ECFB7E', note: 'Paper-thin, ghee-kissed.' },
+  { emoji: 'ð©', name: 'Vada', tamil: 'à®µà®à¯', color: '#BAD306', note: 'Crisp ring, pepper bite.' },
+  { emoji: 'ð²', name: 'Pongal', tamil: 'à®ªà¯à®à¯à®à®²à¯', color: '#667210', note: 'Harvest rice, ghee, pepper.' },
+  { emoji: 'ð«', name: 'Sambar', tamil: 'à®à®¾à®®à¯à®ªà®¾à®°à¯', color: '#C4C4C4', note: 'Lentil, tamarind, drumstick.' },
+  { emoji: 'â', name: 'Filter Coffee', tamil: 'à®ªà®¿à®²à¯à®à®°à¯ à®à®¾à®ªà®¿', color: '#747474', note: 'Brass dabara, frothy top.' },
+  { emoji: 'ð¥', name: 'Biryani', tamil: 'à®ªà®¿à®°à®¿à®¯à®¾à®£à®¿', color: '#E0FF00', note: 'Seeraga samba, saffron.' },
+  { emoji: 'ð«', name: 'Parotta', tamil: 'à®ªà®°à¯à®à¯à®à®¾', color: '#ECFB7E', note: 'Layered, flaky, street-side.' },
+  { emoji: 'ð§', name: 'Kuzhi Paniyaram', tamil: 'à®à¯à®´à®¿ à®ªà®£à®¿à®¯à®¾à®°à®®à¯', color: '#BAD306', note: 'Crisp outside, soft inside.' },
+  { emoji: 'ð', name: 'Idiyappam', tamil: 'à®à®à®¿à®¯à®¾à®ªà¯à®ªà®®à¯', color: '#667210', note: 'Rice noodles, coconut milk.' },
+  { emoji: 'ð', name: 'Puliyodarai', tamil: 'à®ªà¯à®³à®¿à®¯à¯à®¤à®°à¯', color: '#C4C4C4', note: 'Tamarind rice, temple prasadam.' },
+  { emoji: 'ð¥£', name: 'Rasam', tamil: 'à®°à®à®®à¯', color: '#747474', note: 'Pepper, tomato, comfort.' },
+  { emoji: 'ð®', name: 'Payasam', tamil: 'à®ªà®¾à®¯à®à®®à¯', color: '#ECFB7E', note: 'Jaggery, milk, cardamom.' },
+  { emoji: 'ð¶ï¸', name: 'Chili', tamil: 'à®®à®¿à®³à®à®¾à®¯à¯', color: '#FF4630', note: 'Heat that wakes the plate.' },
+  { emoji: 'ð¥­', name: 'Mango', tamil: 'à®®à®¾à®®à¯à®ªà®´à®®à¯', color: '#ECFB7E', note: 'Summer gold, sticky fingers.' },
+  { emoji: 'ð¥¥', name: 'Coconut', tamil: 'à®¤à¯à®à¯à®à®¾à®¯à¯', color: '#F8F8F8', note: 'Sweet, cool, tropical.' },
+  { emoji: 'ð¥¬', name: 'Banana Leaf', tamil: 'à®µà®¾à®´à¯ à®à®²à¯', color: '#667210', note: 'The plate of the south.' },
+  { emoji: 'ð¬', name: 'Murukku', tamil: 'à®®à¯à®±à¯à®à¯à®à¯', color: '#E0FF00', note: 'Spiral crunch, rice flour.' },
+  { emoji: 'ðª', name: 'Adhirasam', tamil: 'à®à®¤à®¿à®°à®à®®à¯', color: '#BAD306', note: 'Jaggery doughnut, deep-fried.' },
+  { emoji: 'ð«', name: 'Mysore Pak', tamil: 'à®®à¯à®à¯à®°à¯ à®ªà®¾à®à¯', color: '#ECFB7E', note: 'Ghee, gram flour, melt.' },
+  { emoji: 'ð¾', name: 'Sugarcane', tamil: 'à®à®°à¯à®®à¯à®ªà¯', color: '#667210', note: 'Pongal harvest symbol.' },
+  { emoji: 'ð', name: 'Kolam', tamil: 'à®à¯à®²à®®à¯', color: '#C4C4C4', note: 'Rice-flour doorstep art.' },
 ]
 
 // remove placeholder
@@ -136,7 +136,7 @@ export default function IndianFoodConstellation() {
 
   return (
     <section className="relative z-20 overflow-hidden border-y-2 border-bone/15 px-6 py-24 md:px-10">
-      {/* subtle line grid — no radial orbs (rule 22) */}
+      {/* subtle line grid â no radial orbs (rule 22) */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgb(224 255 0 / 1) 1px, transparent 1px), linear-gradient(90deg, rgb(224 255 0 / 1) 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
 
       <div className="relative mx-auto max-w-[1440px]">

@@ -135,11 +135,11 @@ export default function Settings() {
                     </Field>
                   </div>
                   <Field icon={<Smartphone className="h-4 w-4" />} label="Phone">
-                    <input value={form.phone} onChange={(e) => set('phone', e.target.value)} className="input-field" placeholder="+91 â€¦" />
+                    <input value={form.phone} onChange={(e) => set('phone', e.target.value)} className="input-field" placeholder="+91 …" />
                   </Field>
                   <Field icon={<Inbox className="h-4 w-4" />} label={isRecipient ? 'Organisation type' : 'Business type'}>
                     <select value={form.account_type} onChange={(e) => set('account_type', e.target.value)} className="input-field">
-                      <option value="">Selectâ€¦</option>
+                      <option value="">Select…</option>
                       {types.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
                     </select>
                   </Field>
@@ -153,7 +153,7 @@ export default function Settings() {
                   </Field>
                 </div>
                 <button onClick={saveProfile} disabled={saving} className="btn-primary mt-4 rounded-lg px-5 py-2.5 text-[13px] disabled:opacity-60">
-                  {saving ? 'Savingâ€¦' : 'Save changes'}
+                  {saving ? 'Saving…' : 'Save changes'}
                 </button>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function Settings() {
                   </Field>
                 </div>
                 <button onClick={changePassword} disabled={changingPwd} className="btn-secondary mt-3 rounded-lg px-5 py-2.5 text-[13px] disabled:opacity-60">
-                  {changingPwd ? 'Updatingâ€¦' : 'Update password'}
+                  {changingPwd ? 'Updating…' : 'Update password'}
                 </button>
               </div>
             </div>

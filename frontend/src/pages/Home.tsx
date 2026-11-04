@@ -124,7 +124,7 @@ export default function Home() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-semibold text-text">{d.food_name}</p>
                     <p className="text-[11px] text-text-3">
-                      {CATEGORY_LABELS[d.food_category] ?? d.food_category} Â· {d.available_quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} Â· {d.city}
+                      {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.available_quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} · {d.city}
                     </p>
                   </div>
                   <ArrowRight className="flex-shrink-0 text-text-3 h-3.5 w-3.5" />
@@ -141,7 +141,7 @@ export default function Home() {
 function QuickAction({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) {
   return (
     <Link to={to} className="flex items-center gap-2.5 rounded-xl border border-line bg-panel px-3.5 py-3 text-[13px] font-semibold text-text transition-colors hover:border-primary-fixed/50">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-container text-on-primary-container">{icon}</span>
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-elevated text-primary-fixed transition-colors">{icon}</span>
       {label}
     </Link>
   )

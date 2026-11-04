@@ -49,7 +49,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 bg-app border-b border-line" ref={rootRef}>
+    <header className="sticky top-0 z-30 bg-app/90 backdrop-blur-md border-b border-line" ref={rootRef}>
       <div className="h-14 px-3 md:px-4 flex items-center justify-between gap-2">
         {/* Mobile menu */}
         <button
@@ -111,7 +111,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
                     </button>
                   </div>
                   {notificationsQuery.isLoading ? (
-                    <div className="p-4 text-center text-sm text-text-2">Loadingâ€¦</div>
+                    <div className="p-4 text-center text-sm text-text-2">Loading…</div>
                   ) : items.length === 0 ? (
                     <div className="p-6 text-center">
                       <Bell className="w-6 h-6 mx-auto mb-2 text-text-3" />

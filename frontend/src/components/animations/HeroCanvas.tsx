@@ -71,7 +71,7 @@ function StaticHero() {
           }}
         />
         <img
-          src="/stickers/01_brand_and_donation/donate_food.png"
+          src="/stickers/cream/01_brand_and_donation/donate_food.png"
           alt=""
           className="relative h-64 w-64 sm:h-80 sm:w-80 object-contain drop-shadow-[0_24px_48px_rgba(5,8,7,0.7)]"
           loading="eager"
