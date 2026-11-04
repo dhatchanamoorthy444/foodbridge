@@ -5,7 +5,7 @@ import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ArrowLeft, Loader2, B
 import useAppStore from '../store/useAppStore'
 import { authService, SignUpPayload } from '../services/api'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { DONOR_ACCOUNT_TYPES, RECIPIENT_ACCOUNT_TYPES, UNIT_LABELS } from '../types/api'
+import { DONOR_ACCOUNT_TYPES, RECIPIENT_ACCOUNT_TYPES } from '../types/api'
 
 type Role = 'donor' | 'recipient'
 
@@ -51,40 +51,40 @@ export default function Register() {
   const [error, setError] = useState('')
   const [needsConfirm, setNeedsConfirm] = useState(false)
 
-  const set = <K extends keyof FormState>(key: K, val: FormState[K]) =>
-    setForm((f) => ({ ...f, [key]: val }))
+  const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
+    setForm((f) => ({ ...f, [key]: value }))
 
-  const accountTypes = useMemo(
-    () => (form.role === 'donor' ? DONOR_ACCOUNT_TYPES : RECIPIENT_ACCOUNT_TYPES),
-    [form.role]
-  )
+  const accountTypes = useMemo(() => {
+    return form.role === 'donor' ? DONOR_ACCOUNT_TYPES : RECIPIENT_ACCOUNT_TYPES
+  }, [form.role])
 
-  const passwordChecks = useMemo(
-    () => ({
-      length: form.password.length >= 8,
-      mixed: /[A-Za-z]/.test(form.password) && /[0-9]/.test(form.password),
-      match: form.password !== '' && form.password === form.confirm,
-    }),
-    [form.password, form.confirm]
-  )
-
-  const canAdvance = (s: number): boolean => {
-    switch (s) {
-      case 0:
-        return !!form.role
-      case 1:
-        return (
-          (form.role === 'donor' ? form.organization.trim().length >= 2 : form.fullName.trim().length >= 2) &&
-          form.email.includes('@') &&
-          passwordChecks.length &&
-          passwordChecks.match &&
-          passwordChecks.mixed
-        )
-      case 2:
-        return form.phone.trim().length >= 6 && !!form.account_type && form.city.trim().length >= 2
-      default:
-        return true
+  const validateStep = (s: number): string | null => {
+    if (s === 1) {
+      if (!form.fullName.trim()) return 'Name is required'
+      if (!form.email.trim() || !form.email.includes('@')) return 'A valid email is required'
+      if (form.password.length < 6) return 'Password must be at least 6 characters'
+      if (form.password !== form.confirm) return 'Passwords do not match'
+    } else if (s === 2) {
+      if (!form.phone.trim()) return 'Phone number is required'
+      if (!form.address.trim()) return 'Address is required'
+      if (!form.city.trim()) return 'City is required'
     }
+    return null
+  }
+
+  const next = () => {
+    const err = validateStep(step)
+    if (err) {
+      setError(err)
+      return
+    }
+    setError('')
+    setStep((s) => Math.min(s + 1, STEPS.length - 1))
+  }
+
+  const prev = () => {
+    setError('')
+    setStep((s) => Math.max(s - 1, 0))
   }
 
   const handleTypeSwitch = (role: Role) => {
@@ -120,7 +120,8 @@ export default function Register() {
         setNeedsConfirm(true)
       } else if (result.profile) {
         setUser(result.profile)
-        navigate(result.profile.role === 'recipient' ? '/browse' : '/donor', { replace: true })
+        const target = result.profile.role === 'recipient' ? '/browse' : '/donor'
+        navigate(target, { replace: true })
       } else {
         setNeedsConfirm(true)
       }
@@ -133,259 +134,355 @@ export default function Register() {
 
   if (needsConfirm) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-app px-4">
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md text-center space-y-4 bg-panel border border-line rounded-2xl p-8">
-          <Mail className="w-10 h-10 mx-auto text-primary-fixed" />
-          <h1 className="font-['Anton'] text-2xl text-text">Confirm your email</h1>
-          <p className="text-sm text-text-2">
-            We sent a verification link to <span className="text-text font-semibold">{form.email}</span>. Click the link to activate your FoodBridge account, then sign in.
+      <div className="min-h-screen flex items-center justify-center bg-[#090B09] px-4 text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md text-center space-y-4 bg-[#131713] border border-[#262E26] rounded-2xl p-8"
+        >
+          <Mail className="w-12 h-12 mx-auto text-[#D7EF4A]" />
+          <h1 className="font-['Anton'] text-2xl uppercase tracking-wide">Confirm your station email</h1>
+          <p className="text-xs text-[#B8BDB6] font-mono leading-relaxed">
+            We sent a verification link to <span className="text-[#D7EF4A] font-bold">{form.email}</span>. Click the link in the message to activate your account, then sign in.
           </p>
-          <Link to="/login" className="btn-primary inline-flex w-full justify-center">Go to sign in</Link>
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider"
+          >
+            Go to Station Sign In <ArrowRight className="w-4 h-4" />
+          </Link>
         </motion.div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-app">
-      <header className="fixed top-0 w-full z-50 bg-app border-b border-line">
+    <div className="min-h-screen flex flex-col bg-[#090B09] text-white">
+      {/* Header */}
+      <header className="fixed top-0 w-full z-50 bg-[#090B09] border-b border-[#262E26]">
         <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-9 w-9 rounded-lg object-contain" />
-            <span className="font-['Anton'] text-xl text-text tracking-tight">FOODBRIDGE</span>
+            <img
+              src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png"
+              alt="FoodBridge logo"
+              className="h-9 w-9 rounded-lg object-contain"
+            />
+            <span className="font-['Anton'] text-xl text-white tracking-tight uppercase">FOODBRIDGE</span>
           </Link>
-          <Link to="/login" className="text-[11px] font-bold uppercase tracking-widest text-primary-fixed hover:text-text transition-colors">Sign In</Link>
+          <Link
+            to="/login"
+            className="font-mono text-xs font-bold uppercase tracking-widest text-[#D7EF4A] hover:text-[#E8F5A4] transition-colors"
+          >
+            Sign In
+          </Link>
         </div>
       </header>
 
-      <div className="flex-1 pt-16 flex items-center justify-center px-4 py-10">
-        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md space-y-5">
+      <div className="flex-1 pt-20 flex items-center justify-center px-4 py-10">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md space-y-5"
+        >
           <div className="text-center space-y-1">
-            <h1 className="font-['Anton'] text-3xl text-text tracking-tight">Join FoodBridge</h1>
-            <p className="text-sm text-text-2">Four quick steps to start rescuing food</p>
+            <h1 className="font-['Anton'] text-3xl uppercase tracking-tight">Register Node</h1>
+            <p className="font-mono text-xs text-[#858C84] uppercase">Join the FoodBridge Surplus Rescue Network</p>
           </div>
 
-          {/* Step indicators */}
-          <div className="flex items-center gap-1">
-            {STEPS.map((label, i) => (
-              <div key={label} className="flex-1">
-                <div className={`h-1 rounded-full ${i <= step ? 'bg-primary' : 'bg-elevated'}`} />
-                <p className={`mt-1 text-[10px] font-bold uppercase tracking-widest ${i <= step ? 'text-primary-fixed' : 'text-text-3'}`}>{label}</p>
+          {/* Stepper indicator */}
+          <div className="flex items-center justify-between gap-1 p-1 bg-[#131713] border border-[#262E26] rounded-xl font-mono text-[10px] uppercase">
+            {STEPS.map((s, idx) => (
+              <div
+                key={s}
+                className={`flex-1 text-center py-1.5 rounded-lg transition-colors font-bold ${
+                  step === idx
+                    ? 'bg-[#D7EF4A] text-[#090B09]'
+                    : step > idx
+                    ? 'text-[#BCD147]'
+                    : 'text-[#858C84]'
+                }`}
+              >
+                {idx + 1}. {s}
               </div>
             ))}
           </div>
 
           {error && (
-            <div className="flex items-start gap-2 p-3 rounded-xl bg-danger-soft">
-              <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-danger" />
-              <p className="text-[13px] text-danger">{error}</p>
+            <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[#410002] border border-[#FF5449]/40 font-mono text-xs text-[#FFDAD6]">
+              <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#FF5449]" />
+              <p>{error}</p>
             </div>
           )}
 
           {!configured && (
-            <div className="p-3 rounded-xl border border-line bg-elevated text-[13px] text-text-2">
-              Authentication is not configured on this deployment. Set <code className="text-primary-fixed">VITE_SUPABASE_URL</code> / <code className="text-primary-fixed">VITE_SUPABASE_ANON_KEY</code> to enable registration.
+            <div className="p-3.5 rounded-xl border border-[#262E26] bg-[#131713] text-xs text-[#858C84] font-mono">
+              Authentication is unconfigured. Set <code className="text-[#D7EF4A]">VITE_SUPABASE_URL</code> / <code className="text-[#D7EF4A]">VITE_SUPABASE_ANON_KEY</code>.
             </div>
           )}
 
           <AnimatePresence mode="wait">
+            {/* Step 0: Role Selection */}
             {step === 0 && (
-              <motion.div key="s0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-3">
-                {(
-                  [
-                    { id: 'donor' as Role, title: 'I have food to give', desc: 'Restaurant, hotel, grocery, bakery or food business', icon: Building2 },
-                    { id: 'recipient' as Role, title: 'I need food for people', desc: 'NGO, shelter, orphanage, community kitchen, household', icon: Home },
-                  ]
-                ).map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => handleTypeSwitch(opt.id)}
-                    className={`w-full text-left p-4 rounded-xl border transition-all ${form.role === opt.id ? 'border-primary bg-primary-container' : 'border-line bg-panel hover:border-line'}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${form.role === opt.id ? 'bg-primary text-on-primary' : 'bg-elevated text-text-2'}`}>
-                        <opt.icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-text">{opt.title}</p>
-                        <p className="text-[12px] text-text-2">{opt.desc}</p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </motion.div>
-            )}
-
-            {step === 1 && (
-              <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-3">
-                <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">
-                    {form.role === 'donor' ? 'Business / organization name' : 'Full name'}
+              <motion.div
+                key="s0"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-3"
+              >
+                <div className="space-y-2">
+                  <label className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[#858C84]">
+                    Select Your Node Role
                   </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-3" />
-                    {form.role === 'donor' ? (
-                      <input value={form.organization} onChange={(e) => set('organization', e.target.value)} placeholder="e.g. Green Leaf Bakery" className="input-field pl-10" />
-                    ) : (
-                      <input value={form.fullName} onChange={(e) => set('fullName', e.target.value)} placeholder="e.g. Maria Santos" className="input-field pl-10" />
-                    )}
-                  </div>
-                  {form.role === 'recipient' && (
-                    <input value={form.organization} onChange={(e) => set('organization', e.target.value)} placeholder="Organization (optional — NGO name)" className="input-field mt-2" />
-                  )}
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Email</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-3" />
-                    <input type="email" value={form.email} onChange={(e) => set('email', e.target.value)} placeholder="you@example.com" className="input-field pl-10" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-3" />
-                    <input type={showPwd ? 'text' : 'password'} value={form.password} onChange={(e) => set('password', e.target.value)} className="input-field pl-10 pr-10" />
-                    <button type="button" onClick={() => setShowPwd((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3" aria-label={showPwd ? 'Hide password' : 'Show password'}>
-                      {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  <div className="grid grid-cols-1 gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => handleTypeSwitch('donor')}
+                      className={`p-4 rounded-xl border text-left transition-all ${
+                        form.role === 'donor'
+                          ? 'border-[#D7EF4A] bg-[#143527]'
+                          : 'border-[#262E26] bg-[#131713] hover:border-[#858C84]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-[#090B09] flex items-center justify-center text-[#D7EF4A]">
+                          <Building2 className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="font-['Anton'] text-lg uppercase text-white">Donor Purveyor</div>
+                          <p className="text-xs text-[#858C84]">Hotels, restaurants, bakeries, banquets, and supermarkets donating surplus food.</p>
+                        </div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleTypeSwitch('recipient')}
+                      className={`p-4 rounded-xl border text-left transition-all ${
+                        form.role === 'recipient'
+                          ? 'border-[#D7EF4A] bg-[#143527]'
+                          : 'border-[#262E26] bg-[#131713] hover:border-[#858C84]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-[#090B09] flex items-center justify-center text-[#D7EF4A]">
+                          <Home className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="font-['Anton'] text-lg uppercase text-white">Recipient Organization / NGO</div>
+                          <p className="text-xs text-[#858C84]">Shelters, community soup kitchens, orphanages, and verified NGOs receiving surplus.</p>
+                        </div>
+                      </div>
                     </button>
                   </div>
-                  <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px]">
-                    <Check ok={passwordChecks.length} label="8+ characters" />
-                    <Check ok={passwordChecks.mixed} label="letters & numbers" />
-                  </div>
                 </div>
-                <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Confirm password</label>
-                  <input type={showPwd ? 'text' : 'password'} value={form.confirm} onChange={(e) => set('confirm', e.target.value)} className="input-field" />
-                  {!passwordChecks.match && form.confirm !== '' && (
-                    <p className="mt-1 text-[11px] text-danger">Passwords do not match</p>
-                  )}
-                </div>
-              </motion.div>
-            )}
 
-            {step === 2 && (
-              <motion.div key="s2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-3">
-                <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">
-                    {form.role === 'donor' ? 'Business type' : 'Recipient type'}
+                <div className="pt-2">
+                  <label className="block font-mono text-[10px] font-bold uppercase tracking-wider text-[#858C84] mb-1.5">
+                    Organization Type
                   </label>
-                  <select value={form.account_type} onChange={(e) => set('account_type', e.target.value)} className="input-field">
+                  <select
+                    value={form.account_type}
+                    onChange={(e) => set('account_type', e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white text-xs font-mono uppercase"
+                  >
                     {accountTypes.map((t) => (
-                      <option key={t.value} value={t.value}>{t.label}</option>
+                      <option key={t.value} value={t.value}>
+                        {t.label.toUpperCase()}
+                      </option>
                     ))}
                   </select>
                 </div>
+              </motion.div>
+            )}
+
+            {/* Step 1: Identity & Credentials */}
+            {step === 1 && (
+              <motion.div
+                key="s1"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-3 font-mono text-xs"
+              >
                 <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Contact phone</label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-3" />
-                    <input value={form.phone} onChange={(e) => set('phone', e.target.value)} placeholder="+91 ..." className="input-field pl-10" />
-                  </div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Full Operator Name</label>
+                  <input
+                    value={form.fullName}
+                    onChange={(e) => set('fullName', e.target.value)}
+                    placeholder="e.g. Rajesh Kumar"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Address</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-3" />
-                    <input value={form.address} onChange={(e) => set('address', e.target.value)} placeholder="Street / area" className="input-field pl-10" />
-                  </div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Organization / Business Name</label>
+                  <input
+                    value={form.organization}
+                    onChange={(e) => set('organization', e.target.value)}
+                    placeholder="e.g. Grand Chola Banquets or Hope Shelter"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Work Email</label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => set('email', e.target.value)}
+                    placeholder="ops@organization.org"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Password</label>
+                  <input
+                    type={showPwd ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={(e) => set('password', e.target.value)}
+                    placeholder="Minimum 6 characters"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Confirm Password</label>
+                  <input
+                    type={showPwd ? 'text' : 'password'}
+                    value={form.confirm}
+                    onChange={(e) => set('confirm', e.target.value)}
+                    placeholder="Re-enter password"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            {/* Step 2: Contact & Location */}
+            {step === 2 && (
+              <motion.div
+                key="s2"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-3 font-mono text-xs"
+              >
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Direct Phone Number</label>
+                  <input
+                    value={form.phone}
+                    onChange={(e) => set('phone', e.target.value)}
+                    placeholder="+91 98400 12345"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Street Address</label>
+                  <input
+                    value={form.address}
+                    onChange={(e) => set('address', e.target.value)}
+                    placeholder="Dock / Gate / Building Street"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">City</label>
-                    <input value={form.city} onChange={(e) => set('city', e.target.value)} className="input-field" />
+                    <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">City</label>
+                    <input
+                      value={form.city}
+                      onChange={(e) => set('city', e.target.value)}
+                      placeholder="Chennai"
+                      className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                    />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">Postal code</label>
-                    <input value={form.postal_code} onChange={(e) => set('postal_code', e.target.value)} className="input-field" />
+                    <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Postal Code</label>
+                    <input
+                      value={form.postal_code}
+                      onChange={(e) => set('postal_code', e.target.value)}
+                      placeholder="600001"
+                      className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                    />
                   </div>
                 </div>
                 {form.role === 'recipient' && (
                   <div>
-                    <label className="block text-[11px] font-bold mb-1.5 text-text-2 tracking-widest uppercase">People you serve (approx.)</label>
-                    <div className="relative">
-                      <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-3" />
-                      <input type="number" min={1} value={form.beneficiary_count} onChange={(e) => set('beneficiary_count', e.target.value)} className="input-field pl-10" />
-                    </div>
+                    <label className="block text-[10px] uppercase font-bold text-[#858C84] mb-1">Average Daily Beneficiaries</label>
+                    <input
+                      type="number"
+                      value={form.beneficiary_count}
+                      onChange={(e) => set('beneficiary_count', e.target.value)}
+                      placeholder="e.g. 150"
+                      className="w-full px-3 py-2.5 rounded-xl bg-[#131713] border border-[#262E26] text-white"
+                    />
                   </div>
                 )}
               </motion.div>
             )}
 
+            {/* Step 3: Review */}
             {step === 3 && (
-              <motion.div key="s3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-3 bg-panel border border-line rounded-xl p-4">
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-elevated text-[12px] text-text-2">
-                  <AlertCircle className="w-4 h-4 text-primary-fixed flex-shrink-0" />
-                  Our team reviews recipient accounts before donation contact sharing becomes visible.
+              <motion.div
+                key="s3"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-3 font-mono text-xs bg-[#131713] border border-[#262E26] rounded-xl p-4"
+              >
+                <div className="flex justify-between border-b border-[#262E26] pb-2">
+                  <span className="text-[#858C84] uppercase">Role:</span>
+                  <span className="font-bold text-[#D7EF4A] uppercase">{form.role}</span>
                 </div>
-                <SummaryRow label="Role" value={form.role === 'donor' ? 'Donor' : 'Recipient'} />
-                <SummaryRow label="Name / Org" value={form.fullName || form.organization || '—'} />
-                <SummaryRow label="Email" value={form.email} />
-                <SummaryRow label="Phone" value={form.phone} />
-                <SummaryRow label="Type" value={accountTypes.find((t) => t.value === form.account_type)?.label ?? form.account_type} />
-                <SummaryRow label="City" value={[form.address, form.city, form.postal_code].filter(Boolean).join(', ') || '—'} />
-                {form.role === 'recipient' && (
-                  <SummaryRow label="People served" value={form.beneficiary_count ? `${form.beneficiary_count}` : '—'} />
-                )}
-                <p className="text-[11px] text-text-3">Units supported for donations: {Object.keys(UNIT_LABELS).slice(0, 4).join(', ')}…</p>
+                <div className="flex justify-between border-b border-[#262E26] pb-2">
+                  <span className="text-[#858C84] uppercase">Organization:</span>
+                  <span className="text-white font-bold">{form.organization || form.fullName}</span>
+                </div>
+                <div className="flex justify-between border-b border-[#262E26] pb-2">
+                  <span className="text-[#858C84] uppercase">Email:</span>
+                  <span className="text-white">{form.email}</span>
+                </div>
+                <div className="flex justify-between border-b border-[#262E26] pb-2">
+                  <span className="text-[#858C84] uppercase">Contact:</span>
+                  <span className="text-white">{form.phone}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#858C84] uppercase">Location:</span>
+                  <span className="text-white">{form.city} ({form.postal_code || 'N/A'})</span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <div className="flex gap-2">
+          {/* Action buttons */}
+          <div className="flex items-center gap-3 pt-2">
             {step > 0 && (
-              <button onClick={() => setStep((s) => s - 1)} className="btn-secondary px-4 h-12 rounded-xl flex items-center gap-1.5" disabled={loading}>
+              <button
+                type="button"
+                onClick={prev}
+                className="px-4 py-3 rounded-xl bg-[#1C221C] border border-[#262E26] text-white font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#252B25] flex items-center gap-1.5"
+              >
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
             )}
             {step < STEPS.length - 1 ? (
               <button
-                onClick={() => {
-                  if (!canAdvance(step)) {
-                    setError('Complete this step to continue')
-                    return
-                  }
-                  setError('')
-                  setStep((s) => s + 1)
-                }}
-                className={`btn-primary flex-1 h-12 rounded-xl flex items-center justify-center gap-1.5 ${!canAdvance(step) ? 'opacity-60' : ''}`}
+                type="button"
+                onClick={next}
+                className="flex-1 py-3 rounded-xl bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] flex items-center justify-center gap-1.5"
               >
                 Continue <ArrowRight className="w-4 h-4" />
               </button>
             ) : (
               <button
+                type="button"
                 onClick={submit}
                 disabled={loading || !configured}
-                className="btn-primary flex-1 h-12 rounded-xl flex items-center justify-center gap-1.5 disabled:opacity-60"
+                className="flex-1 py-3 rounded-xl bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-extrabold uppercase tracking-wider hover:bg-[#E8F5A4] flex items-center justify-center gap-2 disabled:opacity-40"
               >
-                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Create account</span><ArrowRight className="w-4 h-4" /></>}
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Commit Registration</span><ArrowRight className="w-4 h-4" /></>}
               </button>
             )}
           </div>
-
-          <p className="text-center text-[13px] text-text-2">
-            Already have an account? <Link to="/login" className="text-primary-fixed font-semibold">Sign in</Link>
-          </p>
         </motion.div>
       </div>
-    </div>
-  )
-}
-
-function Check({ ok, label }: { ok: boolean; label: string }) {
-  return (
-    <span className={`inline-flex items-center gap-1 ${ok ? 'text-secondary' : 'text-text-3'}`}>
-      <span className={`h-1.5 w-1.5 rounded-full ${ok ? 'bg-secondary' : 'bg-line'}`} /> {label}
-    </span>
-  )
-}
-
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between gap-4 text-[13px]">
-      <span className="text-text-2">{label}</span>
-      <span className="text-text font-medium text-right truncate">{value}</span>
     </div>
   )
 }

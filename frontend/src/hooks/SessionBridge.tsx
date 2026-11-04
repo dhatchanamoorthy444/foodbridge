@@ -7,14 +7,15 @@ import type { Profile } from '../types/api'
 async function authSessionProfile(): Promise<Profile | null> {
   try {
     return await authService.fetchProfile()
-  } catch {
+  } catch (err) {
+    console.error('Failed to fetch profile during auth sync:', err)
     return null
   }
 }
 
 /**
  * Boots the Supabase session once and streams auth state changes into the
- * Zustand store. Demo sessions (env unconfigured) are owned by Login.tsx.
+ * Zustand store with robust lifecycle handling.
  */
 export function SessionBridge({ children }: { children?: React.ReactNode }) {
   const setUser = useAppStore((s) => s.setUser)
@@ -37,38 +38,39 @@ export function SessionBridge({ children }: { children?: React.ReactNode }) {
       } else {
         setUser(null)
       }
+      setSessionReady(true)
     }
 
-    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'TOKEN_REFRESHED') return
-      if (event === 'SIGNED_OUT' || !session) {
-        apply(null)
-        return
-      }
-      if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
-        const profile = await authSessionProfile()
-        apply(profile)
-        if (!profile) {
-          // profile fetch failed (likely transient) — force re-apply on next poll
-          setSessionReady(true)
-        }
-      }
-    })
-
-    void supabase.auth.getSession().then(async ({ data: { session } }) => {
+    // 1. Initial Session Check directly from Supabase client
+    void supabase.auth.getSession().then(async ({ data: { session }, error }) => {
       if (!active) return
-      if (!session) {
-        setSessionReady(true)
+      if (error || !session) {
+        apply(null)
         return
       }
       const profile = await authSessionProfile()
       apply(profile)
-      setSessionReady(true)
+    })
+
+    // 2. Auth State Change Listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!active) return
+      if (event === 'TOKEN_REFRESHED') return
+
+      if (event === 'SIGNED_OUT' || !session) {
+        apply(null)
+        return
+      }
+
+      if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION' || event === 'USER_UPDATED') {
+        const profile = await authSessionProfile()
+        apply(profile)
+      }
     })
 
     return () => {
       active = false
-      data.subscription.unsubscribe()
+      subscription.unsubscribe()
     }
   }, [setUser, setSessionReady, setDemoSession])
 

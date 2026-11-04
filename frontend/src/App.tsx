@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -28,6 +28,7 @@ import Register from './pages/Register'
 import LandingPage from './pages/LandingPage'
 
 import useAppStore from './store/useAppStore'
+import type { AppRole } from './types/api'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,22 +40,65 @@ const queryClient = new QueryClient({
   },
 })
 
-function ProtectedRoute({ role }: { role?: 'donor' | 'recipient' }) {
+// Helper to determine role-based home landing
+function getRoleHome(role?: AppRole): string {
+  if (role === 'donor') return '/donor'
+  if (role === 'recipient') return '/browse'
+  if (role === 'admin') return '/donor'
+  return '/'
+}
+
+// ── Protected Route: only authenticated users allowed ──
+function ProtectedRoute({ role }: { role?: AppRole }) {
   const user = useAppStore((s) => s.user)
   const isSessionReady = useAppStore((s) => s.isSessionReady)
+  const location = useLocation()
+
   if (!isSessionReady) {
     return (
-      <div className="flex h-[50vh] items-center justify-center">
+      <div className="flex h-screen items-center justify-center bg-[#090B09]">
+        <div className="flex flex-col items-center gap-3">
+          <LoadingSpinner />
+          <span className="font-mono text-xs uppercase tracking-widest text-[#D7EF4A]">
+            Verifying Security Session...
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
+
+  if (role && user.role !== role && user.role !== 'admin') {
+    return <Navigate to={getRoleHome(user.role)} replace />
+  }
+
+  return <Outlet />
+}
+
+// ── Public Only Route: redirects authenticated users away from Login / Register ──
+function PublicOnlyRoute() {
+  const user = useAppStore((s) => s.user)
+  const isSessionReady = useAppStore((s) => s.isSessionReady)
+
+  if (!isSessionReady) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#090B09]">
         <LoadingSpinner />
       </div>
     )
   }
-  if (!user) return <Navigate to="/login" replace />
-  if (role && user.role !== role) return <Navigate to="/" replace />
+
+  if (user) {
+    return <Navigate to={getRoleHome(user.role)} replace />
+  }
+
   return <Outlet />
 }
 
-function AppShell() {
+function AuthenticatedAppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const user = useAppStore((s) => s.user)
 
@@ -68,7 +112,7 @@ function AppShell() {
   if (!user) return null
 
   return (
-    <div className="flex flex-1">
+    <div className="flex flex-1 min-h-screen bg-[#090B09] text-white">
       <AnimatePresence>
         {isSidebarOpen && (
           <>
@@ -82,7 +126,7 @@ function AppShell() {
               <Sidebar />
             </motion.div>
             <div
-              className="md:hidden fixed inset-0 bg-app-deep/70 z-30"
+              className="md:hidden fixed inset-0 bg-black/80 z-30"
               onClick={() => setIsSidebarOpen(false)}
             />
           </>
@@ -91,72 +135,104 @@ function AppShell() {
 
       <div className="flex-1 flex flex-col min-h-screen min-w-0">
         <Navbar onMenuClick={() => setIsSidebarOpen((v) => !v)} />
-        <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-app">
-          <Routes>
-            {/* Shared workspace */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/alerts" element={<Alerts />} />
-              <Route path="/pickups" element={<Pickups />} />
-            </Route>
-
-            {/* Donor */}
-            <Route element={<ProtectedRoute role="donor" />}>
-              <Route path="/donor" element={<DonorDashboard />} />
-              <Route path="/donor/new" element={<DonationForm />} />
-              <Route path="/donor/:id/edit" element={<DonationForm />} />
-              <Route path="/donations/:id/requests" element={<DonorDashboard />} />
-            </Route>
-
-            {/* Recipient */}
-            <Route element={<ProtectedRoute role="recipient" />}>
-              <Route path="/browse" element={<BrowseDonations />} />
-              <Route path="/browse/:id" element={<DonationDetail />} />
-              <Route path="/donation/:id" element={<DonationDetail />} />
-              <Route path="/my-requests" element={<MyRequests />} />
-            </Route>
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-[#090B09]">
+          <Outlet />
         </main>
       </div>
     </div>
   )
 }
 
+function RootRedirect() {
+  const user = useAppStore((s) => s.user)
+  const isSessionReady = useAppStore((s) => s.isSessionReady)
+
+  if (!isSessionReady) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#090B09]">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  // If authenticated, send to their role command hub. Otherwise render the public LandingPage!
+  if (user) {
+    return <Navigate to={getRoleHome(user.role)} replace />
+  }
+
+  return <LandingPage />
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <SessionBridge />
-        <div className="relative min-h-dvh flex flex-col bg-app text-text">
-          <CursorGlow />
-          <CookieConsent />
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#191E1A',
-                color: '#F2F0E8',
-                border: '1px solid #343C35',
-                borderRadius: '8px',
-                boxShadow: '0 12px 32px -4px rgba(0,0,0,0.55)',
-              },
-            }}
-          />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/cookies" element={<CookiePolicy />} />
-            <Route path="/refund" element={<RefundPolicy />} />
-            <Route path="*" element={<LandingPage />} />
-          </Routes>
-          <AppShell />
-        </div>
+        <SessionBridge>
+          <div className="relative min-h-dvh flex flex-col bg-[#090B09] text-white">
+            <CursorGlow />
+            <CookieConsent />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#131713',
+                  color: '#F6F7F2',
+                  border: '1px solid #262E26',
+                  borderRadius: '12px',
+                  boxShadow: '0 12px 32px -4px rgba(0,0,0,0.65)',
+                },
+              }}
+            />
+
+            <Routes>
+              {/* Public Root: shows LandingPage for guests, redirects authenticated users to their dashboard */}
+              <Route path="/" element={<RootRedirect />} />
+
+              {/* Public Information Pages */}
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/cookies" element={<CookiePolicy />} />
+              <Route path="/refund" element={<RefundPolicy />} />
+
+              {/* Public Only Auth Pages (Auto-redirect if already logged in) */}
+              <Route element={<PublicOnlyRoute />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Route>
+
+              {/* Authenticated Workspace App Layout with Sidebar & Navbar */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AuthenticatedAppLayout />}>
+                  {/* Shared across authenticated users */}
+                  <Route path="/hub" element={<Home />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/alerts" element={<Alerts />} />
+                  <Route path="/pickups" element={<Pickups />} />
+
+                  {/* Donor & Admin Area */}
+                  <Route element={<ProtectedRoute role="donor" />}>
+                    <Route path="/donor" element={<DonorDashboard />} />
+                    <Route path="/donor/new" element={<DonationForm />} />
+                    <Route path="/donor/:id/edit" element={<DonationForm />} />
+                    <Route path="/donations/:id/requests" element={<DonorDashboard />} />
+                  </Route>
+
+                  {/* Recipient / NGO Area */}
+                  <Route element={<ProtectedRoute role="recipient" />}>
+                    <Route path="/browse" element={<BrowseDonations />} />
+                    <Route path="/browse/:id" element={<DonationDetail />} />
+                    <Route path="/donation/:id" element={<DonationDetail />} />
+                    <Route path="/my-requests" element={<MyRequests />} />
+                  </Route>
+                </Route>
+              </Route>
+
+              {/* Catch-all */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </SessionBridge>
       </Router>
     </QueryClientProvider>
   )

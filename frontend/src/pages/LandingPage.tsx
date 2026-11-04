@@ -1,16 +1,13 @@
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   Heart,
   ShieldCheck,
   Users,
   Scale,
   UtensilsCrossed,
-  Zap,
-  Store,
-  HandHeart,
-  Bike,
   ArrowRight,
 } from 'lucide-react'
+import useAppStore from '../store/useAppStore'
 
 const NEON = '#dfff00'
 const BLACK = '#0a0a0a'
@@ -27,7 +24,8 @@ const IMPACT = [
 ]
 
 export default function LandingPage() {
-  const navigate = useNavigate()
+  const user = useAppStore((s) => s.user)
+  const dashboardLink = user?.role === 'recipient' ? '/browse' : '/donor'
 
   return (
     <div className="min-h-screen" style={{ background: BLACK, color: '#ffffff' }}>
@@ -57,36 +55,57 @@ export default function LandingPage() {
               </span>
             </div>
           </Link>
+
           <div className="flex items-center gap-5">
-            <Link
-              to="/login"
-              className="hidden sm:flex items-center transition-colors hover:opacity-80"
-              style={{
-                color: '#ffffff',
-                fontFamily: 'Be Vietnam Pro, sans-serif',
-                fontSize: 13,
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/register"
-              className="flex items-center gap-2 h-12 px-6 rounded-lg transition-all active:scale-95"
-              style={{
-                background: NEON,
-                color: BLACK,
-                fontFamily: 'Be Vietnam Pro, sans-serif',
-                fontSize: 13,
-                fontWeight: 700,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Launch Platform <ArrowRight className="w-4 h-4" />
-            </Link>
+            {user ? (
+              <Link
+                to={dashboardLink}
+                className="flex items-center gap-2 h-12 px-6 rounded-lg transition-all active:scale-95"
+                style={{
+                  background: NEON,
+                  color: BLACK,
+                  fontFamily: 'Be Vietnam Pro, sans-serif',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Open Dashboard <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="hidden sm:flex items-center transition-colors hover:opacity-80"
+                  style={{
+                    color: '#ffffff',
+                    fontFamily: 'Be Vietnam Pro, sans-serif',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex items-center gap-2 h-12 px-6 rounded-lg transition-all active:scale-95"
+                  style={{
+                    background: NEON,
+                    color: BLACK,
+                    fontFamily: 'Be Vietnam Pro, sans-serif',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Launch Platform <ArrowRight className="w-4 h-4" />
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -94,121 +113,94 @@ export default function LandingPage() {
       {/* ══════════════ FULL-SCREEN HERO ══════════════ */}
       <section className="relative min-h-screen pt-[72px] flex flex-col justify-center overflow-hidden" style={{ background: BLACK }}>
         <div className="max-w-[1400px] mx-auto w-full px-5 md:px-8 lg:px-10 py-10 lg:py-14 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center flex-1">
-          {/* ─── Left column ─── */}
+          {/* Left column */}
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center gap-2.5">
               <span
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full"
-                style={{ background: NEON, color: BLACK }}
+                className="px-3 py-1 rounded-full border text-[11px] font-bold tracking-widest uppercase flex items-center gap-1.5"
+                style={{ borderColor: NEON, color: NEON, background: 'rgba(223,255,0,0.08)' }}
               >
-                <Zap className="w-3.5 h-3.5" fill="currentColor" />
-                <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                  Next-Gen Food Rescue
-                </span>
-              </span>
-              <span
-                className="inline-flex items-center px-4 py-1.5 rounded-full border"
-                style={{ borderColor: OUTLINE, color: MUTED }}
-              >
-                <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                  Est. 2026 · Zero Waste
-                </span>
+                <span className="w-2 h-2 rounded-full animate-ping" style={{ background: NEON }} />
+                Real-Time Surplus Dispatch
               </span>
             </div>
 
             <h1
-              className="leading-[0.9] tracking-tight"
-              style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 'clamp(52px, 8vw, 100px)', color: '#ffffff', textTransform: 'uppercase' }}
+              className="text-[clamp(44px,7vw,84px)] font-normal leading-[0.95] tracking-tight"
+              style={{ fontFamily: 'Anton, Impact, sans-serif', color: '#ffffff' }}
             >
-              Rescue Food.
-              <br />
-              <span style={{ color: NEON }}>Feed People.</span>
+              DON'T LET GOOD FOOD GO TO WASTE.
             </h1>
 
-            <p className="max-w-lg" style={{ fontFamily: 'Rubik, sans-serif', fontSize: 17, lineHeight: '28px', color: MUTED }}>
-              FoodBridge connects surplus food with the people who need it most.
-              Real-time expiry monitoring, smart allocation and zero-waste logistics —
-              all in one loud, fast platform.
+            <p
+              className="text-[17px] md:text-[19px] leading-relaxed max-w-[560px]"
+              style={{ fontFamily: 'Rubik, sans-serif', color: MUTED }}
+            >
+              Commercial kitchens, banquets, and hotels log surplus in 30 seconds. Local shelters and NGOs receive instant priority dispatch before expiry.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <button
-                onClick={() => navigate('/register')}
-                className="group relative h-14 px-7 rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] overflow-hidden"
-                style={{ background: NEON, color: BLACK }}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Link
+                to={user ? dashboardLink : '/register'}
+                className="h-14 px-8 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+                style={{
+                  background: NEON,
+                  color: BLACK,
+                  fontFamily: 'Be Vietnam Pro, sans-serif',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 14, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                  Get Started Now
-                </span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="h-14 px-7 rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] border"
-                style={{ borderColor: OUTLINE, color: '#ffffff', fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 14, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}
-              >
-                Sign In
-              </button>
+                {user ? 'Go To Your Dashboard' : 'Start Rescuing Surplus'} <ArrowRight className="w-4 h-4" />
+              </Link>
+              {!user && (
+                <Link
+                  to="/login"
+                  className="h-14 px-8 rounded-xl flex items-center justify-center gap-2 border transition-all active:scale-95"
+                  style={{
+                    borderColor: OUTLINE,
+                    color: '#ffffff',
+                    fontFamily: 'Be Vietnam Pro, sans-serif',
+                    fontSize: 14,
+                    fontWeight: 700,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Station Sign In
+                </Link>
+              )}
             </div>
           </div>
 
-          {/* ─── Right column — big food image card ─── */}
-          <div className="relative hidden lg:block">
-            <div
-              className="relative rounded-2xl overflow-hidden"
-              style={{
-                border: `3px solid ${NEON}`,
-                boxShadow: `14px 14px 0 0 ${NEON}`,
-              }}
-            >
-              <span
-                className="absolute top-5 left-5 z-10 px-4 py-1.5 rounded-full"
-                style={{ background: NEON, color: BLACK, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}
-              >
-                Real Food · Real Rescue
-              </span>
+          {/* Right column: Realistic Food Visual */}
+          <div className="relative rounded-2xl overflow-hidden border" style={{ borderColor: OUTLINE, background: CARD }}>
+            <div className="aspect-[4/3] w-full overflow-hidden relative">
               <img
-                src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=1000&q=80"
-                alt="Traditional South Indian banana-leaf meal ready for rescue redistribution"
-                className="w-full h-[520px] object-cover"
+                src="/images/meal-thali.jpg"
+                alt="Fresh wholesome food ready for donation"
+                className="w-full h-full object-cover"
               />
               <div
                 className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.4) 45%, transparent 70%)' }}
+                style={{
+                  background: 'linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 50%, transparent 100%)',
+                }}
               />
-              <div className="absolute bottom-6 left-6 right-6">
-                <h3 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 32, lineHeight: '38px', color: '#ffffff', textTransform: 'uppercase' }}>
-                  One Plate =<br />
-                  <span style={{ color: NEON }}>One Child's Lunch.</span>
-                </h3>
-                <p className="mt-2" style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, lineHeight: '22px', color: MUTED, maxWidth: 360 }}>
-                  Every rescued meal on FoodBridge is a breakfast or lunch that reaches a child instead of a bin.
-                </p>
-              </div>
-              <span
-                className="absolute -bottom-4 right-8 px-4 py-2 rounded-full"
-                style={{ background: NEON, color: BLACK, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }}
-              >
-                No Waste. No Hunger.
-              </span>
-            </div>
-          </div>
-
-          {/* Mobile image */}
-          <div className="lg:hidden px-5 pb-8 -mt-4">
-            <div className="relative rounded-2xl overflow-hidden" style={{ border: `2px solid ${NEON}`, boxShadow: `8px 8px 0 0 ${NEON}` }}>
-              <img
-                src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800&q=80"
-                alt="Traditional South Indian banana-leaf meal"
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%)' }} />
-              <div className="absolute bottom-4 left-5 right-5">
-                <h3 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 24, color: '#ffffff', textTransform: 'uppercase' }}>
-                  One Plate ={' '}
-                  <span style={{ color: NEON }}>One Child's Lunch.</span>
-                </h3>
+              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+                <div>
+                  <span className="font-mono text-[10px] text-[#D7EF4A] uppercase font-bold tracking-wider">
+                    VERIFIED SURPLUS DISPATCH
+                  </span>
+                  <p className="font-['Anton'] text-xl uppercase text-white mt-0.5">
+                    Hygienic Commercial Quality Food
+                  </p>
+                </div>
+                <span className="px-2.5 py-1 rounded bg-[#263300] border border-[#BCD147]/40 text-[#D7EF4A] font-mono text-[10px] font-bold uppercase">
+                  ZERO WASTE
+                </span>
               </div>
             </div>
           </div>
@@ -216,131 +208,27 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════════ IMPACT STATS ══════════════ */}
-      <section className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 py-16">
-        <div className="flex flex-col gap-2 mb-8">
-          <h2 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
-            How We Work
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {IMPACT.map((s) => (
-            <div key={s.label} className="rounded-xl p-6 flex flex-col gap-2" style={{ background: CARD, border: `1px solid ${OUTLINE}` }}>
-              <div className="flex items-center justify-between">
-                <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: FAINT, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                  {s.label}
-                </span>
-                <s.Icon className="w-5 h-5" style={{ color: NEON }} />
+      <section className="py-16 border-t" style={{ borderColor: OUTLINE, background: BLACK }}>
+        <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {IMPACT.map((item) => (
+            <div key={item.label} className="p-6 rounded-2xl border" style={{ borderColor: OUTLINE, background: CARD }}>
+              <item.Icon className="w-6 h-6 mb-3" style={{ color: NEON }} />
+              <div style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 32, color: '#ffffff' }}>
+                {item.value} {item.unit}
               </div>
-              <span className="tabular-nums" style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 40, lineHeight: '44px', color: '#ffffff' }}>
-                {s.value}
-                {s.unit && (
-                  <span style={{ fontFamily: 'Rubik, sans-serif', fontSize: 16, fontWeight: 400, color: FAINT, marginLeft: 4 }}>{s.unit}</span>
-                )}
-              </span>
-              <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, fontWeight: 600, color: NEON }}>{s.sub}</span>
+              <div style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 13, fontWeight: 700, color: NEON, marginTop: 4 }}>
+                {item.label}
+              </div>
+              <div style={{ fontFamily: 'Rubik, sans-serif', fontSize: 12, color: MUTED, marginTop: 2 }}>
+                {item.sub}
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ══════════════ HOW IT WORKS ══════════════ */}
-      <section className="py-16" style={{ background: CARD }}>
-        <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10">
-          <div className="flex flex-col gap-2 mb-10">
-            <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: NEON, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              Three Simple Steps
-            </span>
-            <h2 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)', color: '#ffffff', textTransform: 'uppercase' }}>
-              How FoodBridge Works
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { step: '01', title: 'Donors Post Surplus', desc: 'Bakeries, markets and farms log surplus batches with expiry windows in under 30 seconds.', Icon: Store },
-              { step: '02', title: 'Smart Matching', desc: 'The engine ranks nearby pantries by urgency, capacity and cold-chain fit — no wasted trips.', Icon: HandHeart },
-              { step: '03', title: 'Volunteers Deliver', desc: 'Last-mile couriers pick up with OTP-verified handovers and live route tracking.', Icon: Bike },
-            ].map((s) => (
-              <div key={s.step} className="rounded-xl p-7 flex flex-col gap-3" style={{ background: BLACK, border: `1px solid ${OUTLINE}` }}>
-                <div className="flex items-center justify-between">
-                  <span style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 32, color: 'transparent', WebkitTextStroke: `1.5px ${NEON}` }}>
-                    {s.step}
-                  </span>
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center" style={{ background: 'rgba(223,255,0,0.1)' }}>
-                    <s.Icon className="w-5 h-5" style={{ color: NEON }} />
-                  </div>
-                </div>
-                <h3 style={{ fontFamily: 'Rubik, sans-serif', fontSize: 19, fontWeight: 600, color: '#ffffff' }}>{s.title}</h3>
-                <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, lineHeight: '22px', color: MUTED }}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ COMMUNITY STORY ══════════════ */}
-      <section className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 py-16">
-        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
-          <div className="relative rounded-xl overflow-hidden min-h-[300px]">
-            <img
-              src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=900&q=80"
-              alt="Volunteers packing rescued food for community distribution"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%)' }} />
-            <div className="absolute bottom-6 left-6 right-6">
-              <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: NEON, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                Safe Handover
-              </span>
-              <h3 className="mt-1.5" style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 28, lineHeight: '34px', color: '#ffffff', textTransform: 'uppercase' }}>
-                From Bakery Shelf to Breakfast Table
-              </h3>
-            </div>
-          </div>
-          <div className="rounded-xl p-8 flex flex-col justify-center gap-5" style={{ background: CARD, border: `1px solid ${OUTLINE}` }}>
-            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 19, lineHeight: '32px', color: '#ffffff' }}>
-              Surplus food is logged with expiry windows, recipients request what their community
-              actually needs, and donors approve the requests they can fulfil. Every step in the
-              FoodBridge flow is timestamped and traceable.
-            </p>
-            <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, fontWeight: 700, color: NEON, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Built for verified food businesses &amp; community organisations
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════ CTA BAND ══════════════ */}
-      <section style={{ background: NEON }}>
-        <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 py-14 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col gap-2">
-            <h2 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 'clamp(28px, 4vw, 48px)', color: BLACK, textTransform: 'uppercase', lineHeight: 1.05 }}>
-              Ready to Bridge the Gap?
-            </h2>
-            <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 16, color: 'rgba(10,10,10,0.7)', maxWidth: 440 }}>
-              Join as a donor, NGO or volunteer. Setup takes under two minutes.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              to="/register"
-              className="h-13 px-7 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95"
-              style={{ background: BLACK, color: NEON, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 14, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}
-            >
-              Create Free Account <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/login"
-              className="h-13 px-7 rounded-lg flex items-center justify-center gap-2 border transition-all active:scale-95"
-              style={{ borderColor: 'rgba(10,10,10,0.3)', color: BLACK, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 14, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}
-            >
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ══════════════ FOOTER ══════════════ */}
-      <footer className="py-12" style={{ background: BLACK }}>
+      <footer className="py-12 border-t" style={{ borderColor: OUTLINE, background: BLACK }}>
         <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="flex items-center gap-3">
             <img
