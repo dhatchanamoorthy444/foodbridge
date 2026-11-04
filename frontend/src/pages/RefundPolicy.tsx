@@ -66,10 +66,11 @@ export default function RefundPolicy() {
             For questions about this policy or to request a cancellation confirmation, contact:
           </p>
           <div className="earth-card p-4 text-bone font-mono text-sm">
-            Email: support@foodbridge.network
+            Reach the team through the sign-in page or your account settings in-app.
           </div>
         </section>
       </div>
     </div>
   )
 }
+

@@ -97,7 +97,7 @@ export function useMyPickups(enabled: boolean): { data?: Pickup[]; isLoading: bo
   const queryClient = useQueryClient()
   const query = useQuery({
     queryKey: ['my-pickups'],
-    queryFn: () => pickupsService.my(),
+    queryFn: () => pickupsService.mine(),
     enabled,
     staleTime: 5_000,
   })

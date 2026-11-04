@@ -34,7 +34,8 @@ export function useRealtime({ tables, onChange, enabled = true }: UseRealtimeTab
     if (!isSupabaseConfigured || !supabase || !enabled || tables.length === 0) {
       return
     }
-    const channel: RealtimeChannel = supabase.channel(`fb-realtime-${key}`)
+    const client = supabase
+    const channel: RealtimeChannel = client.channel(`fb-realtime-${key}`)
     for (const table of tables) {
       channel.on(
         'postgres_changes' as never,
@@ -58,7 +59,7 @@ export function useRealtime({ tables, onChange, enabled = true }: UseRealtimeTab
     return () => {
       disposed = true
       if (debounceRef.current) clearTimeout(debounceRef.current)
-      supabase.removeChannel(channel)
+      client.removeChannel(channel)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, enabled, fire])

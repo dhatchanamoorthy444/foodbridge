@@ -7,21 +7,27 @@ import useAppStore from '../store/useAppStore'
 import { dashboardService, donationsService } from '../services/api'
 import { SkeletonList, EmptyState } from '../components/ui/Feedback'
 import { storagePublicUrl } from '../lib/supabase'
-import { CATEGORY_LABELS, UNIT_LABELS } from '../types/api'
+import { CATEGORY_LABELS, UNIT_LABELS, Donation, DonorStats, RecipientStats } from '../types/api'
+
+type Stats = DonorStats | RecipientStats
 
 export default function Home() {
   const user = useAppStore((s) => s.user)
   const isDonor = user?.role === 'donor'
 
-  const stats = useQuery({
+  const stats = useQuery<Stats, Error>({
     queryKey: ['home-stats'],
-    queryFn: () => (isDonor ? dashboardService.donor() : dashboardService.recipient()),
-    enabled: !!user && isDonor === (user.role === 'donor'),
+    queryFn: async (): Promise<Stats> => {
+      const s = isDonor ? await dashboardService.donor() : await dashboardService.recipient()
+      return s as Stats
+    },
+    enabled: !!user,
   })
 
-  const recent = useQuery({
+  const recent = useQuery<{ data: Donation[]; total: number }, Error>({
     queryKey: isDonor ? ['home-my-donations'] : ['home-browse'],
-    queryFn: () => (isDonor ? donationsService.my() : donationsService.list({ limit: 4, sort: 'expiry' })),
+    queryFn: (): Promise<{ data: Donation[]; total: number }> =>
+      isDonor ? donationsService.my() : donationsService.list({ limit: 4, sort: 'expiry' }),
     enabled: !!user,
   })
 

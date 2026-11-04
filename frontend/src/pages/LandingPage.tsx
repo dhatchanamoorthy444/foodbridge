@@ -1,25 +1,16 @@
-import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   Heart,
-  Search,
   ShieldCheck,
   Users,
   Scale,
   UtensilsCrossed,
-  Timer,
-  MapPin,
   Zap,
   Store,
   HandHeart,
   Bike,
-  Activity,
   ArrowRight,
-  Leaf,
-  Play,
 } from 'lucide-react'
-import useAppStore from '../store/useAppStore'
 
 const NEON = '#dfff00'
 const BLACK = '#0a0a0a'
@@ -228,7 +219,7 @@ export default function LandingPage() {
       <section className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 py-16">
         <div className="flex flex-col gap-2 mb-8">
           <h2 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
-            Verified Impact
+            How We Work
           </h2>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -247,49 +238,6 @@ export default function LandingPage() {
                 )}
               </span>
               <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, fontWeight: 600, color: NEON }}>{s.sub}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════ URGENCY RADAR ══════════════ */}
-      <section className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-10 pb-16">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: '#ff3b30' }} />
-            <h2 style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 'clamp(26px, 3vw, 36px)', color: '#ffffff', textTransform: 'uppercase' }}>
-              Live Urgency Radar
-            </h2>
-          </div>
-          <span className="px-3 py-1 rounded-full" style={{ background: '#3a0a0a', color: '#ff6b6b', fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Critical &lt; 24h
-          </span>
-        </div>
-        <div className="grid sm:grid-cols-3 gap-4">
-          {URGENCY.map((item) => (
-            <div key={item.id} className="rounded-xl p-5 flex flex-col gap-2.5" style={{ background: CARD, border: `1px solid ${OUTLINE}` }}>
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: item.critical ? '#ff3b30' : '#3a3200', color: item.critical ? '#ffffff' : NEON, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700 }}>
-                  <Timer className="w-3.5 h-3.5" /> {item.time}
-                </span>
-                <span className="tabular-nums" style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: FAINT }}>
-                  {item.distance}
-                </span>
-              </div>
-              <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: NEON, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                {item.source}
-              </span>
-              <h3 style={{ fontFamily: 'Rubik, sans-serif', fontSize: 17, fontWeight: 600, color: '#ffffff', lineHeight: '24px' }}>
-                {item.name}
-              </h3>
-              <div className="flex items-center justify-between mt-auto pt-2">
-                <span className="flex items-center gap-1.5 text-xs" style={{ color: MUTED }}>
-                  <MapPin className="w-3.5 h-3.5" /> {item.location}
-                </span>
-                <span className="px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.08)', color: MUTED, fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700 }}>
-                  {item.qty}
-                </span>
-              </div>
             </div>
           ))}
         </div>
@@ -341,31 +289,22 @@ export default function LandingPage() {
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%)' }} />
             <div className="absolute bottom-6 left-6 right-6">
               <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: NEON, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                Dispatch Report · 08:30 AM
+                Safe Handover
               </span>
               <h3 className="mt-1.5" style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 28, lineHeight: '34px', color: '#ffffff', textTransform: 'uppercase' }}>
-                The Morning Bread Run: 120 Loaves Saved
+                From Bakery Shelf to Breakfast Table
               </h3>
             </div>
           </div>
           <div className="rounded-xl p-8 flex flex-col justify-center gap-5" style={{ background: CARD, border: `1px solid ${OUTLINE}` }}>
             <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 19, lineHeight: '32px', color: '#ffffff' }}>
-              "Before FoodBridge, unsold artisanal boules were discarded at closing. Today,
-              seventy families enjoyed warm, wholesome crusts before midday."
+              Surplus food is logged with expiry windows, recipients request what their community
+              actually needs, and donors approve the requests they can fulfil. Every step in the
+              FoodBridge flow is timestamped and traceable.
             </p>
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full flex items-center justify-center" style={{ background: NEON, color: BLACK }}>
-                <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 13, fontWeight: 700 }}>MA</span>
-              </div>
-              <div>
-                <p style={{ fontFamily: 'Rubik, sans-serif', fontSize: 14, fontWeight: 500, color: '#ffffff' }}>
-                  Marcie Alverez · Field Coordinator
-                </p>
-                <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 700, color: NEON, letterSpacing: '0.04em' }}>
-                  Verified Safe Handover
-                </span>
-              </div>
-            </div>
+            <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 12, fontWeight: 700, color: NEON, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              Built for verified food businesses &amp; community organisations
+            </span>
           </div>
         </div>
       </section>
@@ -412,7 +351,7 @@ export default function LandingPage() {
             <div className="flex flex-col">
               <span style={{ fontFamily: 'Anton, Impact, sans-serif', fontSize: 18, color: '#ffffff' }}>FoodBridge</span>
               <span style={{ fontFamily: 'Be Vietnam Pro, sans-serif', fontSize: 11, fontWeight: 600, color: FAINT }}>
-                FoodBridge Network, 42 Green Lane, San Francisco CA 94110 · info@foodbridge.network
+                Verified donors · Verified recipients · Zero-cost surplus rescue
               </span>
             </div>
           </div>

@@ -45,7 +45,7 @@ export default function Pickups() {
     enabled: !!user,
     refetchInterval: 20000,
   })
-  const pickups = query.data?.data ?? []
+  const pickups = query.data ?? []
 
   const updateStatus = async (p: Pickup, status: PickupStatus) => {
     try {

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import Navbar from './components/layout/Navbar'
 import Sidebar from './components/layout/Sidebar'
-import SessionBridge from './hooks/SessionBridge'
+import { SessionBridge } from './hooks/SessionBridge'
 import { CookieConsent } from './components/ui/CookieConsent'
 import { CursorGlow } from './components/ui/CursorGlow'
 import { LoadingSpinner } from './components/ui/Feedback'

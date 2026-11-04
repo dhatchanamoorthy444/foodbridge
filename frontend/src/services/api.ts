@@ -8,6 +8,7 @@ import type {
 type Envelope<T> = { data: T; [key: string]: unknown }
 
 export { toastApiError }
+export default toastApiError
 
 /* ------------------------------------------------------------------ */
 /*  Auth — handled by Supabase, profiles stay in sync via DB trigger   */

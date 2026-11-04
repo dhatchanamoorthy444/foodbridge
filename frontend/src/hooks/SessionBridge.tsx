@@ -16,7 +16,7 @@ async function authSessionProfile(): Promise<Profile | null> {
  * Boots the Supabase session once and streams auth state changes into the
  * Zustand store. Demo sessions (env unconfigured) are owned by Login.tsx.
  */
-export function SessionBridge({ children }: { children: React.ReactNode }) {
+export function SessionBridge({ children }: { children?: React.ReactNode }) {
   const setUser = useAppStore((s) => s.setUser)
   const setSessionReady = useAppStore((s) => s.setSessionReady)
   const setDemoSession = useAppStore((s) => s.setDemoSession)

@@ -30,7 +30,7 @@ export default function Alerts() {
     enabled: !!user,
     refetchInterval: 20000,
   })
-  const alerts = query.data?.data ?? []
+  const alerts = query.data ?? []
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ['alerts'] })

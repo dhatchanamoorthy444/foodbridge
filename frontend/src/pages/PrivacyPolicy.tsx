@@ -81,11 +81,12 @@ export default function PrivacyPolicy() {
             For data protection inquiries, access requests, or regulatory questions, reach our project team at:
           </p>
           <div className="earth-card p-4 text-bone font-mono text-sm">
-            Email: privacy@foodbridge.network<br />
-            Support: support@foodbridge.network
+            
+            Reach the team through your account settings page in-app.
           </div>
         </section>
       </div>
     </div>
   )
 }
+
