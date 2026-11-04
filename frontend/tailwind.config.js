@@ -103,11 +103,12 @@ export default {
         'bg-dark-elevated': 'rgb(var(--fb-panel) / 0.92)',
       },
       fontFamily: {
-        sans: ['Rubik', 'system-ui', 'sans-serif'],
-        body: ['Rubik', 'system-ui', 'sans-serif'],
-        headline: ['Anton', 'Impact', 'sans-serif'],
-        label: ['Be Vietnam Pro', 'system-ui', 'sans-serif'],
-        mono: ['Roboto Mono', 'JetBrains Mono', 'monospace'],
+        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        headline: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        label: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"Roboto Mono"', 'JetBrains Mono', 'monospace'],
       },
       borderRadius: {
         DEFAULT: '0.25rem',
