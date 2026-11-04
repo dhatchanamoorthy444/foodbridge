@@ -19,6 +19,7 @@ export default function BrowseDonations() {
     category: category === 'all' ? undefined : category,
     city: city || undefined,
     sort: 'expiry',
+    excludeExpired: true,
   })
 
   const donations = query.data?.data ?? []
