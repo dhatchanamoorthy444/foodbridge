@@ -12,7 +12,7 @@ export const foodRequestsService = {
   async list(q: RequestQuery): Promise<{ rows: FoodRequestRow[]; total: number }> {
     let builder = supabaseAdmin
       .from('food_requests')
-      .select('*', { count: 'exact' })
+      .select('*, donation:food_donations(id, food_name, unit)', { count: 'exact' })
     if (q.recipientId) builder = builder.eq('recipient_id', q.recipientId)
     if (q.donationId) builder = builder.eq('donation_id', q.donationId)
     if (q.status && q.status !== 'all') builder = builder.eq('status', q.status)
