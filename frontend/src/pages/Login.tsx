@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, HeartHandshake, Loader2 } from 'lucide-react'
@@ -40,19 +40,12 @@ export default function Login() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-app-deep">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(55% 45% at 82% 6%, rgba(183,217,106,0.09) 0%, rgba(5,8,7,0) 55%), radial-gradient(45% 40% at 6% 92%, rgba(16,60,45,0.55) 0%, rgba(5,8,7,0) 60%)',
-        }}
-      />
-      <header className="fixed top-0 w-full z-50 bg-app-deep/85 backdrop-blur-md border-b border-line">
+    <div className="min-h-screen flex flex-col bg-app">
+      <header className="fixed top-0 w-full z-50 bg-app border-b border-line">
         <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
           <Link to="/" className="flex items-center gap-2.5">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-9 w-9 rounded-lg object-contain" />
-            <span className="font-display text-xl text-text tracking-tight">FOODBRIDGE</span>
+            <span className="font-['Anton'] text-xl text-text tracking-tight">FOODBRIDGE</span>
           </Link>
           <Link to="/register" className="text-[11px] font-bold uppercase tracking-widest text-primary-fixed hover:text-text transition-colors">
             Create Account
@@ -60,16 +53,11 @@ export default function Login() {
         </div>
       </header>
 
-      <div className="relative flex-1 pt-16 flex items-center justify-center px-4 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="w-full max-w-sm space-y-6"
-        >
+      <div className="flex-1 pt-16 flex items-center justify-center px-4 py-12">
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }} className="w-full max-w-sm space-y-6">
           <div className="text-center space-y-2">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-16 w-16 mx-auto object-contain" />
-            <h1 className="font-display text-3xl text-text tracking-tight">Welcome Back</h1>
+            <h1 className="font-['Anton'] text-3xl text-text tracking-tight">Welcome Back</h1>
             <p className="text-sm text-text-2">Sign in to your FoodBridge portal</p>
           </div>
 
@@ -83,6 +71,12 @@ export default function Login() {
             <div className="flex items-start gap-2 p-3 rounded-xl bg-danger-soft">
               <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-danger" />
               <p className="text-[13px] text-danger">{error}</p>
+            </div>
+          )}
+
+          {!configured && (
+            <div className="p-3 rounded-xl border border-line bg-elevated text-[13px] text-text-2">
+              Authentication is not configured on this deployment yet. Set <code className="text-primary-fixed">VITE_SUPABASE_URL</code> and <code className="text-primary-fixed">VITE_SUPABASE_ANON_KEY</code> to enable sign-in.
             </div>
           )}
 
@@ -116,22 +110,14 @@ export default function Login() {
                   placeholder="Your password"
                   className="input-field pl-10 pr-10"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPwd((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3"
-                  aria-label={showPwd ? 'Hide password' : 'Show password'}
-                >
+                <button type="button" onClick={() => setShowPwd((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3" aria-label={showPwd ? 'Hide password' : 'Show password'}>
                   {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <button type="submit" disabled={loading} className="btn-primary w-full h-12 text-[15px]">
-              {loading
-                ? <Loader2 className="w-5 h-5 animate-spin" />
-                : <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>
-              }
+            <button type="submit" disabled={loading || !configured} className="btn-primary w-full h-12 text-[15px]">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Sign In</span><ArrowRight className="w-4 h-4" /></>}
             </button>
           </form>
 
@@ -139,6 +125,7 @@ export default function Login() {
             <button
               type="button"
               onClick={async () => {
+                if (!configured) return toast.error('Authentication not configured')
                 if (!email) return toast.error('Enter your email above first')
                 try {
                   await authService.requestPasswordReset(email)
@@ -152,8 +139,7 @@ export default function Login() {
               Forgot your password?
             </button>
             <p className="text-[13px] text-text-2">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-primary-fixed font-semibold">Sign up free</Link>
+              Don't have an account? <Link to="/register" className="text-primary-fixed font-semibold">Sign up free</Link>
             </p>
           </div>
 

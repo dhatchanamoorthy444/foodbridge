@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -52,7 +52,7 @@ export default function DonorDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl text-text tracking-tight">Donor Dashboard</h1>
+          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Donor Dashboard</h1>
           <p className="text-[13px] text-text-2">
             {user?.organization?.trim() || user?.full_name || user?.email}'s actual inventory
           </p>
@@ -154,7 +154,7 @@ function StatCard({ label, value, icon, loading, tone = 'default', subtle }: {
       {loading ? (
         <div className="mt-2 h-7 w-14 animate-pulse rounded bg-elevated" />
       ) : (
-        <p className="mt-1 font-display text-[24px] tracking-tight text-text tabular-nums">{value}</p>
+        <p className="mt-1 font-['Anton'] text-[24px] tracking-tight text-text tabular-nums">{value}</p>
       )}
       {subtle && <p className="text-[10px] text-text-3">{subtle}</p>}
     </div>

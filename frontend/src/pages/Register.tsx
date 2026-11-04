@@ -1,9 +1,10 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ArrowLeft, Loader2, Building2, MapPin, Phone, User, Users, Home } from 'lucide-react'
 import useAppStore from '../store/useAppStore'
 import { authService, SignUpPayload } from '../services/api'
+import { isSupabaseConfigured } from '../lib/supabase'
 import { DONOR_ACCOUNT_TYPES, RECIPIENT_ACCOUNT_TYPES, UNIT_LABELS } from '../types/api'
 
 type Role = 'donor' | 'recipient'
@@ -28,6 +29,7 @@ const STEPS = ['Role', 'Identity', 'Contact', 'Review'] as const
 export default function Register() {
   const navigate = useNavigate()
   const setUser = useAppStore((s) => s.setUser)
+  const configured = isSupabaseConfigured
 
   const [step, setStep] = useState(0)
   const [form, setForm] = useState<FormState>({
@@ -134,7 +136,7 @@ export default function Register() {
       <div className="min-h-screen flex items-center justify-center bg-app px-4">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md text-center space-y-4 bg-panel border border-line rounded-2xl p-8">
           <Mail className="w-10 h-10 mx-auto text-primary-fixed" />
-          <h1 className="font-display text-2xl text-text">Confirm your email</h1>
+          <h1 className="font-['Anton'] text-2xl text-text">Confirm your email</h1>
           <p className="text-sm text-text-2">
             We sent a verification link to <span className="text-text font-semibold">{form.email}</span>. Click the link to activate your FoodBridge account, then sign in.
           </p>
@@ -150,7 +152,7 @@ export default function Register() {
         <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
           <Link to="/" className="flex items-center gap-2.5">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-9 w-9 rounded-lg object-contain" />
-            <span className="font-display text-xl text-text tracking-tight">FOODBRIDGE</span>
+            <span className="font-['Anton'] text-xl text-text tracking-tight">FOODBRIDGE</span>
           </Link>
           <Link to="/login" className="text-[11px] font-bold uppercase tracking-widest text-primary-fixed hover:text-text transition-colors">Sign In</Link>
         </div>
@@ -159,7 +161,7 @@ export default function Register() {
       <div className="flex-1 pt-16 flex items-center justify-center px-4 py-10">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md space-y-5">
           <div className="text-center space-y-1">
-            <h1 className="font-display text-3xl text-text tracking-tight">Join FoodBridge</h1>
+            <h1 className="font-['Anton'] text-3xl text-text tracking-tight">Join FoodBridge</h1>
             <p className="text-sm text-text-2">Four quick steps to start rescuing food</p>
           </div>
 
@@ -177,6 +179,12 @@ export default function Register() {
             <div className="flex items-start gap-2 p-3 rounded-xl bg-danger-soft">
               <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-danger" />
               <p className="text-[13px] text-danger">{error}</p>
+            </div>
+          )}
+
+          {!configured && (
+            <div className="p-3 rounded-xl border border-line bg-elevated text-[13px] text-text-2">
+              Authentication is not configured on this deployment. Set <code className="text-primary-fixed">VITE_SUPABASE_URL</code> / <code className="text-primary-fixed">VITE_SUPABASE_ANON_KEY</code> to enable registration.
             </div>
           )}
 
@@ -348,7 +356,7 @@ export default function Register() {
             ) : (
               <button
                 onClick={submit}
-                disabled={loading}
+                disabled={loading || !configured}
                 className="btn-primary flex-1 h-12 rounded-xl flex items-center justify-center gap-1.5 disabled:opacity-60"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><span>Create account</span><ArrowRight className="w-4 h-4" /></>}

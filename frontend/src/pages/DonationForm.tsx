@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -196,7 +196,7 @@ export default function DonationForm() {
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-container text-on-primary-container">
           <Check className="h-7 w-7" />
         </span>
-        <h1 className="mt-4 font-display text-2xl text-text">Donation published</h1>
+        <h1 className="mt-4 font-['Anton'] text-2xl text-text">Donation published</h1>
         <p className="mt-2 text-[13px] text-text-2">It is now visible to eligible recipients and live on your dashboard.</p>
         <Link to="/donor" className="btn-primary mt-6 inline-flex rounded-xl px-5 py-2.5 text-[13px]">Back to dashboard</Link>
       </motion.div>
@@ -209,7 +209,7 @@ export default function DonationForm() {
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
 
-      <h1 className="font-display text-2xl text-text tracking-tight">
+      <h1 className="font-['Anton'] text-2xl text-text tracking-tight">
         {editing ? 'Edit donation' : 'New food donation'}
       </h1>
       <p className="mt-1 text-[13px] text-text-2">All fields validated on the server. Image uploads go to secure storage.</p>
@@ -326,7 +326,7 @@ export default function DonationForm() {
               <input value={form.postal_code} onChange={(e) => set('postal_code', e.target.value)} className="input-field" />
             </Field>
             <Field label="Pickup availability">
-              <input value={form.pickup_window} onChange={(e) => set('pickup_window', e.target.value)} placeholder="e.g. Monâ€“Sat, 9 AMâ€“7 PM" className="input-field" />
+              <input value={form.pickup_window} onChange={(e) => set('pickup_window', e.target.value)} placeholder="e.g. Mon–Sat, 9 AM–7 PM" className="input-field" />
             </Field>
             <div className="md:col-span-2">
               <Field label="Pickup instructions">

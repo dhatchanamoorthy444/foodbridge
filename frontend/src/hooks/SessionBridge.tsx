@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import useAppStore from '../store/useAppStore'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { supabase } from '../lib/supabase'
 import { authService } from '../services/api'
 import type { Profile } from '../types/api'
 
@@ -22,6 +22,11 @@ export function SessionBridge({ children }: { children?: React.ReactNode }) {
   const setDemoSession = useAppStore((s) => s.setDemoSession)
 
   useEffect(() => {
+    if (!supabase) {
+      setSessionReady(true)
+      return
+    }
+
     let active = true
 
     function apply(profile: Profile | null) {
@@ -32,11 +37,6 @@ export function SessionBridge({ children }: { children?: React.ReactNode }) {
       } else {
         setUser(null)
       }
-    }
-
-    if (!isSupabaseConfigured || !supabase) {
-      setSessionReady(true)
-      return
     }
 
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {

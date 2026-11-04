@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, MapPin, Package, SlidersHorizontal, X } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -28,7 +28,7 @@ export default function BrowseDonations() {
       {/* Header */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl text-text tracking-tight">Browse Donations</h1>
+          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Browse Donations</h1>
           <p className="text-[13px] text-text-2">Live surplus Listings from verified donors</p>
         </div>
         <button onClick={() => setShowFilters((v) => !v)} className="btn-secondary rounded-lg px-3 py-2 text-[12px] flex items-center gap-1.5">

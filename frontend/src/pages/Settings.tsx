@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { User, Shield, Mail, Building2, Smartphone, MapPin, Globe, Lock, Inbox } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -82,7 +82,7 @@ export default function Settings() {
 
   return (
     <div className="mx-auto max-w-2xl pb-10">
-      <h1 className="font-display text-2xl text-text tracking-tight">Settings</h1>
+      <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Settings</h1>
       <p className="text-[13px] text-text-2">Identity, contact details and account security</p>
 
       {/* Tabs */}
@@ -105,7 +105,7 @@ export default function Settings() {
               <div className="rounded-xl border border-line bg-panel p-4">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-container">
-                    <span className="font-display text-xl text-on-primary-container">
+                    <span className="font-['Anton'] text-xl text-on-primary-container">
                       {(user?.full_name || user?.email || 'U').charAt(0).toUpperCase()}
                     </span>
                   </div>

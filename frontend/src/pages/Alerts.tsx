@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { AlarmClock, Plus, X, RefreshCw, Loader2, ChevronDown, Megaphone, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -41,7 +41,7 @@ export default function Alerts() {
     const foodName = window.prompt('What food can you offer? (e.g. Cooked rice meals)')
     if (!foodName || foodName.trim().length < 2) return
     const raw = window.prompt(
-      `Quantity for "${foodName}" â€” this alert still needs ${Math.max(a.required_quantity - a.fulfilled_quantity, 0)} ${a.unit}`
+      `Quantity for "${foodName}" — this alert still needs ${Math.max(a.required_quantity - a.fulfilled_quantity, 0)} ${a.unit}`
     )
     if (!raw) return
     const qty = Number(raw)
@@ -66,7 +66,7 @@ export default function Alerts() {
     setBusy(rid)
     try {
       await alertsService.decideResponse(rid, accept ? 'accept' : 'decline')
-      toast.success(accept ? 'Response accepted â€” allocation created' : 'Response declined')
+      toast.success(accept ? 'Response accepted — allocation created' : 'Response declined')
       refresh()
     } catch (err) {
       toastApiError(err, 'Decision failed')
@@ -79,7 +79,7 @@ export default function Alerts() {
     <div className="mx-auto max-w-3xl pb-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl text-text tracking-tight">Emergency Food Alerts</h1>
+          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Emergency Food Alerts</h1>
           <p className="text-[13px] text-text-2">{isDonor ? 'Urgent needs you can fulfil right now' : 'Broadcast urgent food needs to nearby donors'}</p>
         </div>
         <div className="flex gap-2">
@@ -105,7 +105,7 @@ export default function Alerts() {
             title="No active alerts"
             message={isDonor
               ? 'When recipients raise urgent food needs, they appear here instantly via realtime sync.'
-              : 'Create an alert when your community runs out of food â€” nearby donors are notified instantly.'}
+              : 'Create an alert when your community runs out of food — nearby donors are notified instantly.'}
           />
         ) : (
           alerts.map((a) => {
@@ -191,13 +191,13 @@ function AlertResponses({ alertId, onDecide, busy }: {
   return (
     <div className="mt-3 space-y-2">
       {contact && (
-        <p className="text-[11px] text-text-3">Alert contact â†’ {contact.contact_phone}{contact.contact_name ? ` (${contact.contact_name})` : ''}</p>
+        <p className="text-[11px] text-text-3">Alert contact → {contact.contact_phone}{contact.contact_name ? ` (${contact.contact_name})` : ''}</p>
       )}
       {responses.map((r) => (
         <div key={r.id} className="flex items-center justify-between gap-2 rounded-lg bg-elevated px-3 py-2">
           <div className="min-w-0">
             <p className="truncate text-[12px] font-semibold text-text">
-              {r.food_name} â€” {r.offered_quantity} {UNIT_LABELS[r.unit]?.toLowerCase() ?? r.unit}
+              {r.food_name} — {r.offered_quantity} {UNIT_LABELS[r.unit]?.toLowerCase() ?? r.unit}
               {r.message ? <span className="ml-1 text-text-3">· "{r.message}"</span> : null}
             </p>
             <p className="text-[10px] uppercase tracking-wider text-text-3">{r.status}</p>
@@ -284,7 +284,7 @@ function CreateModal({ onClose, onCreated }: { onClose: () => void; onCreated: (
       <form onSubmit={submit} className="w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-t-2xl md:rounded-2xl border border-line bg-panel p-5">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="font-display text-xl text-text">New emergency alert</h2>
+            <h2 className="font-['Anton'] text-xl text-text">New emergency alert</h2>
             <p className="mt-0.5 text-[12px] text-text-3">Broadcast a verified urgent food need</p>
           </div>
           <button type="button" onClick={onClose} className="text-text-3 hover:text-text" aria-label="Close"><X className="h-4 w-4" /></button>
@@ -336,7 +336,7 @@ function CreateModal({ onClose, onCreated }: { onClose: () => void; onCreated: (
             <textarea value={form.reason} onChange={(e) => set('reason', e.target.value)} rows={2} className="input-field resize-none" placeholder="e.g. 60 children at our shelter have had no dinner for two days" required />
           </Wrap>
           <Wrap label="Additional requirements">
-            <input value={form.additional_requirements} onChange={(e) => set('additional_requirements', e.target.value)} className="input-field" placeholder="e.g. vegetarian only â€” optional" />
+            <input value={form.additional_requirements} onChange={(e) => set('additional_requirements', e.target.value)} className="input-field" placeholder="e.g. vegetarian only — optional" />
           </Wrap>
           <div className="grid grid-cols-2 gap-3">
             <Wrap label="Contact person">
@@ -346,7 +346,7 @@ function CreateModal({ onClose, onCreated }: { onClose: () => void; onCreated: (
               <input value={form.contact_phone} onChange={(e) => set('contact_phone', e.target.value)} className="input-field" required />
             </Wrap>
           </div>
-          <p className="text-[11px] text-text-3">Contact details stay private â€” donors see them only after you accept their responses.</p>
+          <p className="text-[11px] text-text-3">Contact details stay private — donors see them only after you accept their responses.</p>
         </div>
 
         <div className="mt-4 flex gap-2">
