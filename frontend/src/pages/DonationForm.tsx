@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -196,7 +196,7 @@ export default function DonationForm() {
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-container text-on-primary-container">
           <Check className="h-7 w-7" />
         </span>
-        <h1 className="mt-4 font-['Anton'] text-2xl text-text">Donation published</h1>
+        <h1 className="mt-4 font-display text-2xl text-text">Donation published</h1>
         <p className="mt-2 text-[13px] text-text-2">It is now visible to eligible recipients and live on your dashboard.</p>
         <Link to="/donor" className="btn-primary mt-6 inline-flex rounded-xl px-5 py-2.5 text-[13px]">Back to dashboard</Link>
       </motion.div>
@@ -209,7 +209,7 @@ export default function DonationForm() {
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
 
-      <h1 className="font-['Anton'] text-2xl text-text tracking-tight">
+      <h1 className="font-display text-2xl text-text tracking-tight">
         {editing ? 'Edit donation' : 'New food donation'}
       </h1>
       <p className="mt-1 text-[13px] text-text-2">All fields validated on the server. Image uploads go to secure storage.</p>
@@ -233,7 +233,7 @@ export default function DonationForm() {
             </Field>
             <div className="md:col-span-2">
               <Field label="Description">
-                <textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} className="input-field resize-none" placeholder="Brand, freshness notes, serving size…" />
+                <textarea value={form.description} onChange={(e) => set('description', e.target.value)} rows={2} className="input-field resize-none" placeholder="Brand, freshness notes, serving sizeâ€¦" />
               </Field>
             </div>
 
@@ -252,11 +252,11 @@ export default function DonationForm() {
                     className="flex h-24 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-line bg-panel text-[13px] text-text-2 hover:border-primary hover:text-text transition-colors"
                   >
                     <ImagePlus className="h-5 w-5" />
-                    Choose image (JPG/PNG/WEBP · max 5 MB)
+                    Choose image (JPG/PNG/WEBP Â· max 5 MB)
                   </button>
                 )}
                 <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic" onChange={onImageChange} className="hidden" />
-                {uploading && <p className="mt-1.5 flex items-center gap-1.5 text-[12px] text-text-2"><Loader2 className="h-3.5 w-3.5 animate-spin" /> Uploading image…</p>}
+                {uploading && <p className="mt-1.5 flex items-center gap-1.5 text-[12px] text-text-2"><Loader2 className="h-3.5 w-3.5 animate-spin" /> Uploading imageâ€¦</p>}
               </Field>
             </div>
 
@@ -326,11 +326,11 @@ export default function DonationForm() {
               <input value={form.postal_code} onChange={(e) => set('postal_code', e.target.value)} className="input-field" />
             </Field>
             <Field label="Pickup availability">
-              <input value={form.pickup_window} onChange={(e) => set('pickup_window', e.target.value)} placeholder="e.g. Mon–Sat, 9 AM–7 PM" className="input-field" />
+              <input value={form.pickup_window} onChange={(e) => set('pickup_window', e.target.value)} placeholder="e.g. Monâ€“Sat, 9 AMâ€“7 PM" className="input-field" />
             </Field>
             <div className="md:col-span-2">
               <Field label="Pickup instructions">
-                <textarea value={form.pickup_instructions} onChange={(e) => set('pickup_instructions', e.target.value)} rows={2} className="input-field resize-none" placeholder="Gate details, who to ask…" />
+                <textarea value={form.pickup_instructions} onChange={(e) => set('pickup_instructions', e.target.value)} rows={2} className="input-field resize-none" placeholder="Gate details, who to askâ€¦" />
               </Field>
             </div>
           </div>
@@ -342,7 +342,7 @@ export default function DonationForm() {
               <input value={form.contact_name} onChange={(e) => set('contact_name', e.target.value)} className="input-field" />
             </Field>
             <Field label="Contact phone" required>
-              <input value={form.contact_phone} onChange={(e) => set('contact_phone', e.target.value)} className="input-field" placeholder="+91 …" />
+              <input value={form.contact_phone} onChange={(e) => set('contact_phone', e.target.value)} className="input-field" placeholder="+91 â€¦" />
             </Field>
             <Field label="Alternate contact">
               <input value={form.alternate_contact} onChange={(e) => set('alternate_contact', e.target.value)} className="input-field" />
@@ -353,7 +353,7 @@ export default function DonationForm() {
 
         <button type="submit" disabled={submitting} className="btn-primary flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[14px]">
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          {editing ? 'Save changes' : uploading ? 'Uploading…' : 'Publish donation'}
+          {editing ? 'Save changes' : uploading ? 'Uploadingâ€¦' : 'Publish donation'}
         </button>
       </form>
     </div>

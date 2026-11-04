@@ -4,63 +4,65 @@
 
 @layer base {
   :root {
-    /* ── FoodBridge warm charcoal / forest / ivory / amber system ── */
-    --fb-app:              17 21 18;   /* #111512 background */
-    --fb-app-deep:         12 16 14;   /* #0C100E surface-dim */
-    --fb-panel:            25 30 26;   /* #191E1A surface */
-    --fb-elevated:         31 37 32;   /* #1F2520 elevated surface */
-    --fb-surface-container:35 42 36;   /* #232A24 */
-    --fb-surface-high:     42 50 43;   /* #2A322B */
-    --fb-surface-highest:  50 59 51;   /* #323B33 */
-    --fb-surface-variant:  58 68 59;   /* #3A443B */
+    /* ── FoodBridge eco-tech dark identity — Good Food. Better Future. ──
+       65% deep forest + carbon, 20% secondary green surfaces,
+       10% neutral text, 5% neon lemon accents. */
+    --fb-app:              9 45 33;    /* #092D21 primary background */
+    --fb-app-deep:         5 8 7;      /* #050807 carbon black */
+    --fb-panel:            16 60 45;   /* #103C2D panel surface */
+    --fb-elevated:         22 71 53;   /* #164735 card surface */
+    --fb-surface-container:27 80 61;   /* #1B503D */
+    --fb-surface-high:     33 92 74;   /* #215C4A */
+    --fb-surface-highest:  41 105 87;  /* #296957 */
+    --fb-surface-variant:  47 118 98;  /* #2F7662 */
 
-    --fb-text:             242 240 232; /* #F2F0E8 warm ivory */
-    --fb-text-2:           184 184 175; /* #B8B8AF secondary */
-    --fb-text-3:           146 149 141; /* #92958D muted */
-    --fb-muted:            146 149 141;
-    --fb-line:             52 60 53;    /* #343C35 neutral border */
+    --fb-text:             244 246 239; /* #F4F6EF primary text */
+    --fb-text-2:           168 184 172; /* #A8B8AC secondary text */
+    --fb-text-3:           124 142 132; /* #7C8E84 muted */
+    --fb-muted:            124 142 132;
+    --fb-line:             41 72 59;    /* #29483B borders */
 
-    --fb-primary:          47 107 74;   /* #2F6B4A forest action */
-    --fb-primary-hover:    58 125 89;   /* #3A7D59 */
-    --fb-primary-container:30 77 54;    /* #1E4D36 deep forest */
-    --fb-on-primary:       242 240 232; /* #F2F0E8 */
-    --fb-on-primary-container: 242 240 232;
-    --fb-primary-fixed:    183 205 175; /* #B7CDAF sage */
-    --fb-primary-fixed-dim:154 178 146; /* #9AB292 */
-    --fb-on-primary-fixed: 16 21 16;
+    --fb-primary:          217 255 69;  /* #D9FF45 neon lemon — strategic accent */
+    --fb-primary-hover:    229 255 116; /* #E5FF74 */
+    --fb-primary-container:29 63 45;    /* #1D3F2D deep tinted surface */
+    --fb-on-primary:       5 8 7;       /* carbon on neon */
+    --fb-on-primary-container: 183 217 106; /* #B7D96A on deep tinted */
+    --fb-primary-fixed:    183 217 106; /* #B7D96A focus/links */
+    --fb-primary-fixed-dim:151 185 79;  /* #97B94F */
+    --fb-on-primary-fixed: 10 31 20;    /* #0A1F14 */
 
-    --fb-accent:           183 205 175; /* #B7CDAF text accent */
-    --fb-accent-soft:      217 182 111; /* #D9B66F warm amber */
-    --fb-accent-deep:      30 77 54;    /* #1E4D36 */
+    --fb-accent:           183 217 106; /* #B7D96A secondary accent */
+    --fb-accent-soft:      217 255 69;  /* #D9FF45 neon soft accent */
+    --fb-accent-deep:      16 60 45;    /* #103C2D */
 
-    --fb-secondary:        169 196 160; /* #A9C4A0 calm sage */
-    --fb-on-secondary:     16 21 16;
-    --fb-secondary-container: 42 59 47; /* #2A3B2F */
-    --fb-on-secondary-container: 221 232 215; /* #DDE8D7 */
-    --fb-secondary-fixed:  183 205 175;
-    --fb-secondary-fixed-dim: 154 178 146;
-    --fb-on-secondary-fixed: 16 21 16;
+    --fb-secondary:        127 216 160; /* #7FD8A0 fresh / success green */
+    --fb-on-secondary:     6 35 26;     /* #06231A */
+    --fb-secondary-container: 30 66 51; /* #1E4233 */
+    --fb-on-secondary-container: 168 232 198; /* #A8E8C6 */
+    --fb-secondary-fixed:  127 216 160;
+    --fb-secondary-fixed-dim: 99 180 134; /* #63B486 */
+    --fb-on-secondary-fixed: 6 35 26;
 
-    --fb-tertiary:         217 182 111; /* #D9B66F amber warning */
-    --fb-on-tertiary:      26 20 11;
-    --fb-tertiary-container: 58 46 24;  /* #3A2E18 */
-    --fb-on-tertiary-container: 240 217 174;
-    --fb-tertiary-fixed:   217 182 111;
-    --fb-tertiary-fixed-dim: 201 166 99;
-    --fb-on-tertiary-fixed: 26 20 11;
+    --fb-tertiary:         232 196 100; /* #E8C464 amber warning */
+    --fb-on-tertiary:      46 36 16;    /* #2E2410 */
+    --fb-tertiary-container: 74 57 28;  /* #4A391C */
+    --fb-on-tertiary-container: 245 218 158; /* #F5DA9E */
+    --fb-tertiary-fixed:   232 196 100;
+    --fb-tertiary-fixed-dim: 207 168 78; /* #CFA84E */
+    --fb-on-tertiary-fixed: 46 36 16;
 
-    --fb-highlight:        217 182 111;
-    --fb-highlight-soft:   58 46 24;
-    --fb-highlight-deep:   217 182 111;
+    --fb-highlight:        232 196 100;
+    --fb-highlight-soft:   74 57 28;
+    --fb-highlight-deep:   232 196 100;
 
-    --fb-danger:           194 106 94;  /* #C26A5E muted red */
-    --fb-on-danger:        255 245 240;
-    --fb-danger-soft:      58 30 27;    /* #3A1E1B */
-    --fb-on-danger-soft:   245 200 190;
+    --fb-danger:           240 140 125; /* #F08C7D */
+    --fb-on-danger:        42 15 11;    /* #2A0F0B */
+    --fb-danger-soft:      74 31 24;    /* #4A1F18 */
+    --fb-on-danger-soft:   255 201 190; /* #FFC9BE */
 
-    --fb-leaf:             159 191 154; /* #9FBF9A */
-    --fb-leaf-deep:        30 77 54;
-    --fb-success:          127 175 143; /* #7FAF8F */
+    --fb-leaf:             183 217 106; /* #B7D96A */
+    --fb-leaf-deep:        29 63 45;    /* #1D3F2D */
+    --fb-success:          127 216 160; /* #7FD8A0 */
   }
 
   * { box-sizing: border-box; }
@@ -70,7 +72,7 @@
   body {
     background-color: rgb(var(--fb-app));
     color: rgb(var(--fb-text));
-    font-family: 'Rubik', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -78,14 +80,15 @@
   }
 
   h1, h2 {
-    font-family: 'Anton', Impact, sans-serif;
-    letter-spacing: -0.01em;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     color: rgb(var(--fb-text));
     -webkit-font-smoothing: subpixel-antialiased;
   }
 
   h3 {
-    font-family: 'Rubik', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.01em;
     color: rgb(var(--fb-text));
@@ -95,7 +98,7 @@
 
   ::selection {
     background-color: rgb(var(--fb-primary));
-    color: rgb(var(--fb-text));
+    color: rgb(var(--fb-on-primary));
   }
 
   :focus-visible {
@@ -109,7 +112,7 @@
   }
 
   ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-track { background: rgb(var(--fb-app-deep)); }
   ::-webkit-scrollbar-thumb {
     background: rgb(var(--fb-line));
     border-radius: 999px;
@@ -123,7 +126,8 @@
 
 /* ─────────────────────────────────────────────
    COMPONENTS
-   Solid surfaces replace the previous glass layers.
+   Layered dark-green surfaces, restrained shadows,
+   neon lemon reserved for actions & focus.
 ───────────────────────────────────────────── */
 @layer components {
   .glass-card {
@@ -134,7 +138,7 @@
   }
 
   .glass-popover {
-    background: rgb(var(--fb-elevated));
+    background: rgb(var(--fb-panel));
     border: 1px solid rgb(var(--fb-line));
     border-radius: 0.75rem;
     box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.9);
@@ -162,8 +166,12 @@
     border-radius: 0.5rem;
     padding: 0.625rem 1.1rem;
     font-size: 0.875rem;
+    letter-spacing: 0.01em;
   }
-  .btn-primary:hover { background: rgb(var(--fb-primary-hover)); }
+  .btn-primary:hover {
+    background: rgb(var(--fb-primary-hover));
+    box-shadow: 0 6px 24px -12px rgb(var(--fb-primary) / 0.55);
+  }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-[0.98];
@@ -175,8 +183,8 @@
     font-size: 0.875rem;
   }
   .btn-secondary:hover {
-    background: rgb(var(--fb-surface-high));
-    border-color: rgb(var(--fb-primary-fixed) / 0.45);
+    background: rgb(var(--fb-surface-container));
+    border-color: rgb(var(--fb-primary-fixed) / 0.5);
   }
 
   .btn-urgent {
@@ -187,7 +195,7 @@
     padding: 0.625rem 1.1rem;
     font-size: 0.875rem;
   }
-  .btn-urgent:hover { filter: brightness(1.04); }
+  .btn-urgent:hover { filter: brightness(1.05); }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 font-medium transition-colors;
@@ -203,7 +211,7 @@
 
   .input-field {
     @apply w-full outline-none transition-all;
-    background: rgb(var(--fb-elevated));
+    background: rgb(var(--fb-panel));
     border: 1px solid rgb(var(--fb-line));
     border-radius: 0.5rem;
     color: rgb(var(--fb-text));
@@ -211,24 +219,25 @@
     padding: 0 0.875rem;
     font-size: 1rem;
   }
+  .input-field:hover { border-color: rgb(var(--fb-surface-variant)); }
   .input-field:focus {
-    border-color: rgb(var(--fb-primary-fixed) / 0.7);
-    box-shadow: 0 0 0 3px rgb(var(--fb-primary-fixed) / 0.14);
+    border-color: rgb(var(--fb-primary-fixed) / 0.75);
+    box-shadow: 0 0 0 3px rgb(var(--fb-primary-fixed) / 0.16);
   }
 
   .input-label {
     @apply block font-semibold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.75rem;
     line-height: 16px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     color: rgb(var(--fb-text-2));
   }
 
-  /* Expiry chips */
+  /* Expiry chips — amber / green / red stay the status carriers */
   .chip-fresh {
     @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.06em;
     background: rgb(var(--fb-secondary) / 0.12);
@@ -238,7 +247,7 @@
   }
   .chip-expiring {
     @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.06em;
     background: rgb(var(--fb-tertiary) / 0.14);
@@ -248,7 +257,7 @@
   }
   .chip-critical {
     @apply inline-flex items-center gap-1 px-2 py-0.5 font-bold;
-    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 10px;
     letter-spacing: 0.06em;
     background: rgb(var(--fb-danger) / 0.14);
@@ -279,25 +288,29 @@
    UTILITIES
 ───────────────────────────────────────────── */
 @layer utilities {
-  .font-headline-sm        { font-family: 'Anton', Impact, sans-serif; }
-  .font-headline-md        { font-family: 'Anton', Impact, sans-serif; }
-  .font-headline-lg        { font-family: 'Anton', Impact, sans-serif; }
-  .font-headline-lg-mobile { font-family: 'Anton', Impact, sans-serif; }
-  .font-display-hero       { font-family: 'Anton', Impact, sans-serif; }
-  .font-display-hero-mobile{ font-family: 'Anton', Impact, sans-serif; }
-  .font-title-md  { font-family: 'Rubik', system-ui, sans-serif; font-weight: 600; }
-  .font-title-lg  { font-family: 'Rubik', system-ui, sans-serif; font-weight: 600; }
-  .font-body-lg   { font-family: 'Rubik', system-ui, sans-serif; }
-  .font-body-md   { font-family: 'Rubik', system-ui, sans-serif; }
-  .font-body-sm   { font-family: 'Rubik', system-ui, sans-serif; }
-  .font-label-md  { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 600; }
-  .font-label-sm  { font-family: 'Be Vietnam Pro', system-ui, sans-serif; font-weight: 700; }
+  .font-headline-sm,
+  .font-headline-md,
+  .font-headline-lg,
+  .font-headline-lg-mobile,
+  .font-display-hero,
+  .font-display-hero-mobile {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .font-title-md  { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; }
+  .font-title-lg  { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; }
+  .font-body-lg   { font-family: 'DM Sans', system-ui, sans-serif; }
+  .font-body-md   { font-family: 'DM Sans', system-ui, sans-serif; }
+  .font-body-sm   { font-family: 'DM Sans', system-ui, sans-serif; }
+  .font-label-md  { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 600; }
+  .font-label-sm  { font-family: 'DM Sans', system-ui, sans-serif; font-weight: 700; }
 
-  .text-display-hero        { font-size: 56px; line-height: 64px; letter-spacing: -0.02em; }
-  .text-display-hero-mobile { font-size: 38px; line-height: 44px; letter-spacing: -0.015em; }
-  .text-headline-lg         { font-size: 36px; line-height: 44px; letter-spacing: -0.015em; }
-  .text-headline-lg-mobile  { font-size: 28px; line-height: 34px; letter-spacing: -0.01em; }
-  .text-headline-md         { font-size: 26px; line-height: 32px; letter-spacing: -0.01em; }
+  .text-display-hero        { font-size: 56px; line-height: 60px; letter-spacing: -0.03em; }
+  .text-display-hero-mobile { font-size: 38px; line-height: 42px; letter-spacing: -0.02em; }
+  .text-headline-lg         { font-size: 36px; line-height: 44px; letter-spacing: -0.02em; }
+  .text-headline-lg-mobile  { font-size: 28px; line-height: 34px; letter-spacing: -0.015em; }
+  .text-headline-md         { font-size: 26px; line-height: 32px; letter-spacing: -0.015em; }
   .text-headline-sm         { font-size: 20px; line-height: 26px; }
   .text-title-lg            { font-size: 18px; line-height: 24px; letter-spacing: -0.01em; }
   .text-title-md            { font-size: 16px; line-height: 22px; }
@@ -306,6 +319,9 @@
   .text-body-sm             { font-size: 12px; line-height: 18px; letter-spacing: 0.01em; }
   .text-label-md            { font-size: 12px; line-height: 16px; letter-spacing: 0.04em; }
   .text-label-sm            { font-size: 10px; line-height: 14px; letter-spacing: 0.06em; }
+
+  .neon-text { color: rgb(var(--fb-primary)); }
+  .neon-glow { text-shadow: 0 0 32px rgb(var(--fb-primary) / 0.35); }
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -322,9 +338,9 @@
   .image-scrim {
     background: linear-gradient(
       to top,
-      rgb(8 10 9 / 0.92) 0%,
-      rgb(8 10 9 / 0.48) 42%,
-      rgb(8 10 9 / 0) 72%
+      rgb(5 8 7 / 0.92) 0%,
+      rgb(5 8 7 / 0.48) 42%,
+      rgb(5 8 7 / 0) 72%
     );
   }
 }

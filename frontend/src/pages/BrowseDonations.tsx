@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, MapPin, Package, SlidersHorizontal, X } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -28,7 +28,7 @@ export default function BrowseDonations() {
       {/* Header */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Browse Donations</h1>
+          <h1 className="font-display text-2xl text-text tracking-tight">Browse Donations</h1>
           <p className="text-[13px] text-text-2">Live surplus Listings from verified donors</p>
         </div>
         <button onClick={() => setShowFilters((v) => !v)} className="btn-secondary rounded-lg px-3 py-2 text-[12px] flex items-center gap-1.5">
@@ -42,7 +42,7 @@ export default function BrowseDonations() {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search food names…"
+          placeholder="Search food namesâ€¦"
           className="input-field pl-10"
           aria-label="Search donations"
         />
@@ -82,7 +82,7 @@ export default function BrowseDonations() {
 
       {/* Result count */}
       <p className="mt-4 text-[11px] uppercase tracking-widest text-text-3">
-        {query.isLoading ? 'Loading…' : `${query.data?.total ?? 0} available listing${query.data?.total === 1 ? '' : 's'}`}
+        {query.isLoading ? 'Loadingâ€¦' : `${query.data?.total ?? 0} available listing${query.data?.total === 1 ? '' : 's'}`}
         <LiveDot live={query.connected} />
       </p>
 
@@ -138,7 +138,7 @@ export function DonationCard({ donation: d, index = 0 }: { donation: Donation; i
               <div className="min-w-0">
                 <p className="truncate text-[15px] font-semibold text-text">{d.food_name}</p>
                 <p className="mt-0.5 text-[12px] text-text-2">
-                  {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.available_quantity} available
+                  {CATEGORY_LABELS[d.food_category] ?? d.food_category} Â· {d.available_quantity} available
                 </p>
               </div>
               <ExpiryBadge expiresAt={d.expires_at} />

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, HeartHandshake, Loader2 } from 'lucide-react'
@@ -47,7 +47,7 @@ export default function Login() {
         <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
           <Link to="/" className="flex items-center gap-2.5">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-9 w-9 rounded-lg object-contain" />
-            <span className="font-['Anton'] text-xl text-text tracking-tight">FOODBRIDGE</span>
+            <span className="font-display text-xl text-text tracking-tight">FOODBRIDGE</span>
           </Link>
           <Link to="/register" className="text-[11px] font-bold uppercase tracking-widest text-primary-fixed hover:text-text transition-colors">
             Create Account
@@ -59,13 +59,13 @@ export default function Login() {
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }} className="w-full max-w-sm space-y-6">
           <div className="text-center space-y-2">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-16 w-16 mx-auto object-contain" />
-            <h1 className="font-['Anton'] text-3xl text-text tracking-tight">Welcome Back</h1>
+            <h1 className="font-display text-3xl text-text tracking-tight">Welcome Back</h1>
             <p className="text-sm text-text-2">Sign in to your FoodBridge portal</p>
           </div>
 
           {resetSent && (
             <div className="p-3 rounded-xl border border-line bg-elevated text-sm text-text-2">
-              Check your email — a password reset link is on its way.
+              Check your email â€” a password reset link is on its way.
             </div>
           )}
 

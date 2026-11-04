@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { ClipboardList, RefreshCw, Clock } from 'lucide-react'
 import { requestsService } from '../services/api'
 import { EmptyState, ErrorState, SkeletonList } from '../components/ui/Feedback'
@@ -15,7 +15,7 @@ const STATUS_STYLE: Record<string, string> = {
 
 const STATUS_LABEL: Record<string, string> = {
   pending: 'Awaiting donor response',
-  approved: 'Approved — pickup coming',
+  approved: 'Approved â€” pickup coming',
   rejected: 'Declined by donor',
   completed: 'Delivered',
 }
@@ -35,7 +35,7 @@ export default function MyRequests() {
     <div className="mx-auto max-w-3xl pb-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">My Requests</h1>
+          <h1 className="font-display text-2xl text-text tracking-tight">My Requests</h1>
           <p className="text-[13px] text-text-2">Track every food request you have sent to donors</p>
         </div>
         <button onClick={() => query.refetch()} className="btn-secondary rounded-lg p-2" aria-label="Refresh">
@@ -52,7 +52,7 @@ export default function MyRequests() {
           <EmptyState
             icon={<ClipboardList className="h-6 w-6" />}
             title="No requests yet"
-            message="Browse available donations and send your first request — donors respond fast."
+            message="Browse available donations and send your first request â€” donors respond fast."
             action={<a href="/browse" className="btn-primary rounded-lg px-4 py-2 text-[13px]">Browse donations</a>}
           />
         ) : (
@@ -64,7 +64,7 @@ export default function MyRequests() {
                 </p>
                 <p className="mt-0.5 text-[12px] text-text-2">
                   {r.requested_quantity} {UNIT_LABELS[r.unit]?.toLowerCase() ?? r.unit}
-                  {r.people_to_feed ? ` · feeding ~${r.people_to_feed} people` : ''}
+                  {r.people_to_feed ? ` Â· feeding ~${r.people_to_feed} people` : ''}
                 </p>
               </div>
               <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-3">

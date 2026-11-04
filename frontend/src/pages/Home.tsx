@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   Package, Plus, Search, Truck, AlarmClock, ClipboardList, ArrowRight, Leaf,
@@ -39,11 +39,11 @@ export default function Home() {
       {/* Greeting */}
       <div className="rounded-2xl border border-line bg-panel p-5">
         <p className="font-label-sm text-[10px] uppercase tracking-[0.2em] text-primary-fixed">FoodBridge workspace</p>
-        <h1 className="mt-2 font-['Anton'] text-2xl tracking-tight text-text md:text-3xl">
+        <h1 className="mt-2 font-display text-2xl tracking-tight text-text md:text-3xl">
           Neighbourhood rescue, one real batch at a time
         </h1>
         <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-text-2">
-          No estimated figures on this page — every number below is measured from your live FoodBridge
+          No estimated figures on this page â€” every number below is measured from your live FoodBridge
           account. Recipients broadcasting alerts are real, donor listings are freshly time-stamped, and
           nothing here is mocked.
         </p>
@@ -101,7 +101,7 @@ export default function Home() {
             title={isDonor ? 'No donations yet' : 'No listings yet'}
             message={isDonor
               ? 'Publish your first batch and it will show up here.'
-              : 'Check back soon — new donations appear in realtime.'}
+              : 'Check back soon â€” new donations appear in realtime.'}
             action={
               isDonor ? (
                 <Link to="/donor/new" className="btn-primary rounded-lg px-4 py-2 text-[13px]">Create donation</Link>
@@ -124,7 +124,7 @@ export default function Home() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-semibold text-text">{d.food_name}</p>
                     <p className="text-[11px] text-text-3">
-                      {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.available_quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} · {d.city}
+                      {CATEGORY_LABELS[d.food_category] ?? d.food_category} Â· {d.available_quantity} {UNIT_LABELS[d.unit]?.toLowerCase() ?? d.unit} Â· {d.city}
                     </p>
                   </div>
                   <ArrowRight className="flex-shrink-0 text-text-3 h-3.5 w-3.5" />
@@ -154,7 +154,7 @@ function LiveStat({ label, value, loading }: { label: string; value?: number; lo
       {loading ? (
         <div className="mt-1.5 h-7 w-12 animate-pulse rounded bg-elevated" />
       ) : (
-        <p className="mt-1 font-['Anton'] text-2xl tabular-nums text-text">{value ?? 0}</p>
+        <p className="mt-1 font-display text-2xl tabular-nums text-text">{value ?? 0}</p>
       )}
     </div>
   )

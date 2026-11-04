@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { User, Shield, Mail, Building2, Smartphone, MapPin, Globe, Lock, Inbox } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -82,7 +82,7 @@ export default function Settings() {
 
   return (
     <div className="mx-auto max-w-2xl pb-10">
-      <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Settings</h1>
+      <h1 className="font-display text-2xl text-text tracking-tight">Settings</h1>
       <p className="text-[13px] text-text-2">Identity, contact details and account security</p>
 
       {/* Tabs */}
@@ -105,7 +105,7 @@ export default function Settings() {
               <div className="rounded-xl border border-line bg-panel p-4">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-container">
-                    <span className="font-['Anton'] text-xl text-on-primary-container">
+                    <span className="font-display text-xl text-on-primary-container">
                       {(user?.full_name || user?.email || 'U').charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -135,11 +135,11 @@ export default function Settings() {
                     </Field>
                   </div>
                   <Field icon={<Smartphone className="h-4 w-4" />} label="Phone">
-                    <input value={form.phone} onChange={(e) => set('phone', e.target.value)} className="input-field" placeholder="+91 …" />
+                    <input value={form.phone} onChange={(e) => set('phone', e.target.value)} className="input-field" placeholder="+91 â€¦" />
                   </Field>
                   <Field icon={<Inbox className="h-4 w-4" />} label={isRecipient ? 'Organisation type' : 'Business type'}>
                     <select value={form.account_type} onChange={(e) => set('account_type', e.target.value)} className="input-field">
-                      <option value="">Select…</option>
+                      <option value="">Selectâ€¦</option>
                       {types.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
                     </select>
                   </Field>
@@ -153,7 +153,7 @@ export default function Settings() {
                   </Field>
                 </div>
                 <button onClick={saveProfile} disabled={saving} className="btn-primary mt-4 rounded-lg px-5 py-2.5 text-[13px] disabled:opacity-60">
-                  {saving ? 'Saving…' : 'Save changes'}
+                  {saving ? 'Savingâ€¦' : 'Save changes'}
                 </button>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function Settings() {
                   </Field>
                 </div>
                 <button onClick={changePassword} disabled={changingPwd} className="btn-secondary mt-3 rounded-lg px-5 py-2.5 text-[13px] disabled:opacity-60">
-                  {changingPwd ? 'Updating…' : 'Update password'}
+                  {changingPwd ? 'Updatingâ€¦' : 'Update password'}
                 </button>
               </div>
             </div>

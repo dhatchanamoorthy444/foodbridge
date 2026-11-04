@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, Bell, CheckCheck, LogOut, Settings as SettingsIcon, User as UserIcon } from 'lucide-react'
@@ -63,7 +63,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
         {/* Logo (mobile) */}
         <Link to="/" className="md:hidden flex items-center gap-2">
           <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-8 w-8 object-contain" />
-          <span className="font-['Anton'] text-lg text-text tracking-tight">FOODBRIDGE</span>
+          <span className="font-display text-lg text-text tracking-tight">FOODBRIDGE</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-2 min-w-0">
@@ -111,7 +111,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
                     </button>
                   </div>
                   {notificationsQuery.isLoading ? (
-                    <div className="p-4 text-center text-sm text-text-2">Loading…</div>
+                    <div className="p-4 text-center text-sm text-text-2">Loadingâ€¦</div>
                   ) : items.length === 0 ? (
                     <div className="p-6 text-center">
                       <Bell className="w-6 h-6 mx-auto mb-2 text-text-3" />

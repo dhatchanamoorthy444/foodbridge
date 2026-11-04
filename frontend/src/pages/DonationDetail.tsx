@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
@@ -97,9 +97,9 @@ export default function DonationDetail() {
           {/* Title block */}
           <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="font-['Anton'] text-2xl text-text tracking-tight">{donation.food_name}</h1>
+              <h1 className="font-display text-2xl text-text tracking-tight">{donation.food_name}</h1>
               <p className="mt-0.5 text-[13px] text-text-2">
-                {CATEGORY_LABELS[donation.food_category] ?? donation.food_category} ·
+                {CATEGORY_LABELS[donation.food_category] ?? donation.food_category} Â·
                 {' '}{donation.available_quantity} {UNIT_LABELS[donation.unit]?.toLowerCase() ?? donation.unit} available
               </p>
             </div>
@@ -122,14 +122,14 @@ export default function DonationDetail() {
             <h2 className="text-[11px] font-bold uppercase tracking-widest text-text-2">About this donation</h2>
             <p className="mt-2 text-[13px] leading-relaxed text-text-2">{donation.description || 'No description was provided for this donation.'}</p>
             <dl className="mt-3 grid grid-cols-1 gap-x-6 gap-y-1.5 text-[12px] md:grid-cols-2">
-              <DetailRow label="Prepared at" value={donation.prepared_at ? formatDateTime(donation.prepared_at) : '—'} />
-              <DetailRow label="Expires at" value={donation.expires_at ? formatDateTime(donation.expires_at) : '—'} />
-              <DetailRow label="Temperature" value={donation.temperature_category || '—'} />
-              <DetailRow label="Packaging" value={donation.packaging_condition || '—'} />
+              <DetailRow label="Prepared at" value={donation.prepared_at ? formatDateTime(donation.prepared_at) : 'â€”'} />
+              <DetailRow label="Expires at" value={donation.expires_at ? formatDateTime(donation.expires_at) : 'â€”'} />
+              <DetailRow label="Temperature" value={donation.temperature_category || 'â€”'} />
+              <DetailRow label="Packaging" value={donation.packaging_condition || 'â€”'} />
               <DetailRow label="Classification" value={donation.is_vegetarian === null ? 'Not specified' : donation.is_vegetarian ? 'Vegetarian' : 'Contains meat / fish'} />
               <DetailRow label="Allergens" value={donation.allergen_info || 'Not specified'} />
-              <DetailRow label="Pickup window" value={donation.pickup_window || '—'} />
-              <DetailRow label="Pickup instructions" value={donation.pickup_instructions || '—'} />
+              <DetailRow label="Pickup window" value={donation.pickup_window || 'â€”'} />
+              <DetailRow label="Pickup instructions" value={donation.pickup_instructions || 'â€”'} />
             </dl>
           </div>
 
@@ -137,7 +137,7 @@ export default function DonationDetail() {
           {!isRecipient ? (
             <div className="mt-5 rounded-xl border border-line bg-panel p-4">
               <p className="flex items-center gap-2 text-[13px] text-text-2">
-                <Phone className="h-4 w-4 text-primary-fixed" /> Recipients request food here — contact details are shared when your donation is claimed.
+                <Phone className="h-4 w-4 text-primary-fixed" /> Recipients request food here â€” contact details are shared when your donation is claimed.
               </p>
             </div>
           ) : claimable ? (
@@ -147,7 +147,7 @@ export default function DonationDetail() {
           ) : (
             <div className="mt-5 rounded-xl border border-line bg-panel p-4 text-center">
               <p className="text-[13px] font-semibold text-text">
-                {expired ? 'This donation expired — it can no longer be requested' : 'This batch is fully claimed'}
+                {expired ? 'This donation expired â€” it can no longer be requested' : 'This batch is fully claimed'}
               </p>
               <Link to="/browse" className="mt-2 inline-block text-[13px] text-primary-fixed font-semibold">Browse other donations</Link>
             </div>
@@ -157,7 +157,7 @@ export default function DonationDetail() {
           {showRequest && donation && (
             <div className="fixed inset-0 z-50 flex items-end justify-center bg-app-deep/70 md:items-center p-0 md:p-4" onClick={(e) => e.target === e.currentTarget && setShowRequest(false)}>
               <form onSubmit={submitRequest} className="w-full max-w-lg rounded-t-2xl md:rounded-2xl border border-line bg-panel p-5 max-h-[88vh] overflow-y-auto">
-                <h2 className="font-['Anton'] text-xl text-text">Request "{donation.food_name}"</h2>
+                <h2 className="font-display text-xl text-text">Request "{donation.food_name}"</h2>
                 <p className="mt-0.5 text-[12px] text-text-3">{donation.available_quantity} {donation.unit} available from {donation.city}</p>
 
                 <div className="mt-4 grid grid-cols-2 gap-3">

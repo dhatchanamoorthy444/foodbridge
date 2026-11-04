@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ArrowLeft, Loader2, Building2, MapPin, Phone, User, Users, Home } from 'lucide-react'
@@ -136,7 +136,7 @@ export default function Register() {
       <div className="min-h-screen flex items-center justify-center bg-app px-4">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md text-center space-y-4 bg-panel border border-line rounded-2xl p-8">
           <Mail className="w-10 h-10 mx-auto text-primary-fixed" />
-          <h1 className="font-['Anton'] text-2xl text-text">Confirm your email</h1>
+          <h1 className="font-display text-2xl text-text">Confirm your email</h1>
           <p className="text-sm text-text-2">
             We sent a verification link to <span className="text-text font-semibold">{form.email}</span>. Click the link to activate your FoodBridge account, then sign in.
           </p>
@@ -152,7 +152,7 @@ export default function Register() {
         <div className="h-16 px-4 flex items-center justify-between max-w-6xl mx-auto">
           <Link to="/" className="flex items-center gap-2.5">
             <img src="/stickers/cream/01_brand_and_donation/foodbridge_logo.png" alt="FoodBridge logo" className="h-9 w-9 rounded-lg object-contain" />
-            <span className="font-['Anton'] text-xl text-text tracking-tight">FOODBRIDGE</span>
+            <span className="font-display text-xl text-text tracking-tight">FOODBRIDGE</span>
           </Link>
           <Link to="/login" className="text-[11px] font-bold uppercase tracking-widest text-primary-fixed hover:text-text transition-colors">Sign In</Link>
         </div>
@@ -161,7 +161,7 @@ export default function Register() {
       <div className="flex-1 pt-16 flex items-center justify-center px-4 py-10">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md space-y-5">
           <div className="text-center space-y-1">
-            <h1 className="font-['Anton'] text-3xl text-text tracking-tight">Join FoodBridge</h1>
+            <h1 className="font-display text-3xl text-text tracking-tight">Join FoodBridge</h1>
             <p className="text-sm text-text-2">Four quick steps to start rescuing food</p>
           </div>
 
@@ -231,7 +231,7 @@ export default function Register() {
                     )}
                   </div>
                   {form.role === 'recipient' && (
-                    <input value={form.organization} onChange={(e) => set('organization', e.target.value)} placeholder="Organization (optional — NGO name)" className="input-field mt-2" />
+                    <input value={form.organization} onChange={(e) => set('organization', e.target.value)} placeholder="Organization (optional â€” NGO name)" className="input-field mt-2" />
                   )}
                 </div>
                 <div>
@@ -320,15 +320,15 @@ export default function Register() {
                   Our team reviews recipient accounts before donation contact sharing becomes visible.
                 </div>
                 <SummaryRow label="Role" value={form.role === 'donor' ? 'Donor' : 'Recipient'} />
-                <SummaryRow label="Name / Org" value={form.fullName || form.organization || '—'} />
+                <SummaryRow label="Name / Org" value={form.fullName || form.organization || 'â€”'} />
                 <SummaryRow label="Email" value={form.email} />
                 <SummaryRow label="Phone" value={form.phone} />
                 <SummaryRow label="Type" value={accountTypes.find((t) => t.value === form.account_type)?.label ?? form.account_type} />
-                <SummaryRow label="City" value={[form.address, form.city, form.postal_code].filter(Boolean).join(', ') || '—'} />
+                <SummaryRow label="City" value={[form.address, form.city, form.postal_code].filter(Boolean).join(', ') || 'â€”'} />
                 {form.role === 'recipient' && (
-                  <SummaryRow label="People served" value={form.beneficiary_count ? `${form.beneficiary_count}` : '—'} />
+                  <SummaryRow label="People served" value={form.beneficiary_count ? `${form.beneficiary_count}` : 'â€”'} />
                 )}
-                <p className="text-[11px] text-text-3">Units supported for donations: {Object.keys(UNIT_LABELS).slice(0, 4).join(', ')}…</p>
+                <p className="text-[11px] text-text-3">Units supported for donations: {Object.keys(UNIT_LABELS).slice(0, 4).join(', ')}â€¦</p>
               </motion.div>
             )}
           </AnimatePresence>

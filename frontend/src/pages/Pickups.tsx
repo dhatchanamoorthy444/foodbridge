@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+﻿import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Truck, RefreshCw, Clock, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { toastApiError, pickupsService } from '../services/api'
@@ -61,7 +61,7 @@ export default function Pickups() {
     <div className="mx-auto max-w-3xl pb-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Pickups</h1>
+          <h1 className="font-display text-2xl text-text tracking-tight">Pickups</h1>
           <p className="text-[13px] text-text-2">
             {isDonor ? 'Approved allocations awaiting collection' : 'Food collections approved for you'}
           </p>

@@ -1,4 +1,4 @@
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+﻿import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import {
   Home,
   Search,
@@ -71,9 +71,9 @@ export default function Sidebar() {
             className="h-10 w-10 object-contain"
           />
           <div className="min-w-0">
-            <p className="font-['Anton'] text-lg leading-none text-text tracking-tight">FOODBRIDGE</p>
+            <p className="font-display text-lg leading-none text-text tracking-tight">FOODBRIDGE</p>
             <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.18em] text-primary-fixed">
-              Connect · Donate · Feed
+              Connect Â· Donate Â· Feed
             </p>
           </div>
         </div>
