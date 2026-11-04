@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Search, MapPin, Package, SlidersHorizontal, X } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useDonations } from '../hooks/useAppData'
 import { EmptyState, ErrorState, SkeletonList, ExpiryBadge } from '../components/ui/Feedback'
 import { storagePublicUrl } from '../lib/supabase'
 import { FOOD_CATEGORIES, CATEGORY_LABELS, Donation } from '../types/api'
-import { cn } from '../lib/utils'
+import { formatRelativeTime } from '../lib/utils'
 
 export default function BrowseDonations() {
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState<string>('all')
   const [city, setCity] = useState('')
@@ -21,138 +21,201 @@ export default function BrowseDonations() {
     sort: 'expiry',
   })
 
+  const donations = query.data?.data ?? []
   const clearFilters = () => { setCategory('all'); setCity(''); setSearch('') }
 
   return (
-    <div className="mx-auto max-w-3xl pb-10">
-      {/* Header */}
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-['Anton'] text-2xl text-text tracking-tight">Browse Donations</h1>
-          <p className="text-[13px] text-text-2">Live surplus Listings from verified donors</p>
+    <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
+      {/* ── Operational Header ── */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-[#D7EF4A] text-[#090B09] font-mono text-[10px] uppercase font-bold tracking-wider">
+              RECIPIENT MARKETPLACE
+            </span>
+            <span className="font-mono text-xs text-[#858C84] uppercase tracking-wider">
+              SURPLUS RADAR // VERIFIED PURVEYOR INVENTORY
+            </span>
+          </div>
+          <h1 className="font-['Anton'] text-2xl md:text-3xl text-white uppercase tracking-wide mt-1.5">
+            AVAILABLE SURPLUS REDISTRIBUTION
+          </h1>
         </div>
-        <button onClick={() => setShowFilters((v) => !v)} className="btn-secondary rounded-lg px-3 py-2 text-[12px] flex items-center gap-1.5">
-          <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
-        </button>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowFilters((v) => !v)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1C221C] border border-[#262E26] text-white font-mono text-xs uppercase font-bold hover:bg-[#252B25] transition-colors"
+          >
+            <span className="material-symbols-outlined text-[18px]">tune</span>
+            FILTERS {category !== 'all' || city ? '(ACTIVE)' : ''}
+          </button>
+          <button
+            onClick={() => navigate('/alerts')}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#410002] border border-[#FF5449]/40 text-[#FFDAD6] font-mono text-xs uppercase font-bold hover:bg-[#690005] transition-colors"
+          >
+            <span className="material-symbols-outlined text-[18px]">crisis_alert</span>
+            POST URGENT NEED
+          </button>
+        </div>
       </div>
 
-      {/* Search */}
+      {/* ── Search Bar ── */}
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-3" />
+        <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[#858C84] text-[20px] pointer-events-none">
+          search
+        </span>
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search food names…"
-          className="input-field pl-10"
-          aria-label="Search donations"
+          placeholder="SEARCH VERIFIED FOOD BATCHES, HOT MEALS, RAW PRODUCE..."
+          className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#131713] border border-[#262E26] text-white font-mono text-xs uppercase placeholder-[#858C84] focus:outline-none focus:border-[#D7EF4A]"
         />
       </div>
 
-      {/* Filter drawer */}
+      {/* ── Filters Drawer ── */}
       {showFilters && (
-        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="mt-3 overflow-hidden rounded-xl border border-line bg-panel p-3">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-text-3">Category</label>
-              <select value={category} onChange={(e) => setCategory(e.target.value)} className="input-field">
-                <option value="all">All categories</option>
-                {FOOD_CATEGORIES.map((c) => (
-                  <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-text-3">City</label>
-              <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="e.g. Chennai" className="input-field" />
-            </div>
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 rounded-xl bg-[#131713] border border-[#262E26] grid grid-cols-1 md:grid-cols-3 gap-3"
+        >
+          <div>
+            <label className="block font-mono text-[10px] text-[#858C84] uppercase font-bold mb-1.5">
+              Category
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-[#1C221C] border border-[#262E26] text-white text-xs uppercase font-mono"
+            >
+              <option value="all">ALL FOOD CATEGORIES</option>
+              {FOOD_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {CATEGORY_LABELS[c].toUpperCase()}
+                </option>
+              ))}
+            </select>
           </div>
-          <button onClick={clearFilters} className="mt-3 text-[12px] font-semibold text-primary-fixed hover:text-text">Clear filters</button>
+          <div>
+            <label className="block font-mono text-[10px] text-[#858C84] uppercase font-bold mb-1.5">
+              City / Region
+            </label>
+            <input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="e.g. Chennai, Bangalore"
+              className="w-full px-3 py-2 rounded-lg bg-[#1C221C] border border-[#262E26] text-white text-xs font-mono uppercase"
+            />
+          </div>
+          <div className="flex items-end">
+            <button
+              onClick={clearFilters}
+              className="w-full py-2 rounded-lg bg-[#252B25] text-white font-mono text-xs uppercase font-bold hover:bg-[#D7EF4A] hover:text-[#090B09] transition-all"
+            >
+              Reset Filters
+            </button>
+          </div>
         </motion.div>
       )}
 
-      {/* Chips row (when filter active, outside drawer) */}
-      {(category !== 'all' || city) && !showFilters && (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {category !== 'all' && (
-            <Chip onClear={() => setCategory('all')}>{CATEGORY_LABELS[category]}</Chip>
-          )}
-          {city && <Chip onClear={() => setCity('')}>City: {city}</Chip>}
+      {/* ── Active Listings Feed ── */}
+      {query.isLoading ? (
+        <div className="py-20 text-center font-mono text-xs text-[#858C84] uppercase">
+          Scanning surplus food radar...
+        </div>
+      ) : query.isError ? (
+        <ErrorState message="Could not connect to live surplus feed" onRetry={() => query.refetch()} />
+      ) : donations.length === 0 ? (
+        <div className="p-12 text-center rounded-2xl bg-[#131713] border border-[#262E26]">
+          <span className="material-symbols-outlined text-4xl text-[#858C84] mb-2">inventory_2</span>
+          <p className="font-['Anton'] text-lg text-white uppercase">No Active Surplus Batches</p>
+          <p className="text-xs text-[#858C84] mt-1 font-mono">
+            Check back shortly or publish an Emergency Need Alert to notify donors nearby.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {donations.map((d) => {
+            const expiryMs = d.expires_at ? new Date(d.expires_at).getTime() : Date.now() + 3600000
+            const diffHours = Math.max(0, (expiryMs - Date.now()) / (1000 * 60 * 60))
+            const hours = Math.floor(diffHours)
+            const mins = Math.floor((diffHours - hours) * 60)
+            const imageUrl = storagePublicUrl(d.image_path)
+
+            return (
+              <div
+                key={d.id}
+                onClick={() => navigate(`/browse/${d.id}`)}
+                className="relative rounded-xl bg-[#131713] border border-[#262E26] overflow-hidden flex flex-col justify-between hover:border-[#D7EF4A]/40 transition-all cursor-pointer group shadow-lg"
+              >
+                {/* Photo or Pattern Header */}
+                <div className="relative h-40 w-full bg-[#1C221C] overflow-hidden">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={d.food_name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-[#D7EF4A]/30 bg-gradient-to-br from-[#143527]/30 to-[#0D231A]">
+                      <span className="material-symbols-outlined text-5xl">restaurant</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#131713] via-transparent to-transparent" />
+                  
+                  {/* Category Pill */}
+                  <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-[#090B09]/80 backdrop-blur border border-[#262E26] font-mono text-[9px] text-[#D7EF4A] uppercase font-bold">
+                    {d.food_category?.toUpperCase()}
+                  </span>
+
+                  {/* Expiry Pill */}
+                  <span
+                    className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${
+                      diffHours <= 3
+                        ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse'
+                        : 'bg-[#263300] text-[#D7EF4A]'
+                    }`}
+                  >
+                    {hours}H {mins}M LEFT
+                  </span>
+                </div>
+
+                {/* Details */}
+                <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
+                  <div>
+                    <h3 className="font-['Anton'] text-lg text-white uppercase group-hover:text-[#D7EF4A] transition-colors line-clamp-1">
+                      {d.food_name}
+                    </h3>
+                    <p className="text-xs text-[#858C84] line-clamp-2 mt-1">
+                      {d.description || 'Prepared fresh and verified under safe hygiene standards.'}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-[#262E26] space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-[#858C84] uppercase">Available:</span>
+                      <span className="font-mono font-bold text-white">
+                        {d.available_quantity ?? d.quantity} {d.unit}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-[#858C84] uppercase">Location:</span>
+                      <span className="font-mono text-[#BCD147] truncate max-w-[180px]">
+                        {d.city || 'Regional Center'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
+                    REQUEST ALLOCATION →
+                  </button>
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
-
-      {/* Result count */}
-      <p className="mt-4 text-[11px] uppercase tracking-widest text-text-3">
-        {query.isLoading ? 'Loading…' : `${query.data?.total ?? 0} available listing${query.data?.total === 1 ? '' : 's'}`}
-        <LiveDot live={query.connected} />
-      </p>
-
-      {/* List */}
-      <div className="mt-3 flex flex-col gap-3">
-        {query.isLoading ? (
-          <SkeletonList count={4} />
-        ) : query.isError ? (
-          <ErrorState message="Could not load donations" onRetry={query.refetch} />
-        ) : (query.data?.data.length ?? 0) === 0 ? (
-          <EmptyState
-            icon={<Package className="h-6 w-6" />}
-            title="No food donations available yet"
-            message={search || city || category !== 'all' ? 'Try clearing filters or checking back soon.' : 'When donors publish surplus food, it will appear here for instant requests.'}
-          />
-        ) : (
-          query.data?.data.map((d, i) => <DonationCard key={d.id} donation={d} index={i} />)
-        )}
-      </div>
     </div>
-  )
-}
-
-function Chip({ onClear, children }: { onClear: () => void; children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-elevated px-2.5 py-1 text-[11px] font-semibold text-text-2">
-      {children}
-      <button onClick={onClear} className="text-text-3 hover:text-text" aria-label="Remove filter"><X className="h-3 w-3" /></button>
-    </span>
-  )
-}
-
-function LiveDot({ live }: { live: boolean }) {
-  if (!live) return null
-  return (
-    <span className="ml-2 inline-flex items-center gap-1 text-[10px] text-secondary">
-      <span className="h-1.5 w-1.5 rounded-full bg-secondary" /> live
-    </span>
-  )
-}
-
-export function DonationCard({ donation: d, index = 0 }: { donation: Donation; index?: number }) {
-  const imageUrl = storagePublicUrl(d.image_path)
-  return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.04, 0.3) }}>
-      <Link to={`/donation/${d.id}`} className="block">
-        <div className="group overflow-hidden rounded-xl border border-line bg-panel transition-colors hover:border-text-3">
-          {imageUrl && (
-            <img src={imageUrl} alt={d.food_name} className="photo-natural h-44 w-full object-cover" loading="lazy" />
-          )}
-          <div className="p-4">
-            <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0">
-                <p className="truncate text-[15px] font-semibold text-text">{d.food_name}</p>
-                <p className="mt-0.5 text-[12px] text-text-2">
-                  {CATEGORY_LABELS[d.food_category] ?? d.food_category} · {d.available_quantity} available
-                </p>
-              </div>
-              <ExpiryBadge expiresAt={d.expires_at} />
-            </div>
-            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-3">
-              <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {d.city}</span>
-              <span className="flex items-center gap-1"><Package className="h-3 w-3" /> {d.donor_business_name || 'Verified donor'}</span>
-            </div>
-            {d.description && (
-              <p className="mt-2 line-clamp-2 text-[12px] text-text-3">{d.description}</p>
-            )}
-          </div>
-        </div>
-      </Link>
-    </motion.div>
   )
 }
