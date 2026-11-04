@@ -123,6 +123,7 @@ export default {
         glass: '0 12px 32px -24px rgba(0, 0, 0, 0.8)',
         'glass-lg': '0 18px 42px -28px rgba(0, 0, 0, 0.9)',
         'glass-xl': '0 24px 60px -32px rgba(0, 0, 0, 0.9)',
+        popover: '0 18px 42px -28px rgba(0, 0, 0, 0.9)',
         header: '0 1px 0 rgba(0, 0, 0, 0.35)',
         'bottom-nav': '0 -2px 12px rgba(0, 0, 0, 0.35)',
         fab: '0 8px 24px -16px rgba(0, 0, 0, 0.8)',
