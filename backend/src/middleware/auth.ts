@@ -59,31 +59,36 @@ export async function authMiddleware(
       .single()
 
     if (profileError || !profile) {
-      // Auto-create the missing profiles row server-side (service role bypasses RLS).
-      // Some sign-up flows (email confirmation, missing DB trigger) leave the
-      // profiles table empty even though the auth session is valid.
+      // Auto-create (idempotent upsert) the missing profiles row server-side.
+      // Service role bypasses RLS. Some sign-up flows (email confirmation,
+      // missing DB trigger) leave the profiles table empty even though the
+      // auth session is valid. Upsert handles concurrent/duplicate requests.
       const meta = (authUser.user_metadata as Record<string, unknown> | undefined) ?? {}
       const role = (meta.role as AppRole) ?? 'recipient'
       const { data: created, error: createError } = await supabaseAdmin
         .from('profiles')
-        .insert({
-          id: authUser.id,
-          email: authUser.email ?? null,
-          role,
-          full_name: meta.full_name ?? null,
-          organization: meta.organization ?? null,
-          phone: meta.phone ?? null,
-          account_type: meta.account_type ?? null,
-          city: meta.city ?? null,
-        })
+        .upsert(
+          {
+            id: authUser.id,
+            email: authUser.email ?? null,
+            role,
+            full_name: meta.full_name ?? null,
+            organization: meta.organization ?? null,
+            phone: meta.phone ?? null,
+            account_type: meta.account_type ?? null,
+            city: meta.city ?? null,
+          },
+          { onConflict: 'id' }
+        )
         .select('id, email, role, full_name, organization, phone, account_type, city')
         .single()
 
       if (createError || !created) {
         console.error('[authMiddleware] auto-create profile failed', createError)
-        return res
-          .status(401)
-          .json({ error: 'Profile not found. Complete registration first.' })
+        return res.status(401).json({
+          error: 'Profile not found. Complete registration first.',
+          detail: createError?.message ?? 'profile row could not be created',
+        })
       }
 
       req.user = {
