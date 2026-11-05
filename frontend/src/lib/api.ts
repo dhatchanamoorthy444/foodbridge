@@ -101,12 +101,14 @@ api.interceptors.response.use(
       return api(originalRequest)
     }
 
-    // Refresh failed - the session is genuinely dead. Clear client-side state
-    // so protected routes redirect to login, but do NOT suppress the error:
-    // the component layer can still surface a meaningful message.
-    const store = useAppStore.getState()
-    if (store.user) {
-      store.logoutLocal()
+    // Refresh failed - the session is genuinely dead. Sign out of Supabase
+    // and clear client-side state so protected routes redirect to login, but
+    // do NOT suppress the error: the component layer can still surface a
+    // meaningful message.
+    try {
+      await useAppStore.getState().logout()
+    } catch {
+      // Ignore logout errors; we still reject the original 401.
     }
 
     return Promise.reject(error)
