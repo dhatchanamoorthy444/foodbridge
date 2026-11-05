@@ -210,12 +210,10 @@ export default function BrowseDonations() {
                 <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
                   REQUEST ALLOCATION →
                 </button>
-              </div>
-            </div>
             )}
-        )}
+          })}  
+        </div>
       </div>
-    )}
     </div>
   )
 }

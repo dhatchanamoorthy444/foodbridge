@@ -10,13 +10,20 @@ export const api = axios.create({
 })
 
 api.interceptors.request.use(async (config) => {
-  if (isSupabaseConfigured && supabase) {
+  // Always try to attach a valid Supabase token if the client is available
+  if (supabase) {
     try {
       const { data } = await supabase.auth.getSession()
       const token = data.session?.access_token
-      if (token) config.headers.Authorization = `Bearer ${token}`
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      } else {
+        // No active session - remove any stale auth header
+        config.headers.Authorization = undefined
+      }
     } catch (e) {
       console.warn('[api interceptor] auth.getSession error', e)
+      // Keep existing config if we can't check session
     }
   }
   return config

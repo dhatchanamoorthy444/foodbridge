@@ -37,7 +37,7 @@ interface FormState {
 }
 
 const EMPTY_FORM: FormState = {
-  food_name: '', food_category: 'fruits', description: '', quantity: '',
+  food_name: '', food_category: 'fruits', description: '', quantity: '0',
   unit: 'kg', prepared_at: '', expires_at: '', storage_requirement: 'room_temperature',
   temperature_category: '', packaging_condition: '', is_vegetarian: null,
   allergen_info: '', pickup_address: '', area: '', city: '', postal_code: '',
