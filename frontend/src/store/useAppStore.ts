@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { supabase } from '../lib/supabase'
 import type { Profile, AppRole } from '../types/api'
 
 export type AppTheme = 'harvest' | 'orchard' | 'market'
@@ -21,6 +22,7 @@ interface AppState {
   setSessionReady: (ready: boolean) => void
   setDemoSession: (demo: boolean) => void
   logoutLocal: () => void
+  logout: () => Promise<void>
   toggleSidebar: () => void
   setSidebarOpen: (open: boolean) => void
   setTheme: (theme: AppTheme) => void
@@ -46,6 +48,14 @@ const useAppStore = create<AppState>()(
       setDemoSession: (demo) => set({ isDemoSession: demo }),
       logoutLocal: () =>
         set({ user: null, isAuthenticated: false, isDemoSession: false, isSessionReady: true }),
+      logout: async () => {
+        try {
+          if (supabase) await supabase.auth.signOut()
+        } catch {
+          // Supabase sign-out may fail offline; clear local state regardless.
+        }
+        set({ user: null, isAuthenticated: false, isDemoSession: false, isSessionReady: true })
+      },
       toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
       setSidebarOpen: (open) => set({ sidebarOpen: open }),
       setTheme: (theme) => set({ theme }),

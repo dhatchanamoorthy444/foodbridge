@@ -164,7 +164,7 @@ function RootRedirect() {
   return <LandingPage />
 }
 
-function ErrorFallback({ error, resetErrorBoundary }: { error?: Error; resetErrorBoundary: () => void }) {
+function ErrorFallback({ error, resetErrorBoundary }: { error?: Error; resetErrorBoundary?: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] p-8 bg-[#090B09] text-white">
       <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>

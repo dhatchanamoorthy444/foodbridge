@@ -1,6 +1,5 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import useAppStore from '../../store/useAppStore'
-import { authService } from '../../services/api'
 import { cn } from '../../lib/utils'
 
 interface NavItem {
@@ -12,7 +11,7 @@ interface NavItem {
 
 export default function Sidebar() {
   const user = useAppStore((s) => s.user)
-  const logoutLocal = useAppStore((s) => s.logoutLocal)
+  const logout = useAppStore((s) => s.logout)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -35,12 +34,7 @@ export default function Sidebar() {
       ]
 
   const handleLogout = async () => {
-    try {
-      await authService.signOut()
-    } catch {
-      /* clear locally */
-    }
-    logoutLocal()
+    await logout()
     navigate('/login', { replace: true })
   }
 

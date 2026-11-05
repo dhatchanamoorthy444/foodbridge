@@ -2,13 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import useAppStore from '../../store/useAppStore'
-import { authService } from '../../services/api'
 import { useNotifications, useMarkNotificationRead, useMarkAllNotificationsRead } from '../../hooks/useAppData'
 import { formatRelativeTime } from '../../lib/utils'
 
 export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
   const user = useAppStore((s) => s.user)
-  const logoutLocal = useAppStore((s) => s.logoutLocal)
+  const logout = useAppStore((s) => s.logout)
   const [openNotifications, setOpenNotifications] = useState(false)
   const [openMenu, setOpenMenu] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -39,12 +38,7 @@ export default function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
     'Station Ops'
 
   const handleLogout = async () => {
-    try {
-      await authService.signOut()
-    } catch {
-      /* clear locally */
-    }
-    logoutLocal()
+    await logout()
     navigate('/login', { replace: true })
   }
 

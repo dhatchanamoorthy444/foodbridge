@@ -192,5 +192,7 @@ export default function BrowseDonations() {
           }
           </div>
         )
-      </div>
-  }
+      }
+    </div>
+  )
+}
