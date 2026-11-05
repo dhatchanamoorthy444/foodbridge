@@ -10,6 +10,7 @@ import { SessionBridge } from './hooks/SessionBridge'
 import { CookieConsent } from './components/ui/CookieConsent'
 import { CursorGlow } from './components/ui/CursorGlow'
 import { LoadingSpinner } from './components/ui/Feedback'
+import { ErrorBoundary } from './components/ui/ErrorBoundary'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -163,6 +164,23 @@ function RootRedirect() {
   return <LandingPage />
 }
 
+function ErrorFallback({ error, resetErrorBoundary }: { error?: Error; resetErrorBoundary: () => void }) {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] p-8 bg-[#090B09] text-white">
+      <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+      <p className="text-[#858C84] mb-6 max-w-md text-center">
+        {error?.message || 'An unexpected error occurred. Please refresh and try again.'}
+      </p>
+      <button
+        onClick={resetErrorBoundary}
+        className="px-5 py-2 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-colors"
+      >
+        Try again
+      </button>
+    </div>
+  )
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -185,52 +203,54 @@ function App() {
               }}
             />
 
-            <Routes>
-              {/* Public Root: shows LandingPage for guests, redirects authenticated users to their dashboard */}
-              <Route path="/" element={<RootRedirect />} />
+            <ErrorBoundary fallback={<ErrorFallback />}>
+              <Routes>
+                {/* Public Root: shows LandingPage for guests, redirects authenticated users to their dashboard */}
+                <Route path="/" element={<RootRedirect />} />
 
-              {/* Public Information Pages */}
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsOfService />} />
-              <Route path="/cookies" element={<CookiePolicy />} />
-              <Route path="/refund" element={<RefundPolicy />} />
+                {/* Public Information Pages */}
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/cookies" element={<CookiePolicy />} />
+                <Route path="/refund" element={<RefundPolicy />} />
 
-              {/* Public Only Auth Pages (Auto-redirect if already logged in) */}
-              <Route element={<PublicOnlyRoute />}>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Route>
+                {/* Public Only Auth Pages (Auto-redirect if already logged in) */}
+                <Route element={<PublicOnlyRoute />}>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                </Route>
 
-              {/* Authenticated Workspace App Layout with Sidebar & Navbar */}
-              <Route element={<ProtectedRoute />}>
-                <Route element={<AuthenticatedAppLayout />}>
-                  {/* Shared across authenticated users */}
-                  <Route path="/hub" element={<Home />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/alerts" element={<Alerts />} />
-                  <Route path="/pickups" element={<Pickups />} />
+                {/* Authenticated Workspace App Layout with Sidebar & Navbar */}
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<AuthenticatedAppLayout />}>
+                    {/* Shared across authenticated users */}
+                    <Route path="/hub" element={<Home />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/alerts" element={<Alerts />} />
+                    <Route path="/pickups" element={<Pickups />} />
 
-                  {/* Donor & Admin Area */}
-                  <Route element={<ProtectedRoute role="donor" />}>
-                    <Route path="/donor" element={<DonorDashboard />} />
-                    <Route path="/donor/new" element={<DonationForm />} />
-                    <Route path="/donor/:id/edit" element={<DonationForm />} />
-                    <Route path="/donations/:id/requests" element={<DonorDashboard />} />
-                  </Route>
+                    {/* Donor & Admin Area */}
+                    <Route element={<ProtectedRoute role="donor" />}>
+                      <Route path="/donor" element={<DonorDashboard />} />
+                      <Route path="/donor/new" element={<DonationForm />} />
+                      <Route path="/donor/:id/edit" element={<DonationForm />} />
+                      <Route path="/donations/:id/requests" element={<DonorDashboard />} />
+                    </Route>
 
-                  {/* Recipient / NGO Area */}
-                  <Route element={<ProtectedRoute role="recipient" />}>
-                    <Route path="/browse" element={<BrowseDonations />} />
-                    <Route path="/browse/:id" element={<DonationDetail />} />
-                    <Route path="/donation/:id" element={<DonationDetail />} />
-                    <Route path="/my-requests" element={<MyRequests />} />
+                    {/* Recipient / NGO Area */}
+                    <Route element={<ProtectedRoute role="recipient" />}>
+                      <Route path="/browse" element={<BrowseDonations />} />
+                      <Route path="/browse/:id" element={<DonationDetail />} />
+                      <Route path="/donation/:id" element={<DonationDetail />} />
+                      <Route path="/my-requests" element={<MyRequests />} />
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
 
-              {/* Catch-all */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </ErrorBoundary>
           </div>
         </SessionBridge>
       </Router>
