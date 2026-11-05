@@ -15,6 +15,31 @@ export const api = axios.create({
 /* ------------------------------------------------------------------ */
 
 /**
+ * Decodes the JWT payload to read the expiry claim without signature
+ * verification (Supabase already verified the signature when issuing it).
+ */
+function decodeExpiry(token: string): number | null {
+  try {
+    const payload = token.split('.')[1]
+    if (!payload) return null
+    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'))
+    const data = JSON.parse(json)
+    return typeof data.exp === 'number' ? data.exp : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Returns true if the access token is expired or expires within 60 seconds.
+ */
+function isTokenExpired(token: string): boolean {
+  const exp = decodeExpiry(token)
+  if (!exp) return true
+  return exp * 1000 <= Date.now() + 60_000
+}
+
+/**
  * Returns a valid access token, refreshing the Supabase session when the
  * cached access token is missing or expired. Returns null only when no
  * refreshable session exists (e.g. logged out / invalid refresh token).
@@ -24,7 +49,8 @@ async function getValidAccessToken(): Promise<string | null> {
 
   const { data, error } = await supabase.auth.getSession()
   const token = data.session?.access_token
-  if (token && !error) return token
+
+  if (token && !error && !isTokenExpired(token)) return token
 
   // Access token missing or expired - attempt a refresh using the refresh token.
   try {
