@@ -32,8 +32,6 @@ declare global {
 /**
  * Verifies a Supabase access token and loads the caller's profile.
  * Role is always read server-side from `profiles` — never from the request.
- * Falls back to accepting legacy JWTs is intentionally NOT supported:
- * the legacy `users` table does not exist in this Supabase project.
  */
 export async function authMiddleware(
   req: Request,
@@ -46,30 +44,52 @@ export async function authMiddleware(
       return res.status(401).json({ error: 'Authentication required' })
     }
 
+    // 1. Verify the Supabase access token
     const { data, error } = await supabaseAdmin.auth.getUser(token)
     if (error || !data?.user) {
       return res.status(401).json({ error: 'Invalid or expired token' })
     }
 
     const authUser = data.user
+    const authUserId = authUser.id
+
+    // Log the authenticated UUID for debugging (never log the token)
+    console.log(
+      `[authMiddleware] authenticated userId=${authUserId} email=${authUser.email ?? 'null'}`
+    )
+
+    // 2. Look up the profiles row for this authenticated user
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('id, email, role, full_name, organization, phone, account_type, city')
-      .eq('id', authUser.id)
-      .single()
+      .eq('id', authUserId)
+      .maybeSingle()
 
-    if (profileError || !profile) {
-      // Auto-create (idempotent upsert) the missing profiles row server-side.
-      // Service role bypasses RLS. Some sign-up flows (email confirmation,
-      // missing DB trigger) leave the profiles table empty even though the
-      // auth session is valid. Upsert handles concurrent/duplicate requests.
+    if (profileError) {
+      console.error(
+        `[authMiddleware] profile lookup error for userId=${authUserId}:`,
+        profileError
+      )
+      return res.status(500).json({
+        error: 'Unable to retrieve profile',
+        detail: profileError.message,
+      })
+    }
+
+    if (!profile) {
+      // Profile missing — auto-create idempotently using service role (bypasses RLS)
+      console.log(
+        `[authMiddleware] profile missing for userId=${authUserId}, auto-creating...`
+      )
+
       const meta = (authUser.user_metadata as Record<string, unknown> | undefined) ?? {}
       const role = (meta.role as AppRole) ?? 'recipient'
+
       const { data: created, error: createError } = await supabaseAdmin
         .from('profiles')
         .upsert(
           {
-            id: authUser.id,
+            id: authUserId,
             email: authUser.email ?? null,
             role,
             full_name: meta.full_name ?? null,
@@ -84,29 +104,35 @@ export async function authMiddleware(
         .single()
 
       if (createError || !created) {
-        console.error('[authMiddleware] auto-create profile failed', createError)
+        console.error(
+          `[authMiddleware] auto-create profile failed for userId=${authUserId}:`,
+          createError
+        )
         return res.status(401).json({
           error: 'Profile not found. Complete registration first.',
           detail: createError?.message ?? 'profile row could not be created',
+          userId: authUserId,
         })
       }
 
       req.user = {
-        userId: authUser.id,
+        userId: authUserId,
         email: authUser.email ?? created.email,
         role: (created.role as AppRole) ?? 'recipient',
         profile: created as Profile,
       }
     } else {
       req.user = {
-        userId: authUser.id,
+        userId: authUserId,
         email: authUser.email ?? profile.email,
         role: (profile.role as AppRole) ?? 'recipient',
         profile: profile as Profile,
       }
     }
+
     next()
   } catch (err) {
+    console.error('[authMiddleware] unexpected error:', err)
     next(err)
   }
 }
