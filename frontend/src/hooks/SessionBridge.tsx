@@ -6,7 +6,14 @@ import type { Profile } from '../types/api'
 
 async function authSessionProfile(): Promise<Profile | null> {
   try {
-    return await authService.fetchProfile()
+    let profile = await authService.fetchProfile()
+    if (!profile && supabase) {
+      const { data } = await supabase.auth.getSession()
+      if (data.session?.user) {
+        profile = await authService.ensureProfile(data.session.user)
+      }
+    }
+    return profile
   } catch (err) {
     console.error('Failed to fetch profile during auth sync:', err)
     return null

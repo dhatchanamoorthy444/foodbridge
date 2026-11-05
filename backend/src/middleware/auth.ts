@@ -59,16 +59,51 @@ export async function authMiddleware(
       .single()
 
     if (profileError || !profile) {
-      return res
-        .status(401)
-        .json({ error: 'Profile not found. Complete registration first.' })
-    }
+      // Auto-create the missing profiles row server-side (service role bypasses RLS).
+      // Some sign-up flows (email confirmation, missing DB trigger) leave the
+      // profiles table empty even though the auth session is valid.
+      const meta = (authUser.user_metadata as Record<string, unknown> | undefined) ?? {}
+      const role = (meta.role as AppRole) ?? 'recipient'
+      const { data: created, error: createError } = await supabaseAdmin
+        .from('profiles')
+        .insert({
+          id: authUser.id,
+          email: authUser.email ?? null,
+          role,
+          full_name: meta.full_name ?? null,
+          organization: meta.organization ?? null,
+          phone: meta.phone ?? null,
+          account_type: meta.account_type ?? null,
+          city: meta.city ?? null,
+          address: meta.address ?? null,
+          postal_code: meta.postal_code ?? null,
+          beneficiary_count: meta.beneficiary_count
+            ? Number(meta.beneficiary_count)
+            : null,
+        })
+        .select('id, email, role, full_name, organization, phone, account_type, city')
+        .single()
 
-    req.user = {
-      userId: authUser.id,
-      email: authUser.email ?? profile.email,
-      role: (profile.role as AppRole) ?? 'recipient',
-      profile: profile as Profile,
+      if (createError || !created) {
+        console.error('[authMiddleware] auto-create profile failed', createError)
+        return res
+          .status(401)
+          .json({ error: 'Profile not found. Complete registration first.' })
+      }
+
+      req.user = {
+        userId: authUser.id,
+        email: authUser.email ?? created.email,
+        role: (created.role as AppRole) ?? 'recipient',
+        profile: created as Profile,
+      }
+    } else {
+      req.user = {
+        userId: authUser.id,
+        email: authUser.email ?? profile.email,
+        role: (profile.role as AppRole) ?? 'recipient',
+        profile: profile as Profile,
+      }
     }
     next()
   } catch (err) {

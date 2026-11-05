@@ -51,7 +51,10 @@ export const authService = {
     })
     if (error) throw error
     let profile: Profile | null = null
-    if (data.session) profile = await this.fetchProfile()
+    if (data.session) {
+      profile = await this.fetchProfile()
+      if (!profile) profile = await this.ensureProfile(data.session.user)
+    }
     return { needsEmailConfirm: !data.session, profile }
   },
 
@@ -59,7 +62,12 @@ export const authService = {
     if (!supabase) throw new Error('Authentication is not configured')
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
-    return this.fetchProfile()
+    let profile = await this.fetchProfile()
+    if (!profile) {
+      const { data } = await supabase.auth.getSession()
+      profile = await this.ensureProfile(data.session?.user ?? { id: '', email: undefined, user_metadata: undefined })
+    }
+    return profile
   },
 
   async signOut(): Promise<void> {
@@ -94,6 +102,57 @@ export const authService = {
       .single()
     if (error) return null
     return row as Profile
+  },
+
+  /**
+   * Ensures a profiles row exists for the authenticated Supabase user.
+   * Some sign-up flows (email confirmation, missing DB trigger) leave the
+   * profiles table empty even though the auth session is valid. This inserts
+   * the missing row from the session's user metadata so the backend
+   * authentication middleware can resolve the donor role and allow API access.
+   */
+  async ensureProfile(sessionUser: {
+    id: string
+    email?: string | null
+    user_metadata?: Record<string, unknown> | null
+  }): Promise<Profile | null> {
+    if (!supabase) return null
+
+    // If profile already exists, return it.
+    const { data: existing } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', sessionUser.id)
+      .single()
+    if (existing) return existing as Profile
+
+    const meta = sessionUser.user_metadata ?? {}
+    const payload: Record<string, unknown> = {
+      id: sessionUser.id,
+      email: sessionUser.email ?? null,
+      role: (meta.role as AppRole) ?? 'recipient',
+      full_name: meta.full_name ?? null,
+      organization: meta.organization ?? null,
+      phone: meta.phone ?? null,
+      account_type: meta.account_type ?? null,
+      city: meta.city ?? null,
+      address: meta.address ?? null,
+      postal_code: meta.postal_code ?? null,
+      beneficiary_count: meta.beneficiary_count
+        ? Number(meta.beneficiary_count)
+        : null,
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .insert(payload)
+      .select()
+      .single()
+    if (error) {
+      console.error('[authService.ensureProfile] insert failed', error)
+      return null
+    }
+    return data as Profile
   },
 
   async updateProfile(patch: Record<string, unknown>): Promise<Profile | null> {
