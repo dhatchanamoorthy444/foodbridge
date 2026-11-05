@@ -75,11 +75,6 @@ export async function authMiddleware(
           phone: meta.phone ?? null,
           account_type: meta.account_type ?? null,
           city: meta.city ?? null,
-          address: meta.address ?? null,
-          postal_code: meta.postal_code ?? null,
-          beneficiary_count: meta.beneficiary_count
-            ? Number(meta.beneficiary_count)
-            : null,
         })
         .select('id, email, role, full_name, organization, phone, account_type, city')
         .single()

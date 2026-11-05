@@ -136,11 +136,6 @@ export const authService = {
       phone: meta.phone ?? null,
       account_type: meta.account_type ?? null,
       city: meta.city ?? null,
-      address: meta.address ?? null,
-      postal_code: meta.postal_code ?? null,
-      beneficiary_count: meta.beneficiary_count
-        ? Number(meta.beneficiary_count)
-        : null,
     }
 
     const { data, error } = await supabase
