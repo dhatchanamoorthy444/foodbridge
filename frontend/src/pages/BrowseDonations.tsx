@@ -6,24 +6,20 @@ import { EmptyState, ErrorState, SkeletonList, ExpiryBadge } from '../components
 import { storagePublicUrl } from '../lib/supabase'
 import { FOOD_CATEGORIES, CATEGORY_LABELS, Donation } from '../types/api'
 import { formatRelativeTime } from '../lib/utils'
-
 export default function BrowseDonations() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState<string>('all')
   const [city, setCity] = useState('')
   const [showFilters, setShowFilters] = useState(false)
-
   const query = useDonations({
     search: search || undefined,
     category: category === 'all' ? undefined : category,
     city: city || undefined,
     sort: 'expiry',
   })
-
   const donations = query.data?.data ?? []
   const clearFilters = () => { setCategory('all'); setCity(''); setSearch('') }
-
   return (
     <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
       {/* â”€â”€ Operational Header â”€â”€ */}
@@ -41,7 +37,6 @@ export default function BrowseDonations() {
             AVAILABLE SURPLUS REDISTRIBUTION
           </h1>
         </div>
-
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowFilters((v) => !v)}
@@ -59,7 +54,6 @@ export default function BrowseDonations() {
           </button>
         </div>
       </div>
-
       {/* â”€â”€ Search Bar â”€â”€ */}
       <div className="relative">
         <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[#858C84] text-[20px] pointer-events-none">
@@ -72,7 +66,6 @@ export default function BrowseDonations() {
           className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#131713] border border-[#262E26] text-white font-mono text-xs uppercase placeholder-[#858C84] focus:outline-none focus:border-[#D7EF4A]"
         />
       </div>
-
       {/* â”€â”€ Filters Drawer â”€â”€ */}
       {showFilters && (
         <motion.div
@@ -118,7 +111,6 @@ export default function BrowseDonations() {
           </div>
         </motion.div>
       )}
-
       {/* â”€â”€ Active Listings Feed â”€â”€ */}
       {query.isLoading ? (
         <div className="py-20 text-center font-mono text-xs text-[#858C84] uppercase">
@@ -142,72 +134,63 @@ export default function BrowseDonations() {
             const hours = Math.floor(diffHours)
             const mins = Math.floor((diffHours - hours) * 60)
             const imageUrl = storagePublicUrl(d.image_path)
-
             return (
-            <div
-              key={d.id}
-              onClick={() => navigate(`/browse/${d.id}`)}
-              className="relative rounded-xl bg-[#131713] border border-[#262E26] overflow-hidden flex flex-col justify-between hover:border-[#D7EF4A]/40 transition-all cursor-pointer group shadow-lg"
-            >
-              {/* Photo or Pattern Header */}
-              <div className="relative h-40 w-full bg-[#1C221C] overflow-hidden">
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt={d.food_name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-[#D7EF4A]/30 bg-gradient-to-br from-[#143527]/30 to-[#0D231A]">
-                    <span className="material-symbols-outlined text-5xl">restaurant</span>
+              <div
+                key={d.id}
+                onClick={() => navigate(`/browse/${d.id}`)}
+                className="relative rounded-xl bg-[#131713] border border-[#262E26] overflow-hidden flex flex-col justify-between hover:border-[#D7EF4A]/40 transition-all cursor-pointer group shadow-lg"
+              >
+                <div className="relative h-40 w-full bg-[#1C221C] overflow-hidden">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={d.food_name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-[#D7EF4A]/30 bg-gradient-to-br from-[#143527]/30 to-[#0D231A]">
+                      <span className="material-symbols-outlined text-5xl">restaurant</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#131713] via-transparent to-transparent" />
+                  <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-[#090B09]/80 backdrop-blur border border-[#262E26] font-mono text-[9px] text-[#D7EF4A] uppercase font-bold">
+                    {d.food_category?.toUpperCase()}
+                  </span>
+                  <span className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${diffHours <= 3 ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse' : 'bg-[#263300] text-[#D7EF4A]'}`}>
+                    {hours}H {mins}M LEFT
+                  </span>
+                </div>
+                <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
+                  <div>
+                    <h3 className="font-['Anton'] text-lg text-white uppercase group-hover:text-[#D7EF4A] transition-colors line-clamp-1">
+                      {d.food_name}
+                    </h3>
+                    <p className="text-xs text-[#858C84] line-clamp-2 mt-1">
+                      {d.description || 'Prepared fresh and verified under safe hygiene standards.'}
+                    </p>
                   </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#131713] via-transparent to-transparent" />
-
-                {/* Category Pill */}
-                <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-[#090B09]/80 backdrop-blur border border-[#262E26] font-mono text-[9px] text-[#D7EF4A] uppercase font-bold">
-                  {d.food_category?.toUpperCase()}
-                </span>
-
-                {/* Expiry Pill */}
-                <span className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${diffHours <= 3 ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse' : 'bg-[#263300] text-[#D7EF4A]'}`}>
-                  {hours}H {mins}M LEFT
-                </span>
+                  <div className="pt-2 border-t border-[#262E26] space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-[#858C84] uppercase">Available:</span>
+                      <span className="font-mono font-bold text-white">
+                        {d.available_quantity ?? d.quantity} {d.unit}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-[#858C84] uppercase">Location:</span>
+                      <span className="font-mono text-[#BCD147] truncate max-w-[180px]">
+                        {d.city || 'Regional Center'}
+                      </span>
+                    </div>
+                  </div>
+                  <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
+                    REQUEST ALLOCATION →
+                  </button>
+                </div>
               </div>
-
-              {/* Details */}
-              <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
-                <div>
-                  <h3 className="font-['Anton'] text-lg text-white uppercase group-hover:text-[#D7EF4A] transition-colors line-clamp-1">
-                    {d.food_name}
-                  </h3>
-                  <p className="text-xs text-[#858C84] line-clamp-2 mt-1">
-                    {d.description || 'Prepared fresh and verified under safe hygiene standards.'}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-[#262E26] space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-mono text-[#858C84] uppercase">Available:</span>
-                    <span className="font-mono font-bold text-white">
-                      {d.available_quantity ?? d.quantity} {d.unit}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-mono text-[#858C84] uppercase">Location:</span>
-                    <span className="font-mono text-[#BCD147] truncate max-w-[180px]">
-                      {d.city || 'Regional Center'}
-                    </span>
-                  </div>
-                </div>
-
-                <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
-                  REQUEST ALLOCATION â†’
-                </button>
-        }        }</div>
+            )})
+          }
+          </div>
+        )
       </div>
-    </div>
-  )
-}
-    </div>
-  )
+  }
