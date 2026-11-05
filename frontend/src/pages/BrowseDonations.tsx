@@ -170,13 +170,7 @@ export default function BrowseDonations() {
                 </span>
 
                 {/* Expiry Pill */}
-                <span
-                  className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${
-                    diffHours <= 3
-                      ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse'
-                      : 'bg-[#263300] text-[#D7EF4A]'
-                  }`}
-                >
+                <span className={`absolute top-3 right-3 px-2 py-0.5 rounded font-mono text-[9px] uppercase font-bold ${diffHours <= 3 ? 'bg-[#410002] border border-[#FF5449] text-[#FF5449] animate-pulse' : 'bg-[#263300] text-[#D7EF4A]'}`}>
                   {hours}H {mins}M LEFT
                 </span>
               </div>
@@ -210,10 +204,10 @@ export default function BrowseDonations() {
                 <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
                   REQUEST ALLOCATION â†’
                 </button>
-              </div>
-            })}
-          </div>
-        )
-      }
+        }        }</div>
+      </div>
+    </div>
+  )
+}
     </div>
   )
