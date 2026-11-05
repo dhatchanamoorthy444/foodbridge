@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useDonations } from '../hooks/useAppData'
@@ -26,7 +26,7 @@ export default function BrowseDonations() {
 
   return (
     <div className="flex flex-col w-full pb-16 space-y-6 max-w-7xl mx-auto">
-      {/* ── Operational Header ── */}
+      {/* â”€â”€ Operational Header â”€â”€ */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
@@ -60,7 +60,7 @@ export default function BrowseDonations() {
         </div>
       </div>
 
-      {/* ── Search Bar ── */}
+      {/* â”€â”€ Search Bar â”€â”€ */}
       <div className="relative">
         <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[#858C84] text-[20px] pointer-events-none">
           search
@@ -73,7 +73,7 @@ export default function BrowseDonations() {
         />
       </div>
 
-      {/* ── Filters Drawer ── */}
+      {/* â”€â”€ Filters Drawer â”€â”€ */}
       {showFilters && (
         <motion.div
           initial={{ opacity: 0, y: -8 }}
@@ -119,7 +119,7 @@ export default function BrowseDonations() {
         </motion.div>
       )}
 
-      {/* ── Active Listings Feed ── */}
+      {/* â”€â”€ Active Listings Feed â”€â”€ */}
       {query.isLoading ? (
         <div className="py-20 text-center font-mono text-xs text-[#858C84] uppercase">
           Scanning surplus food radar...
@@ -208,12 +208,12 @@ export default function BrowseDonations() {
                 </div>
 
                 <button className="w-full py-2.5 rounded-lg bg-[#D7EF4A] text-[#090B09] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#E8F5A4] transition-all">
-                  REQUEST ALLOCATION →
+                  REQUEST ALLOCATION â†’
                 </button>
-            )}
-          })}  
-        </div>
-      </div>
+              </div>
+            })}
+          </div>
+        )
+      }
     </div>
   )
-}
