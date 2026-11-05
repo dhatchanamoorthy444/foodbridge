@@ -22,7 +22,10 @@ function decodeExpiry(token: string): number | null {
   try {
     const payload = token.split('.')[1]
     if (!payload) return null
-    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'))
+    // Base64URL → Base64: replace -_ with +/ and pad to a multiple of 4.
+    let base64 = payload.replace(/-/g, '+').replace(/_/g, '/')
+    while (base64.length % 4 !== 0) base64 += '='
+    const json = atob(base64)
     const data = JSON.parse(json)
     return typeof data.exp === 'number' ? data.exp : null
   } catch {
@@ -31,10 +34,20 @@ function decodeExpiry(token: string): number | null {
 }
 
 /**
- * Returns true if the access token is expired or expires within 60 seconds.
+ * Returns true if the access token is missing, expired, or expires within 60 seconds.
+ * Prefers Supabase's `expires_at` (unix seconds) when available; falls back to
+ * decoding the JWT `exp` claim.
  */
-function isTokenExpired(token: string): boolean {
-  const exp = decodeExpiry(token)
+function isTokenExpired(session: { access_token?: string; expires_at?: number | null } | null): boolean {
+  if (!session?.access_token) return true
+
+  // Supabase session exposes expires_at directly (unix seconds).
+  if (typeof session.expires_at === 'number' && session.expires_at > 0) {
+    return session.expires_at * 1000 <= Date.now() + 60_000
+  }
+
+  // Fall back to decoding the JWT exp claim.
+  const exp = decodeExpiry(session.access_token)
   if (!exp) return true
   return exp * 1000 <= Date.now() + 60_000
 }
@@ -48,9 +61,11 @@ async function getValidAccessToken(): Promise<string | null> {
   if (!supabase) return null
 
   const { data, error } = await supabase.auth.getSession()
-  const token = data.session?.access_token
+  const session = data.session
 
-  if (token && !error && !isTokenExpired(token)) return token
+  if (session?.access_token && !error && !isTokenExpired(session)) {
+    return session.access_token
+  }
 
   // Access token missing or expired - attempt a refresh using the refresh token.
   try {
