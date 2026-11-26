@@ -1,0 +1,181 @@
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/controller/DonationRequestController.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/controller/FoodItemController.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/model/Donation.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/model/DonationRequest.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/model/FoodItem.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/model/User.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/repository/DonationRepository.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/repository/DonationRequestRepository.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/repository/FoodItemRepository.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/repository/UserRepository.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/service/DonationRequestService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/service/DonationService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/main/java/com/foodbridge/api/service/FoodItemService.java', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/routes/analytics.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/routes/auth.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/routes/inventory.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/routes/matching.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/routes/notifications.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/routes/pickups.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/src/server.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/App.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/animations/Dynamic3DScene.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/animations/ThreeJSFoodScene.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/animations/ThreeJSHero.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/layout/Navbar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/layout/Sidebar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Accordion.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Avatar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/BackgroundElements.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Badge.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/BadgeList.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Breadcrumb.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Button.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Calendar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Card.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Checkbox.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Chip.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/CookieConsent.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/CopyButton.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/CreativeGrid.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/CursorGlow.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/DataTable.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/DatePicker.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/DateRangePicker.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Divider.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/EmptyState.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/ErrorDisplay.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/ExpandableText.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/FileUpload.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/FilterBar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Filters.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Form.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/FormGroup.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/GridLayout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/InputValidation.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/InteractiveCard.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/LoadingSpinner.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Menu.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/MobileMenu.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Modal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/NavigationItem.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/OverflowMenu.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Pagination.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/PremiumCard.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/PriorityBadge.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/ProgressBar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Scrollbar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/SearchInput.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/SelectInput.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Sidebar.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Skeleton.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Slider.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Spacer.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/StatCard.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/StatDisplay.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Stepper.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Switch.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Tabs.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/TimeAgo.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Toast.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Toggle.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/ToggleGroup.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Tooltip.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Typography.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/WarningBanner.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/Watermark.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/components/ui/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/index.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/lib/utils.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/lib/validations.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/main.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Analytics.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/CookiePolicy.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Dashboard.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Inventory.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/LandingPage.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Login.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Matching.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Pickups.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/PrivacyPolicy.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/Settings.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/pages/TermsOfService.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/store/useAppStore.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/src/types/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/tailwind.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/tsconfig.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/vite.config.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/backend/src/main/java/com/foodbridge/api/controller/DonationRequestController.java b/backend/src/main/java/com/foodbridge/api/controller/DonationRequestController.java[m
+[1mindex 6d74580..3e68e79 100644[m
+[1m--- a/backend/src/main/java/com/foodbridge/api/controller/DonationRequestController.java[m
+[1m+++ b/backend/src/main/java/com/foodbridge/api/controller/DonationRequestController.java[m
+[36m@@ -3,23 +3,159 @@[m [mpackage com.foodbridge.api.controller;[m
+ import com.foodbridge.api.model.DonationRequest;[m
+ import com.foodbridge.api.service.DonationRequestService;[m
+ import org.springframework.beans.factory.annotation.Autowired;[m
+[32m+[m[32mimport org.springframework.http.HttpStatus;[m
+[32m+[m[32mimport org.springframework.http.ResponseEntity;[m
+ import org.springframework.web.bind.annotation.*;[m
+ [m
+ import java.util.List;[m
+[32m+[m[32mimport java.util.UUID;[m
+ [m
+ @RestController[m
+[31m-@RequestMapping("/api/requests")[m
+[32m+[m[32m@RequestMapping("/api/donation-requests")[m
+ public class DonationRequestController {[m
+[32m+[m
+     @Autowired[m
+     private DonationRequestService donationRequestService;[m
+ [m
+[32m+[m[32m    // CREATE[m
+[32m+[m[32m    @PostMapping[m
+[32m+[m[32m    public ResponseEntity<DonationRequest> createDonationRequest(@RequestBody DonationRequest donationRequest) {[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            // Validate request[m
+[32m+[m[32m            if (donationRequest == null) {[m
+[32m+[m[32m                return ResponseEntity.badRequest().build();[m
+[32m+[m[32m            }[m
+[32m+[m[32m            if (donationRequest.getDonationId() == null || donationRequest.getDonationId().isEmpty()) {[m
+[32m+[m[32m                return ResponseEntity.badRequest().build();[m
+[32m+[m[32m            }[m
+[32m+[m[32m            if (donationRequest.getRecipientId() == null || donationRequest.getRecipientId().isEmpty()) {[m
+[32m+[m[32m                return ResponseEntity.badRequest().build();[m
+[32m+[m[32m            }[m
+[32m+[m[32m            if (donationRequest.getRequestedQuantity() == null || donationRequest.getRequestedQuantity() <= 0) {[m
+[32m+[m[32m                return ResponseEntity.badRequest().build();[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            DonationRequest createdRequest = donationRequestService.createDonationRequest(donationRequest);[m
+[32m+[m[32m            return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);[m
+[32m+[m[32m        } catch (Exception e) {[m
+[32m+[m[32m            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    // READ - All[m
+     @GetMapping[m
+[31m-    public List<DonationRequest> getAllRequests() {[m
+[31m-        return donationRequestService.getAllRequests();[m
+[32m+[m[32m    public ResponseEntity<List<DonationRequest>> getAllDonationRequests() {[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            List<DonationRequest> requests = donationRequestService.getAllDonationRequests();[m
+[32m+[m[32m            if (requests.isEmpty()) {[m
+[32m+[m[32m                return ResponseEntity.noContent().build();[m
+[32m+[m[32m            }[m
+[32m+[m[32m            return ResponseEntity.ok(requests);[m
+[32m+[m[32m        } catch (Exception e) {[m
+[32m+[m[32m            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();[m
+[32m+[m[32m        }[m
+     }[m
+ [m
+[31m-    @PostMapping[m
+[31m-    public DonationRequest createRequest(@RequestBody DonationRequest request) {[m
+[31m-        return donationRequestService.createRequest(request);[m
+[32m+[m[32m    // READ - By ID[m
+[32m+[m[32m    @GetMapping("/{id}")[m
+[32m+[m[32m    public ResponseEntity<DonationRequest> getDonationRequestById(@PathVariable String id) {[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            DonationRequest request = donationRequestService.ge

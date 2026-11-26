@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    /* FoodBridge Stitch palette — Night Black / Forest / Neon Lemon / White */
+    --fb-night: #090B09;
+    --fb-forest: #0D231A;
+    --fb-forest-2: #143527;
+    --fb-card: #131713;
+    --fb-card-hover: #1C221C;
+    --fb-lemon: #D7EF4A;
+    --fb-lemon-dim: #BCD147;
+    --fb-lemon-soft: #E8F5A4;
+    --fb-white: #F6F7F2;
+    --fb-muted: #B8BDB6;
+    --fb-dim: #858C84;
+    --fb-border: #262E26;
+
+    /* RGB variants for Tailwind opacity modifiers */
+    --fb-night-rgb: 9 11 9;
+    --fb-forest-rgb: 13 35 26;
+    --fb-forest-2-rgb: 20 53 39;
+    --fb-card-rgb: 19 23 19;
+    --fb-card-hover-rgb: 28 34 28;
+    --fb-lemon-rgb: 215 239 74;
+    --fb-white-rgb: 246 247 242;
+    --fb-muted-rgb: 184 189 182;
+    --fb-dim-rgb: 133 140 132;
+    --fb-border-rgb: 38 46 38;
+
+    /* Semantic tokens for existing component styles */
+    --fb-app: 9 11 9;
+    --fb-app-deep: 7 8 7;
+    --fb-panel: 19 23 19;
+    --fb-elevated: 28 34 28;
+    --fb-surface-container: 24 30 24;
+    --fb-surface-high: 34 42 34;
+    --fb-surface-highest: 44 54 44;
+    --fb-surface-variant: 44 54 44;
+
+    --fb-text: 246 247 242;
+    --fb-text-2: 184 189 182;
+    --fb-text-3: 133 140 132;
+    --fb-line: 38 46 38;
+
+    --fb-primary: 215 239 74;
+    --fb-primary-hover: 232 245 164;
+    --fb-primary-container: 20 53 39;
+    --fb-on-primary: 9 11 9;
+    --fb-on-primary-container: 215 239 74;
+    --fb-primary-fixed: 215 239 74;
+    --fb-primary-fixed-dim: 188 209 71;
+    --fb-on-primary-fixed: 25 30 0;
+
+    --fb-secondary: 188 209 71;
+    --fb-on-secondary: 25 30 0;
+    --fb-secondary-container: 38 51 0;
+    --fb-on-secondary-container: 216 237 97;
+    --fb-secondary-fixed: 216 237 97;
+    --fb-secondary-fixed-dim: 188 209 71;
+
+    --fb-tertiary: 255 255 255;
+    --fb-on-tertiary: 13 35 26;
+    --fb-tertiary-container: 20 53 39;
+    --fb-on-tertiary-container: 200 232 241;
+
+    --fb-danger: 255 84 73;
+    --fb-on-danger: 105 0 5;
+    --fb-danger-soft: 65 0 2;
+    --fb-on-danger-soft: 255 218 214;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--fb-night) !important;
+    color: var(--fb-white);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-headline {
+    font-family: 'Anton', Impact, sans-serif;
+    letter-spacing: 0.02em;
+    color: var(--fb-white);
+  }
+
+  ::selection {
+    background: var(--fb-lemon);
+    color: var(--fb-night);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--fb-lemon) !important;
+    outline-offset: 2px;
+  }
+
+  input, select, textarea {
+    background-color: #0E120E !important;
+    border-color: var(--fb-border) !important;
+    color: var(--fb-white) !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--fb-dim) !important;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--fb-border);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--fb-dim); }
+
+  .tabular-nums, .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Common Stitch UI Cards */
+  .stitch-card {
+    background-color: var(--fb-card);
+    border: 1px solid var(--fb-border);
+    border-radius: 0.75rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .stitch-card:hover {
+    background-color: var(--fb-card-hover);
+    border-color: rgba(215, 239, 74, 0.2);
+  }
+
+  .glass-card, .botanical-card {
+    background: var(--fb-card);
+    border: 1px solid var(--fb-border);
+    border-radius: 0.75rem;
+  }
+
+  .glass-popover {
+    background: var(--fb-card);
+    border: 1px solid var(--fb-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 18px 42px -10px rgba(0, 0, 0, 0.85);
+  }
+
+  .glass-modal {
+    background: #0E120E;
+    border: 1px solid var(--fb-border);
+    border-radius: 0.875rem;
+    box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.95);
+  }
+
+  /* Primary Stitch Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+    background: var(--fb-lemon);
+    color: #090B09;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.8125rem;
+  }
+  .btn-primary:hover {
+    background: var(--fb-lemon-soft);
+    box-shadow: 0 0 20px rgba(215, 239, 74, 0.3);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98];
+    background: #1C221C;
+    border: 1px solid var(--fb-border);
+    color: var(--fb-white);
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.8125rem;
+  }
+  .btn-secondary:hover {
+    background: #252B25;
+    border-color: rgba(215, 239, 74, 0.3);
+  }
+
+  .btn-urgent {
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98];
+    background: #410002;
+    border: 1px solid #FF5449;
+    color: #FFDAD6;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.8125rem;
+  }
+  .btn-urgent:hover {
+    background: #690005;
+    box-shadow: 0 0 20px rgba(255, 84, 73, 0.35);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 font-bold uppercase tracking-wider transition-colors;
+    color: var(--fb-muted);
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+  }
+  .btn-ghost:hover {
+    color: var(--fb-white);
+    background: #1C221C;
+  }
+
+  .input-field {
+    @apply w-full outline-none transition-all;
+    background: #0E120E !important;
+    border: 1px solid var(--fb-border) !important;
+    border-radius: 0.5rem;
+    color: var(--fb-white) !important;
+    height: 44px;
+    padding: 0 0.875rem;
+    font-size: 0.9375rem;
+  }
+  .input-field:focus {
+    border-color: var(--fb-lemon) !important;
+    box-shadow: 0 0 0 2px rgba(215, 239, 74, 0.2);
+  }
+
+  .input-label {
+    @apply block font-bold uppercase tracking-wider;
+    font-size: 0.6875rem;
+    color: var(--fb-muted);
+  }
+
+  /* Expiry chips */
+  .chip-fresh {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 font-bold uppercase tracking-wider;
+    font-size: 10px;
+    background: rgba(188, 209, 71, 0.15);
+    color: var(--fb-lemon);
+    border: 1px solid rgba(188, 209, 71, 0.3);
+    border-radius: 0.25rem;
+  }
+  .chip-expiring {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 font-bold uppercase tracking-wider;
+    font-size: 10px;
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 0.25rem;
+  }
+  .chip-critical {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 font-bold uppercase tracking-wider animate-pulse;
+    font-size: 10px;
+    background: #410002;
+    color: #FF5449;
+    border: 1px solid #FF5449;
+    border-radius: 0.25rem;
+  }
+}
